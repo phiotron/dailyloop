@@ -335,4 +335,147 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get scheduleOnce => 'Một lần';
+
+  @override
+  String get tasks => 'Việc';
+
+  @override
+  String get newTask => 'Việc mới';
+
+  @override
+  String get editTask => 'Sửa việc';
+
+  @override
+  String get deleteTaskConfirm => 'Xóa việc này?';
+
+  @override
+  String get subtasks => 'Việc con (không bắt buộc)';
+
+  @override
+  String get repeatNone => 'Không lặp lại';
+
+  @override
+  String get taskDate => 'Ngày';
+
+  @override
+  String get taskTime => 'Giờ';
+
+  @override
+  String get noTime => 'Không đặt giờ';
+
+  @override
+  String get unscheduled => 'Chưa xếp lịch';
+
+  @override
+  String get startDateRequired => 'Chọn ngày bắt đầu';
+
+  @override
+  String get createNew => 'Tạo mới';
+
+  @override
+  String get addHabit => 'Thêm thói quen';
+
+  @override
+  String get addTask => 'Thêm việc';
+
+  @override
+  String get backToToday => 'Về hôm nay';
+
+  @override
+  String get pickDay => 'Chọn ngày';
+
+  @override
+  String overdueDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Quá hạn · $count ngày',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get skipToday => 'Bỏ qua ngày này';
+
+  @override
+  String get unskip => 'Bỏ dấu bỏ qua';
+
+  @override
+  String get skipped => 'Đã bỏ qua';
+
+  @override
+  String get achieved => 'Đạt';
+
+  @override
+  String get notAchieved => 'Chưa đạt';
+
+  @override
+  String get edit => 'Sửa';
+
+  @override
+  String get futureDay => 'Chỉ ghi được kết quả tới hôm nay';
+
+  @override
+  String get addOne => 'Thêm 1';
+
+  @override
+  String get recordValue => 'Ghi kết quả';
+
+  @override
+  String progress(String value, String target) {
+    return '$value trên $target';
+  }
+
+  @override
+  String itemsDone(int done, int total) {
+    return '$done trên $total mục';
+  }
+
+  @override
+  String get filterToday => 'Hôm nay';
+
+  @override
+  String get filterUpcoming => 'Sắp tới';
+
+  @override
+  String get filterOverdue => 'Quá hạn';
+
+  @override
+  String get filterUnscheduled => 'Chưa xếp lịch';
+
+  @override
+  String get filterDone => 'Đã xong';
+
+  @override
+  String get emptyTasks => 'Không có việc nào';
+
+  @override
+  String get welcomeTitle1 => 'Xây thói quen bền vững';
+
+  @override
+  String get welcomeBody1 =>
+      'Theo dõi thói quen kiểu có hoặc không, số lượng, thời gian hay danh sách con, vào đúng những ngày bạn chọn.';
+
+  @override
+  String get welcomeTitle2 => 'Sắp xếp ngày của bạn';
+
+  @override
+  String get welcomeBody2 =>
+      'Thói quen và việc cần làm trong ngày nằm chung ở màn Hôm nay.';
+
+  @override
+  String get welcomeTitle3 => 'Dữ liệu ở lại trên máy';
+
+  @override
+  String get welcomeBody3 =>
+      'Không cần tài khoản, không cần mạng. Bạn tự xuất file sao lưu khi muốn.';
+
+  @override
+  String get skip => 'Bỏ qua';
+
+  @override
+  String get next => 'Tiếp';
+
+  @override
+  String get getStarted => 'Bắt đầu';
 }

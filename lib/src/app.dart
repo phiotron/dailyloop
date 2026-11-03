@@ -7,9 +7,12 @@ import '../l10n/app_localizations.dart';
 import 'features/categories/categories_screen.dart';
 import 'features/habits/habit_editor_screen.dart';
 import 'features/habits/habits_screen.dart';
+import 'data/database.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/shell/home_shell.dart';
+import 'features/tasks/tasks_screen.dart';
 import 'features/today/today_screen.dart';
+import 'features/welcome/welcome_screen.dart';
 import 'providers.dart';
 import 'ui/messenger.dart';
 
@@ -39,7 +42,29 @@ GoRouter createRouter() {
               ),
             ],
           ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/tasks',
+                builder: (context, state) => const TasksScreen(),
+              ),
+            ],
+          ),
         ],
+      ),
+      GoRoute(
+        parentNavigatorKey: rootKey,
+        path: '/tasks/new',
+        builder: (context, state) => HabitEditorScreen(
+          kind: ActivityKind.task,
+          initialDate: state.uri.queryParameters['date'],
+        ),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootKey,
+        path: '/tasks/:id',
+        builder: (context, state) =>
+            HabitEditorScreen(habitId: int.parse(state.pathParameters['id']!)),
       ),
       GoRoute(
         parentNavigatorKey: rootKey,
@@ -85,7 +110,15 @@ class DailyLoopApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider).value ?? ThemeMode.system;
     final localeCode = ref.watch(localeCodeProvider).value;
+    final onboarding = ref.watch(onboardingDoneProvider);
     return MaterialApp.router(
+      // Lần mở đầu thì màn chào phủ lên app (AC-34). Đang đọc cài đặt thì
+      // để trống, tránh màn chào nháy lên rồi tắt.
+      builder: (context, child) => switch (onboarding.value) {
+        true => child!,
+        false => const WelcomeScreen(),
+        null => const Scaffold(),
+      },
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       routerConfig: router ?? _router,
       scaffoldMessengerKey: rootMessengerKey,

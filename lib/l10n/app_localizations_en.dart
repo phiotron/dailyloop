@@ -335,4 +335,148 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scheduleOnce => 'Once';
+
+  @override
+  String get tasks => 'Tasks';
+
+  @override
+  String get newTask => 'New task';
+
+  @override
+  String get editTask => 'Edit task';
+
+  @override
+  String get deleteTaskConfirm => 'Delete this task?';
+
+  @override
+  String get subtasks => 'Subtasks (optional)';
+
+  @override
+  String get repeatNone => 'Does not repeat';
+
+  @override
+  String get taskDate => 'Date';
+
+  @override
+  String get taskTime => 'Time';
+
+  @override
+  String get noTime => 'No time';
+
+  @override
+  String get unscheduled => 'Unscheduled';
+
+  @override
+  String get startDateRequired => 'Pick a start date';
+
+  @override
+  String get createNew => 'Create';
+
+  @override
+  String get addHabit => 'Add habit';
+
+  @override
+  String get addTask => 'Add task';
+
+  @override
+  String get backToToday => 'Back to today';
+
+  @override
+  String get pickDay => 'Pick a day';
+
+  @override
+  String overdueDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Overdue · $count days',
+      one: 'Overdue · 1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get skipToday => 'Skip this day';
+
+  @override
+  String get unskip => 'Undo skip';
+
+  @override
+  String get skipped => 'Skipped';
+
+  @override
+  String get achieved => 'Done';
+
+  @override
+  String get notAchieved => 'Not done';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get futureDay => 'You can only record days up to today';
+
+  @override
+  String get addOne => 'Add 1';
+
+  @override
+  String get recordValue => 'Record';
+
+  @override
+  String progress(String value, String target) {
+    return '$value of $target';
+  }
+
+  @override
+  String itemsDone(int done, int total) {
+    return '$done of $total items';
+  }
+
+  @override
+  String get filterToday => 'Today';
+
+  @override
+  String get filterUpcoming => 'Upcoming';
+
+  @override
+  String get filterOverdue => 'Overdue';
+
+  @override
+  String get filterUnscheduled => 'Unscheduled';
+
+  @override
+  String get filterDone => 'Done';
+
+  @override
+  String get emptyTasks => 'No tasks here';
+
+  @override
+  String get welcomeTitle1 => 'Build habits that stick';
+
+  @override
+  String get welcomeBody1 =>
+      'Track yes-or-no habits, amounts, time or checklists, on the days you choose.';
+
+  @override
+  String get welcomeTitle2 => 'Plan your day';
+
+  @override
+  String get welcomeBody2 =>
+      'Habits and tasks for the day are together on the Today screen.';
+
+  @override
+  String get welcomeTitle3 => 'Your data stays on this phone';
+
+  @override
+  String get welcomeBody3 =>
+      'No account and no internet needed. Export a backup file whenever you want.';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get getStarted => 'Get started';
 }

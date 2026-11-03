@@ -14,11 +14,22 @@ import '../../providers.dart';
 import '../../ui/messenger.dart';
 import '../../ui/schedule_text.dart';
 
-/// Tạo hoặc sửa thói quen (AC-01 tới AC-05). [habitId] null là tạo mới.
+/// Tạo hoặc sửa thói quen (AC-01 tới AC-05) hoặc việc cần làm (AC-13,
+/// AC-14). [habitId] null là tạo mới loại [kind]; sửa thì lấy loại của mục.
 class HabitEditorScreen extends ConsumerStatefulWidget {
-  const HabitEditorScreen({super.key, this.habitId});
+  const HabitEditorScreen({
+    super.key,
+    this.habitId,
+    this.kind = ActivityKind.habit,
+    this.initialDate,
+  });
 
   final int? habitId;
+  final ActivityKind kind;
+
+  /// Ngày `YYYY-MM-DD` điền sẵn khi tạo mới (tạo việc từ một ngày ở màn
+  /// Hôm nay); null là hôm nay.
+  final String? initialDate;
 
   @override
   ConsumerState<HabitEditorScreen> createState() => _HabitEditorScreenState();
@@ -48,12 +59,22 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
   Evaluation _evaluation = Evaluation.yesNo;
   TargetCondition _condition = TargetCondition.atLeast;
   int? _checklistMinDone;
-  ScheduleType _scheduleType = ScheduleType.daily;
+  late ActivityKind _kind = widget.kind;
+  late ScheduleType _scheduleType = widget.kind == ActivityKind.task
+      ? ScheduleType.once
+      : ScheduleType.daily;
   int _weekdays = 0;
   Set<int> _monthDays = {};
   SchedulePeriod _period = SchedulePeriod.week;
-  late String _startDate;
+
+  /// Thói quen luôn có ngày bắt đầu; việc null là "Chưa xếp lịch".
+  String? _startDate;
   String? _endDate;
+
+  /// Giờ của việc, số phút từ 00:00.
+  int? _timeOfDay;
+
+  bool get _isTask => _kind == ActivityKind.task;
 
   /// Lỗi đang hiện, theo tên trường của [ActivityDraft.validate].
   String? _error;
@@ -64,7 +85,7 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
   @override
   void initState() {
     super.initState();
-    _startDate = dateKey(ref.read(clockProvider)());
+    _startDate = widget.initialDate ?? dateKey(ref.read(clockProvider)());
     _load();
   }
 
@@ -76,6 +97,8 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
       final items = await repo.checklistOf(id);
       final rule = await repo.currentRule(id);
       if (a != null) {
+        _kind = a.kind;
+        _timeOfDay = a.timeOfDay;
         _name.text = a.name;
         _description.text = a.description ?? '';
         _categoryId = a.categoryId;
@@ -86,7 +109,9 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
         _unit.text = a.unit ?? '';
         _checklistMinDone = a.checklistMinDone;
         _items.addAll([for (final c in items) _Item(id: c.id, text: c.title)]);
-        _startDate = a.startDate ?? _startDate;
+        _startDate = a.kind == ActivityKind.task
+            ? a.startDate
+            : (a.startDate ?? _startDate);
         _endDate = a.endDate;
       }
       if (rule != null) {
@@ -98,7 +123,8 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
         _period = rule.period ?? SchedulePeriod.week;
       }
     }
-    if (_items.isEmpty) _items.add(_Item());
+    // Thói quen kiểu Danh sách con cần ít nhất một ô; việc thì không bắt buộc.
+    if (_items.isEmpty && !_isTask) _items.add(_Item());
     if (mounted) setState(() => _loading = false);
   }
 
@@ -126,11 +152,13 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
   );
 
   ActivityDraft get _draft => ActivityDraft(
+    kind: _kind,
     name: _name.text,
     description: _description.text,
     categoryId: _categoryId,
     priority: _priority,
-    evaluation: _evaluation,
+    evaluation: _isTask ? Evaluation.yesNo : _evaluation,
+    timeOfDay: _isTask && _startDate != null ? _timeOfDay : null,
     target: double.tryParse(_target.text.trim().replaceAll(',', '.')),
     condition: _condition,
     unit: _unit.text,
@@ -188,7 +216,7 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        content: Text(l.deleteHabitConfirm),
+        content: Text(_isTask ? l.deleteTaskConfirm : l.deleteHabitConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -213,8 +241,28 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
     );
   }
 
+  /// Bỏ con trỏ khỏi ô nhập trước khi mở hộp chọn; không thì đóng hộp xong
+  /// con trỏ quay lại ô Tên và bàn phím bật lên (thấy trên máy thật).
+  void _unfocus() => FocusManager.instance.primaryFocus?.unfocus();
+
+  Future<void> _pickTime() async {
+    _unfocus();
+    final t = _timeOfDay ?? 9 * 60;
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: t ~/ 60, minute: t % 60),
+    );
+    if (picked != null) {
+      setState(() => _timeOfDay = picked.hour * 60 + picked.minute);
+    }
+  }
+
   Future<void> _pickDate({required bool end}) async {
-    final initial = parseDateKey(end ? (_endDate ?? _startDate) : _startDate);
+    _unfocus();
+    final fallback = dateKey(ref.read(clockProvider)());
+    final initial = parseDateKey(
+      end ? (_endDate ?? _startDate ?? fallback) : (_startDate ?? fallback),
+    );
     final picked = await showDatePicker(
       context: context,
       initialDate: DateTime(initial.year, initial.month, initial.day),
@@ -242,6 +290,7 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
       'interval' => l.intervalInvalid,
       'timesPerPeriod' => l.timesInvalid,
       'endDate' => l.endDateInvalid,
+      'startDate' => l.startDateRequired,
       _ => null,
     };
   }
@@ -287,13 +336,18 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(editing ? l.editHabit : l.newHabit),
+        title: Text(
+          _isTask
+              ? (editing ? l.editTask : l.newTask)
+              : (editing ? l.editHabit : l.newHabit),
+        ),
         actions: [
           if (editing)
             PopupMenuButton<String>(
               onSelected: (v) => v == 'archive' ? _archive() : _delete(),
               itemBuilder: (context) => [
-                PopupMenuItem(value: 'archive', child: Text(l.archive)),
+                if (!_isTask)
+                  PopupMenuItem(value: 'archive', child: Text(l.archive)),
                 PopupMenuItem(value: 'delete', child: Text(l.delete)),
               ],
             ),
@@ -373,38 +427,44 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
                       onChanged: (v) => setState(() => _priority = v!),
                     ),
                   ),
-                  header(l.evaluation),
-                  RadioGroup<Evaluation>(
-                    groupValue: _evaluation,
-                    onChanged: (v) => setState(() {
-                      _evaluation = v!;
-                      _error = null;
-                    }),
-                    child: Column(
-                      children: [
-                        RadioListTile(
-                          value: Evaluation.yesNo,
-                          title: Text(l.evalYesNo),
-                        ),
-                        RadioListTile(
-                          value: Evaluation.quantity,
-                          title: Text(l.evalQuantity),
-                        ),
-                        RadioListTile(
-                          value: Evaluation.duration,
-                          title: Text(l.evalDuration),
-                        ),
-                        RadioListTile(
-                          value: Evaluation.checklist,
-                          title: Text(l.evalChecklist),
-                        ),
-                      ],
+                  if (_isTask) ...[
+                    header(l.subtasks),
+                    _checklistFields(l),
+                  ] else ...[
+                    header(l.evaluation),
+                    RadioGroup<Evaluation>(
+                      groupValue: _evaluation,
+                      onChanged: (v) => setState(() {
+                        _evaluation = v!;
+                        _error = null;
+                      }),
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            value: Evaluation.yesNo,
+                            title: Text(l.evalYesNo),
+                          ),
+                          RadioListTile(
+                            value: Evaluation.quantity,
+                            title: Text(l.evalQuantity),
+                          ),
+                          RadioListTile(
+                            value: Evaluation.duration,
+                            title: Text(l.evalDuration),
+                          ),
+                          RadioListTile(
+                            value: Evaluation.checklist,
+                            title: Text(l.evalChecklist),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  if (_evaluation == Evaluation.quantity ||
-                      _evaluation == Evaluation.duration)
-                    _targetFields(l),
-                  if (_evaluation == Evaluation.checklist) _checklistFields(l),
+                    if (_evaluation == Evaluation.quantity ||
+                        _evaluation == Evaluation.duration)
+                      _targetFields(l),
+                    if (_evaluation == Evaluation.checklist)
+                      _checklistFields(l),
+                  ],
                   header(l.repeat),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -412,6 +472,11 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
                       initialValue: _scheduleType,
                       isExpanded: true,
                       items: [
+                        if (_isTask)
+                          DropdownMenuItem(
+                            value: ScheduleType.once,
+                            child: Text(l.repeatNone),
+                          ),
                         DropdownMenuItem(
                           value: ScheduleType.daily,
                           child: Text(l.repeatDaily),
@@ -447,25 +512,73 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
                   const SizedBox(height: 8),
                   ListTile(
                     leading: const Icon(Icons.event_outlined),
-                    title: Text(l.startDate),
-                    subtitle: Text(showDate(_startDate)),
-                    onTap: () => _pickDate(end: false),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.event_busy_outlined),
-                    title: Text(l.endDate),
-                    subtitle: Text(
-                      _endDate == null ? l.noEndDate : showDate(_endDate!),
+                    title: Text(
+                      _isTask && _scheduleType == ScheduleType.once
+                          ? l.taskDate
+                          : l.startDate,
                     ),
-                    trailing: _endDate == null
-                        ? null
-                        : IconButton(
+                    subtitle: Text(
+                      _startDate == null
+                          ? l.unscheduled
+                          : showDate(_startDate!),
+                    ),
+                    // Việc một lần được bỏ ngày để vào "Chưa xếp lịch" (AC-13).
+                    trailing:
+                        _isTask &&
+                            _scheduleType == ScheduleType.once &&
+                            _startDate != null
+                        ? IconButton(
                             icon: const Icon(Icons.close),
                             tooltip: l.clear,
-                            onPressed: () => setState(() => _endDate = null),
-                          ),
-                    onTap: () => _pickDate(end: true),
+                            onPressed: () => setState(() {
+                              _startDate = null;
+                              _timeOfDay = null;
+                            }),
+                          )
+                        : null,
+                    onTap: () => _pickDate(end: false),
                   ),
+                  errorLine('startDate'),
+                  if (_isTask && _startDate != null)
+                    ListTile(
+                      leading: const Icon(Icons.schedule),
+                      title: Text(l.taskTime),
+                      subtitle: Text(
+                        _timeOfDay == null
+                            ? l.noTime
+                            : MaterialLocalizations.of(context).formatTimeOfDay(
+                                TimeOfDay(
+                                  hour: _timeOfDay! ~/ 60,
+                                  minute: _timeOfDay! % 60,
+                                ),
+                              ),
+                      ),
+                      trailing: _timeOfDay == null
+                          ? null
+                          : IconButton(
+                              icon: const Icon(Icons.close),
+                              tooltip: l.clear,
+                              onPressed: () =>
+                                  setState(() => _timeOfDay = null),
+                            ),
+                      onTap: _pickTime,
+                    ),
+                  if (!_isTask || _scheduleType != ScheduleType.once)
+                    ListTile(
+                      leading: const Icon(Icons.event_busy_outlined),
+                      title: Text(l.endDate),
+                      subtitle: Text(
+                        _endDate == null ? l.noEndDate : showDate(_endDate!),
+                      ),
+                      trailing: _endDate == null
+                          ? null
+                          : IconButton(
+                              icon: const Icon(Icons.close),
+                              tooltip: l.clear,
+                              onPressed: () => setState(() => _endDate = null),
+                            ),
+                      onTap: () => _pickDate(end: true),
+                    ),
                   errorLine('endDate'),
                 ],
               ),
@@ -554,7 +667,7 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
                 IconButton(
                   icon: const Icon(Icons.remove_circle_outline),
                   tooltip: l.removeItem,
-                  onPressed: count <= 1
+                  onPressed: count <= 1 && !_isTask
                       ? null
                       : () => setState(() {
                           _items.removeAt(i).controller.dispose();
@@ -578,20 +691,24 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
               ),
             ),
           ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: DropdownButtonFormField<int?>(
-            initialValue: _checklistMinDone,
-            isExpanded: true,
-            decoration: InputDecoration(labelText: l.checklistMinDone),
-            items: [
-              DropdownMenuItem(value: null, child: Text(l.checklistAll)),
-              for (var n = 1; n < count; n++)
-                DropdownMenuItem(value: n, child: Text(l.checklistAtLeast(n))),
-            ],
-            onChanged: (v) => setState(() => _checklistMinDone = v),
+        if (!_isTask)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: DropdownButtonFormField<int?>(
+              initialValue: _checklistMinDone,
+              isExpanded: true,
+              decoration: InputDecoration(labelText: l.checklistMinDone),
+              items: [
+                DropdownMenuItem(value: null, child: Text(l.checklistAll)),
+                for (var n = 1; n < count; n++)
+                  DropdownMenuItem(
+                    value: n,
+                    child: Text(l.checklistAtLeast(n)),
+                  ),
+              ],
+              onChanged: (v) => setState(() => _checklistMinDone = v),
+            ),
           ),
-        ),
         if (_error == 'checklist' || _error == 'checklistMin')
           Padding(
             key: _errorKey,

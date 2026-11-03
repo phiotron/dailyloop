@@ -4,15 +4,15 @@ App mobile CHỈ dành cho điện thoại. Mở Claude ngay trong thư mục n�
 
 - Mã app: APP-002
 - Thư mục: apps/APP-002-dailyloop
-- Giai đoạn hiện tại: G2 xong, chờ duyệt
+- Giai đoạn hiện tại: G3 xong, chờ duyệt
 - Nền tảng: Android (v1; iOS để sau, D-001)
 - Quy mô: chuẩn
 - Stack: Flutter
 
 ## Điểm dừng (Claude cập nhật bằng /end; đọc mục này đầu tiên khi quay lại app sau thời gian dài)
 - Cập nhật lần cuối: 2026-11-03
-- Đang làm dở: G1 và G2 xong: 54 test tự động đạt, `flutter analyze` sạch, APK release G2 đã cài và thử một phần trên Galaxy A13 (biên bản trong BACKLOG). Đã commit (91b6843), chưa có remote
-- Bước tiếp theo: người dùng duyệt G1 và G2, rồi làm G3 (màn Hôm nay, việc cần làm)
+- Đang làm dở: G3 xong phần code: 80 test tự động đạt, `flutter analyze` sạch, APK release G3 đã cài và thử một phần trên Galaxy A13 (biên bản trong BACKLOG), CHƯA commit. G1, G2 đã commit (91b6843)
+- Bước tiếp theo: người dùng duyệt G3, rồi G4 (nhắc giờ)
 - Đang chờ (ai/cái gì): người dùng: duyệt cổng, tạo remote git, sao lưu `D:/DemoChung` ra ngoài ổ D. Chỉ dùng điện thoại qua adb khi người dùng cho phép trong phiên
 - Lưu ý dễ vấp: (1) Galaxy A13 chạy 32-bit, không build APK chỉ arm64 (L-011). (2) Flutter và adb chưa có trong PATH, xem mục "Lệnh". (3) `dart format` có thể dời dòng `// ignore: recursive_getters`, nên chạy `flutter analyze` sau khi định dạng.
 

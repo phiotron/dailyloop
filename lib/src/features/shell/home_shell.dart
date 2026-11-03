@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../l10n/app_localizations.dart';
 
-/// Thanh điều hướng dưới (AC-33). G2 có Hôm nay và Thói quen; Việc (G3) và
-/// Thống kê (G5) thêm sau.
+/// Thanh điều hướng dưới (AC-33): Hôm nay, Thói quen, Việc; Thống kê thêm ở
+/// G5.
 class HomeShell extends StatelessWidget {
   const HomeShell({super.key, required this.shell});
 
@@ -29,6 +29,11 @@ class HomeShell extends StatelessWidget {
             icon: const Icon(Icons.repeat),
             selectedIcon: const Icon(Icons.repeat_on),
             label: l.habits,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.task_alt_outlined),
+            selectedIcon: const Icon(Icons.task_alt),
+            label: l.tasks,
           ),
         ],
       ),

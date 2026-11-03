@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'data/activity_repository.dart';
 import 'data/category_repository.dart';
 import 'data/database.dart';
+import 'data/dates.dart';
+import 'data/day_repository.dart';
+import 'data/entry_repository.dart';
 import 'data/schedule.dart';
 import 'data/settings_repository.dart';
 
@@ -64,6 +67,60 @@ final habitsProvider = StreamProvider<List<Activity>>(
 
 final archivedHabitsProvider = StreamProvider<List<Activity>>(
   (ref) => ref.watch(activityRepositoryProvider).watchHabits(archived: true),
+);
+
+final entryRepositoryProvider = Provider<EntryRepository>(
+  (ref) => EntryRepository(ref.watch(databaseProvider)),
+);
+final dayRepositoryProvider = Provider<DayRepository>(
+  (ref) => DayRepository(ref.watch(databaseProvider)),
+);
+
+final onboardingDoneProvider = StreamProvider<bool>(
+  (ref) => ref.watch(settingsRepositoryProvider).watchOnboardingDone(),
+);
+
+/// Ngày đang xem ở màn Hôm nay; mặc định hôm nay (AC-08).
+class SelectedDayNotifier extends Notifier<DateTime> {
+  @override
+  DateTime build() => dayOf(ref.read(clockProvider)());
+
+  void select(DateTime day) => state = dayOf(day);
+}
+
+final selectedDayProvider = NotifierProvider<SelectedDayNotifier, DateTime>(
+  SelectedDayNotifier.new,
+);
+
+/// Các mục của ngày đang xem (AC-07).
+final dayItemsProvider = StreamProvider<List<DayItem>>(
+  (ref) => ref
+      .watch(dayRepositoryProvider)
+      .watchDay(
+        ref.watch(selectedDayProvider),
+        today: ref.read(clockProvider)(),
+      ),
+);
+
+/// Bộ lọc đang chọn ở màn Việc (AC-16).
+class TaskFilterNotifier extends Notifier<TaskFilter> {
+  @override
+  TaskFilter build() => TaskFilter.today;
+
+  void select(TaskFilter filter) => state = filter;
+}
+
+final taskFilterProvider = NotifierProvider<TaskFilterNotifier, TaskFilter>(
+  TaskFilterNotifier.new,
+);
+
+final taskItemsProvider = StreamProvider<List<DayItem>>(
+  (ref) => ref
+      .watch(dayRepositoryProvider)
+      .watchTasks(
+        ref.watch(taskFilterProvider),
+        today: ref.read(clockProvider)(),
+      ),
 );
 
 /// Lịch đang áp dụng của từng mục, để hiện mô tả lịch trong danh sách.

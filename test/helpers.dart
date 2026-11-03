@@ -30,12 +30,15 @@ Future<AppDatabase> pumpApp(
   WidgetTester tester, {
   String? localeCode = 'vi',
   AppDatabase? db,
+  bool onboarded = true,
 }) async {
   usePhoneScreen(tester);
   final database = db ?? memoryDatabase();
-  await tester.runAsync(
-    () => SettingsRepository(database).setLocaleCode(localeCode),
-  );
+  await tester.runAsync(() async {
+    final settings = SettingsRepository(database);
+    await settings.setLocaleCode(localeCode);
+    if (onboarded) await settings.setOnboardingDone();
+  });
   await tester.pumpWidget(
     ProviderScope(
       overrides: [

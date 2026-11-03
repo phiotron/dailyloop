@@ -709,6 +709,264 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Once'**
   String get scheduleOnce;
+
+  /// No description provided for @tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get tasks;
+
+  /// No description provided for @newTask.
+  ///
+  /// In en, this message translates to:
+  /// **'New task'**
+  String get newTask;
+
+  /// No description provided for @editTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit task'**
+  String get editTask;
+
+  /// No description provided for @deleteTaskConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this task?'**
+  String get deleteTaskConfirm;
+
+  /// No description provided for @subtasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtasks (optional)'**
+  String get subtasks;
+
+  /// No description provided for @repeatNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Does not repeat'**
+  String get repeatNone;
+
+  /// No description provided for @taskDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get taskDate;
+
+  /// No description provided for @taskTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get taskTime;
+
+  /// No description provided for @noTime.
+  ///
+  /// In en, this message translates to:
+  /// **'No time'**
+  String get noTime;
+
+  /// No description provided for @unscheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Unscheduled'**
+  String get unscheduled;
+
+  /// No description provided for @startDateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a start date'**
+  String get startDateRequired;
+
+  /// No description provided for @createNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get createNew;
+
+  /// No description provided for @addHabit.
+  ///
+  /// In en, this message translates to:
+  /// **'Add habit'**
+  String get addHabit;
+
+  /// No description provided for @addTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Add task'**
+  String get addTask;
+
+  /// No description provided for @backToToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to today'**
+  String get backToToday;
+
+  /// No description provided for @pickDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a day'**
+  String get pickDay;
+
+  /// No description provided for @overdueDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Overdue · 1 day} other{Overdue · {count} days}}'**
+  String overdueDays(int count);
+
+  /// No description provided for @skipToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip this day'**
+  String get skipToday;
+
+  /// No description provided for @unskip.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo skip'**
+  String get unskip;
+
+  /// No description provided for @skipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped'**
+  String get skipped;
+
+  /// No description provided for @achieved.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get achieved;
+
+  /// No description provided for @notAchieved.
+  ///
+  /// In en, this message translates to:
+  /// **'Not done'**
+  String get notAchieved;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @futureDay.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only record days up to today'**
+  String get futureDay;
+
+  /// No description provided for @addOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Add 1'**
+  String get addOne;
+
+  /// No description provided for @recordValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get recordValue;
+
+  /// No description provided for @progress.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} of {target}'**
+  String progress(String value, String target);
+
+  /// No description provided for @itemsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} items'**
+  String itemsDone(int done, int total);
+
+  /// No description provided for @filterToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get filterToday;
+
+  /// No description provided for @filterUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get filterUpcoming;
+
+  /// No description provided for @filterOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get filterOverdue;
+
+  /// No description provided for @filterUnscheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Unscheduled'**
+  String get filterUnscheduled;
+
+  /// No description provided for @filterDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get filterDone;
+
+  /// No description provided for @emptyTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks here'**
+  String get emptyTasks;
+
+  /// No description provided for @welcomeTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Build habits that stick'**
+  String get welcomeTitle1;
+
+  /// No description provided for @welcomeBody1.
+  ///
+  /// In en, this message translates to:
+  /// **'Track yes-or-no habits, amounts, time or checklists, on the days you choose.'**
+  String get welcomeBody1;
+
+  /// No description provided for @welcomeTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan your day'**
+  String get welcomeTitle2;
+
+  /// No description provided for @welcomeBody2.
+  ///
+  /// In en, this message translates to:
+  /// **'Habits and tasks for the day are together on the Today screen.'**
+  String get welcomeBody2;
+
+  /// No description provided for @welcomeTitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data stays on this phone'**
+  String get welcomeTitle3;
+
+  /// No description provided for @welcomeBody3.
+  ///
+  /// In en, this message translates to:
+  /// **'No account and no internet needed. Export a backup file whenever you want.'**
+  String get welcomeBody3;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get getStarted;
 }
 
 class _AppLocalizationsDelegate

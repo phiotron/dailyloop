@@ -58,6 +58,16 @@ class ActivityDraft {
       final m = checklistMinDone;
       if (m != null && (m < 1 || m > checklist.length)) return 'checklistMin';
     }
+    if (kind == ActivityKind.task) {
+      // Việc: mục con không bắt buộc, có thì không được trống (AC-13).
+      if (checklist.length > 20) return 'checklist';
+      if (checklist.any((c) => c.title.trim().isEmpty)) return 'checklist';
+      // Việc lặp lại cần ngày bắt đầu (AC-14); giờ chỉ có khi có ngày.
+      if (rule.type != ScheduleType.once && startDate == null) {
+        return 'startDate';
+      }
+      if (timeOfDay != null && startDate == null) return 'time';
+    }
     if (kind == ActivityKind.habit && startDate == null) return 'startDate';
     if (startDate != null &&
         endDate != null &&
@@ -67,9 +77,12 @@ class ActivityDraft {
     return rule.validate();
   }
 
-  /// Chỉ kiểu Danh sách con mới lưu mục con; đổi sang kiểu khác thì xóa hết.
+  /// Thói quen: chỉ kiểu Danh sách con mới lưu mục con, đổi sang kiểu khác
+  /// thì xóa hết. Việc: luôn lưu mục con (không bắt buộc).
   List<({int? id, String title})> get _checklistToSave =>
-      evaluation == Evaluation.checklist ? checklist : const [];
+      kind == ActivityKind.task || evaluation == Evaluation.checklist
+      ? checklist
+      : const [];
 
   ActivitiesCompanion _fields() {
     final measured =

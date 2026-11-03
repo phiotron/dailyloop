@@ -32,6 +32,8 @@ class CategoriesScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        // Mỗi tab có nút + riêng; tắt hero để không trùng khi mở màn mới.
+        heroTag: null,
         tooltip: l.addCategory,
         onPressed: () => showCategoryEditor(context),
         child: const Icon(Icons.add),

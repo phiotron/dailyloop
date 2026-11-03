@@ -43,4 +43,12 @@ class SettingsRepository {
   ).map((v) => v == '${DateTime.sunday}' ? DateTime.sunday : DateTime.monday);
 
   Future<void> setWeekStart(int weekday) => _write(weekStartKey, '$weekday');
+
+  static const onboardingDoneKey = 'onboardingDone';
+
+  /// Đã xem màn chào chưa (AC-34).
+  Stream<bool> watchOnboardingDone() =>
+      _watch(onboardingDoneKey).map((v) => v == 'true');
+
+  Future<void> setOnboardingDone() => _write(onboardingDoneKey, 'true');
 }

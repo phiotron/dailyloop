@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 /// ScaffoldMessenger chung, để thanh "Hoàn tác" còn hiện sau khi đóng màn sửa.
 final rootMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
+void showMessage(String message) {
+  rootMessengerKey.currentState
+    ?..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text(message)));
+}
+
 /// Hiện thanh "Đã xóa · Hoàn tác" trong 5 giây (AC-05).
 void showUndoSnackBar({
   required String message,

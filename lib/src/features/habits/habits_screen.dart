@@ -93,6 +93,8 @@ class HabitsScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        // Mỗi tab có nút + riêng; tắt hero để không trùng khi mở màn mới.
+        heroTag: null,
         tooltip: l.newHabit,
         onPressed: () => context.push('/habits/new'),
         child: const Icon(Icons.add),

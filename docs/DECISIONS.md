@@ -2,6 +2,12 @@
 
 Mỗi quyết định một mục, mới nhất ở trên cùng.
 
+## D-006 · Việc cần làm ghi kết quả vào ngày của việc; một màn soạn cho cả thói quen và việc · 2026-11-03
+- Bối cảnh: G3, SPEC F-03 (AC-13 tới AC-16) và F-02 (AC-07 tới AC-12).
+- Quyết định: Việc một lần là mục `kind = task` có lịch `once`, ngày của việc ở `startDate` (null là "Chưa xếp lịch"). Xong việc thì ghi `entries` với `value = 1` vào chính ngày của việc, kể cả khi đánh xong lúc đã quá hạn. Việc chưa xếp lịch ghi vào ngày đánh xong. Việc lặp lại dùng chung bảng lịch với thói quen. Việc con lưu ở `checklist_items`, chỉ để đánh dấu, không quyết định xong hay chưa. Màn Hôm nay và màn Việc đọc qua `DayRepository`, phát lại mỗi khi các bảng liên quan đổi (`tableUpdates`). Màn soạn thói quen dùng chung cho việc (tham số `kind`): ẩn phần "Cách theo dõi", thêm "Không lặp lại", ngày bỏ trống được, có giờ.
+- Lý do / phương án đã loại: Cột `completedAt` riêng cho việc (loại: phải xử lý việc lặp lại theo cách khác, sao lưu thêm một kiểu dữ liệu). Hai màn soạn riêng (loại: lặp gần hết phần tên, danh mục, ưu tiên, lịch lặp).
+- Hệ quả cần nhớ: Đổi ngày của việc đã xong thì kết quả cũ ở ngày cũ không đi theo, việc thành chưa xong ở ngày mới. "Hôm nay" được đọc khi mở màn hình, nên app mở qua nửa đêm sẽ không tự sang ngày mới (BUG-001).
+
 ## D-005 · Mô hình dữ liệu: thói quen và việc chung một bảng, lịch lặp có ngày hiệu lực · 2026-11-03
 - Bối cảnh: Màn Hôm nay (AC-07), giờ nhắc (AC-17), sao lưu (AC-43) đều xử lý thói quen và việc như nhau. AC-04 đòi đổi lịch lặp chỉ ảnh hưởng từ hôm nay. AC-12 đòi kết quả lưu ngay.
 - Quyết định: Bảng `activities` chứa cả thói quen và việc (cột `kind`). Lịch lặp nằm ở bảng `schedules`, mỗi dòng có `effectiveFrom`. Đổi lịch thì thêm dòng mới từ hôm nay, giữ dòng cũ cho các ngày trước. Kết quả theo ngày ở bảng `entries` (mỗi mục mỗi ngày tối đa một dòng): `value` là số thực (lần, ly, km; kiểu Thời gian tính bằng phút; Có/Không là 1), `skipped` đánh dấu bỏ qua. Mục con đã xong ở bảng `checklist_marks`. Ngày lưu chữ `YYYY-MM-DD` theo giờ địa phương, giờ nhắc lưu số phút từ 00:00. Cài đặt lưu bảng khóa-giá trị trong cùng SQLite, để một file sao lưu chứa đủ. Danh mục mặc định có `nameKey` để hiện theo ngôn ngữ máy.
