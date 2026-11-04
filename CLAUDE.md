@@ -11,8 +11,8 @@ App mobile CHỈ dành cho điện thoại. Mở Claude ngay trong thư mục n�
 
 ## Điểm dừng (Claude cập nhật bằng /end; đọc mục này đầu tiên khi quay lại app sau thời gian dài)
 - Cập nhật lần cuối: 2026-11-04
-- Đang làm dở: G5 xong code: 136 test tự động đạt, `flutter analyze` sạch, APK release build được; CHƯA thử máy thật, CHƯA commit G5. G1 tới G4 đã commit và đẩy lên github.com/phiotron/dailyloop (nhánh master)
-- Bước tiếp theo: commit G5; người dùng duyệt G3, G4, G5 và cho phép thử máy thật; quyết AC-21; rồi G6 (Pomodoro, widget)
+- Đang làm dở: G5 xong code: 136 test tự động đạt, `flutter analyze` sạch, APK release build được; CHƯA thử máy thật. G1 tới G5 đã commit (G5: ac53d58) và đẩy lên github.com/phiotron/dailyloop (nhánh master); CI GitHub đạt cho G5
+- Bước tiếp theo: người dùng duyệt G3, G4, G5 và cho phép thử máy thật; quyết AC-21; rồi G6 (Pomodoro, widget)
 - Đang chờ (ai/cái gì): người dùng: duyệt cổng, sao lưu `D:/DemoChung` ra ngoài ổ D. Chỉ dùng điện thoại qua adb khi người dùng cho phép trong phiên
 - Lưu ý dễ vấp: (1) Galaxy A13 chạy 32-bit, không build APK chỉ arm64 (L-011). (2) Flutter và adb chưa có trong PATH, xem mục "Lệnh". Nhắc giờ: Google Play chỉ cho `USE_EXACT_ALARM` với app báo thức hoặc lịch, nên KHÔNG khai quyền đó (D-007). (3) `dart format` có thể dời dòng `// ignore: recursive_getters`, nên chạy `flutter analyze` sau khi định dạng.
 
