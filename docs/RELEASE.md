@@ -1,4 +1,4 @@
-# RELEASE — DailyLoop (APP-002)
+# RELEASE — DailyLoop (A003-dailyloop)
 
 ## Định danh
 - Bundle ID / package name:

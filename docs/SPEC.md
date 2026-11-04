@@ -1,4 +1,4 @@
-# SPEC — DailyLoop (APP-002)
+# SPEC — DailyLoop (A003-dailyloop)
 
 Đã duyệt: 2026-11-03
 <!-- Khi người dùng duyệt, đổi thành: "Đã duyệt: YYYY-MM-DD". Chưa có dòng này thì Claude không viết code. -->
@@ -98,7 +98,7 @@ Quy ước kiểm chứng: **[T]** = test tự động (`flutter test`), **[M]**
 - AC-53: Manifest của bản phát hành không có quyền INTERNET. App không gửi dữ liệu đi đâu. Mỗi quyền có trong manifest phải có lý do trong mục 5. [T: kiểm manifest đã build]
 
 ## 4. Ngoài phạm vi (cố ý KHÔNG làm ở bản đầu)
-- Bản iOS: code Flutter viết để sau này chạy được iOS, nhưng v1 không build và không phát hành iOS.
+- (Đổi 2026-11-04) Bản iOS đã được đưa vào v1, xem D-001 và D-010. Chuông toàn màn hình chỉ có trên Android; iOS dùng thông báo time-sensitive.
 - Tài khoản, đăng nhập, máy chủ, đồng bộ đám mây (HabitNow có sao lưu đám mây ở bản Premium; mình chỉ có file sao lưu).
 - Gói Premium, quảng cáo, mua trong app, analytics, SDK báo crash.
 - Mẫu thói quen có sẵn và thử thách (challenges), chia sẻ lên mạng xã hội, bạn bè, bảng xếp hạng.

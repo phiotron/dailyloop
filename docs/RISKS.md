@@ -1,4 +1,4 @@
-# RISKS — DailyLoop (APP-002)
+# RISKS — DailyLoop (A003-dailyloop)
 
 Sổ rủi ro sống: xem lại mỗi khi chuyển giai đoạn và trước phát hành. Mức: Xác suất (thấp/vừa/cao) × Ảnh hưởng (nhẹ/nặng/chặn). Rủi ro đã xảy ra thì đổi trạng thái thành "đã xảy ra" và ghi bài học vào RETROSPECTIVE.
 

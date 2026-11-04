@@ -1,4 +1,4 @@
-# SECURITY & PRIVACY — DailyLoop (APP-002)
+# SECURITY & PRIVACY — DailyLoop (A003-dailyloop)
 
 Điền trước khi phát hành. Là đầu vào cho chính sách quyền riêng tư và biểu mẫu khai báo của store.
 

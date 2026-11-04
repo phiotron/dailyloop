@@ -81,8 +81,8 @@ Mỗi quyết định một mục, mới nhất ở trên cùng.
 - Lý do / phương án đã loại: Sao lưu đám mây kèm đăng nhập Google như HabitNow Premium (loại ở v1: cần đăng nhập và nhà cung cấp lưu trữ, kéo theo D-05, D-10, chuyển dữ liệu xuyên biên giới). Firebase Crashlytics (loại: gửi dữ liệu ra ngoài, phải xin đồng ý ở EU và khai Data safety).
 - Hệ quả cần nhớ: Mất máy mà chưa xuất file là mất dữ liệu. Thêm bất kỳ tính năng gọi mạng nào sau này phải mở lại COMPLIANCE.
 
-## D-001 · Stack: Flutter, v1 chỉ Android · 2026-11-03
+## D-001 · Stack: Flutter, Android + iOS · 2026-11-03 (sửa 2026-11-04)
 - Bối cảnh: SPEC cần nhắc giờ chính xác, chuông báo thức toàn màn hình, widget màn hình chính, đồng hồ Pomodoro, chạy offline hoàn toàn. Người dùng chọn Flutter.
-- Quyết định: Flutter. v1 chỉ build và phát hành Android. Code giữ khả năng thêm iOS sau. Dự kiến ghim Flutter 3.47.8 như APP-001 (`C:/src/flutter`), xác nhận ở G1. Các thư viện (quản lý trạng thái, cơ sở dữ liệu, thông báo, widget) chọn ở G1 và G4, mỗi cái ghi một D-xxx.
+- Quyết định: Flutter. ~~v1 chỉ Android~~ → **2026-11-04: thêm iOS vào bản 1** (build/ký/test trên GitHub Actions macOS runner; không có iPhone → thử trên simulator CI). Widget iOS bằng WidgetKit; kiểu "Chuông" trên iOS = thông báo time-sensitive (D-010). Code giữ khả năng thêm iOS sau. Dự kiến ghim Flutter 3.47.8 như APP-001 (`C:/src/flutter`), xác nhận ở G1. Các thư viện (quản lý trạng thái, cơ sở dữ liệu, thông báo, widget) chọn ở G1 và G4, mỗi cái ghi một D-xxx.
 - Lý do / phương án đã loại: Expo/React Native (loại: chưa app nào trong kho dùng; báo thức chính xác, màn hình toàn màn hình và widget đều cần module native và development build, không chạy bằng Expo Go). Flutter thì đã có máy, có CI mẫu và kinh nghiệm thử máy thật từ APP-001 (L-011). Bản iOS ở v1 (loại: cần máy Mac và tài khoản Apple, nhắc giờ trên iOS có giới hạn riêng).
 - Hệ quả cần nhớ: Widget và chuông báo thức cần thêm mã Kotlin trong `android/`. Không import code từ APP-001; nếu cần dùng chung thì chép sang và ghi lại, hoặc đề xuất đưa vào `shared/`.

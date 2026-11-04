@@ -1,4 +1,4 @@
-# CHANGELOG — DailyLoop (APP-002)
+# CHANGELOG — DailyLoop (A003-dailyloop)
 
 ## [Chưa phát hành]
 - G6: đồng hồ Pomodoro (chỉnh 4 thông số, tính theo mốc thời gian, báo hết giờ, cộng phút vào thói quen kiểu Thời gian), widget Hôm nay (đánh xong ngay trên widget, sang ngày mới không cần mở app), sửa BUG-001 (qua nửa đêm) (2026-11-04; widget và báo hết giờ CHƯA thử máy thật)
