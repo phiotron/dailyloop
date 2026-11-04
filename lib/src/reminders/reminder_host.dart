@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../data/database.dart' hide Priority;
+import '../features/lock/app_lock.dart';
 import '../providers.dart';
 import 'reminder_planner.dart';
 import '../widget/home_widget_sync.dart';
@@ -70,6 +71,8 @@ class _ReminderHostState extends ConsumerState<ReminderHost> {
         gateway: ref.read(homeWidgetGatewayProvider),
         clock: ref.read(clockProvider),
         texts: () => widgetTexts,
+        // Có khóa PIN thì widget chỉ hiện số mục còn lại, không hiện tên (AC-41).
+        hideNames: _hideNames(ref.read(pinEnabledProvider)),
       )..start();
     } else {
       _widget!.texts = () => widgetTexts;
@@ -119,6 +122,12 @@ class _ReminderHostState extends ConsumerState<ReminderHost> {
     final p = parsePayload(r.payload);
     if (p == null) return;
     if (p.kind == ReminderKind.alarm) {
+      // App đang khóa: chuông hiện ngay trên màn khóa, Xong/Hoãn/Tắt không
+      // cần PIN (AC-46).
+      if (ref.read(lockProvider) != AppLockState.unlocked) {
+        ref.read(lockedAlarmProvider.notifier).set(r);
+        return;
+      }
       widget.router.push('/alarm', extra: r);
     } else {
       widget.router.go('/');
@@ -134,6 +143,26 @@ class _ReminderHostState extends ConsumerState<ReminderHost> {
     super.dispose();
   }
 
+  /// Chưa biết hoặc lỗi đọc bộ nhớ an toàn thì ẩn tên cho chắc (AC-41).
+  static bool _hideNames(AsyncValue<bool> pin) => pin.value ?? true;
+
   @override
-  Widget build(BuildContext context) => widget.child;
+  Widget build(BuildContext context) {
+    // Bật hay tắt PIN thì dựng lại dữ liệu widget ngay (AC-41).
+    ref.listen(pinEnabledProvider, (_, next) {
+      _widget
+        ?..hideNames = _hideNames(next)
+        ..schedule();
+    });
+    // Chuông chạm lúc đang khóa mà app mở khóa luôn (không có PIN): mở màn
+    // chuông thường.
+    ref.listen(lockProvider, (_, next) {
+      final alarm = ref.read(lockedAlarmProvider);
+      if (next == AppLockState.unlocked && alarm != null) {
+        ref.read(lockedAlarmProvider.notifier).set(null);
+        widget.router.push('/alarm', extra: alarm);
+      }
+    });
+    return widget.child;
+  }
 }

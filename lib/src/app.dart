@@ -10,6 +10,7 @@ import 'features/categories/categories_screen.dart';
 import 'features/habits/habit_detail_screen.dart';
 import 'features/habits/habit_editor_screen.dart';
 import 'features/habits/habits_screen.dart';
+import 'features/lock/app_lock.dart';
 import 'data/database.dart';
 import 'features/pomodoro/pomodoro_screen.dart';
 import 'features/settings/settings_screen.dart';
@@ -153,11 +154,16 @@ class DailyLoopApp extends ConsumerWidget {
       // khớp dữ liệu (D-007).
       builder: (context, child) => ReminderHost(
         router: routerConfig,
-        child: switch (onboarding.value) {
-          true => child!,
-          false => const WelcomeScreen(),
-          null => const Scaffold(),
-        },
+        // Khóa PIN phủ lên cả màn chào lẫn app (AC-46); xóa hết dữ liệu vì
+        // quên mã thì đưa router về màn đầu (AC-47).
+        child: AppLockOverlay(
+          onReset: () => routerConfig.go('/'),
+          child: switch (onboarding.value) {
+            true => child!,
+            false => const WelcomeScreen(),
+            null => const Scaffold(),
+          },
+        ),
       ),
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       routerConfig: routerConfig,

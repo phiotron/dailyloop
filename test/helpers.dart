@@ -5,9 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dailyloop/src/app.dart';
 import 'package:dailyloop/src/data/database.dart';
+import 'package:dailyloop/src/data/pin_service.dart';
 import 'package:dailyloop/src/data/settings_repository.dart';
+import 'package:dailyloop/src/features/backup/data_actions.dart';
+import 'package:dailyloop/src/features/backup/file_gateway.dart';
+import 'package:dailyloop/src/features/lock/app_lock.dart';
 import 'package:dailyloop/src/providers.dart';
 import 'package:dailyloop/src/reminders/reminder_service.dart';
+import 'package:dailyloop/src/widget/home_widget_sync.dart';
 
 /// Ngày cố định cho test.
 final testToday = DateTime(2026, 11, 3, 9);
@@ -34,6 +39,9 @@ Future<AppDatabase> pumpApp(
   bool onboarded = true,
   ReminderGateway? reminders,
   DateTime Function()? clock,
+  SecretStore? secrets,
+  FileGateway? files,
+  HomeWidgetGateway? homeWidget,
 }) async {
   usePhoneScreen(tester);
   final database = db ?? memoryDatabase();
@@ -49,6 +57,11 @@ Future<AppDatabase> pumpApp(
         clockProvider.overrideWithValue(clock ?? () => testToday),
         if (reminders != null)
           reminderGatewayProvider.overrideWithValue(reminders),
+        // Không bao giờ chạm Keychain/Keystore hay trình chọn file thật.
+        secretStoreProvider.overrideWithValue(secrets ?? MemorySecretStore()),
+        fileGatewayProvider.overrideWithValue(files ?? FakeFileGateway()),
+        if (homeWidget != null)
+          homeWidgetGatewayProvider.overrideWithValue(homeWidget),
       ],
       child: DailyLoopApp(router: createRouter()),
     ),
