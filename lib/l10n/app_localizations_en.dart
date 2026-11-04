@@ -479,4 +479,77 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get getStarted => 'Get started';
+
+  @override
+  String get reminders => 'Reminders';
+
+  @override
+  String get addReminder => 'Add reminder';
+
+  @override
+  String get removeReminder => 'Remove reminder';
+
+  @override
+  String get reminderNotification => 'Notification';
+
+  @override
+  String get reminderAlarm => 'Alarm';
+
+  @override
+  String get channelReminders => 'Reminders';
+
+  @override
+  String get channelAlarms => 'Alarms';
+
+  @override
+  String get actionDone => 'Done';
+
+  @override
+  String get actionSnooze => 'Snooze 10 min';
+
+  @override
+  String get actionDismiss => 'Dismiss';
+
+  @override
+  String get allow => 'Allow';
+
+  @override
+  String get notNow => 'Not now';
+
+  @override
+  String get openSettings => 'Open settings';
+
+  @override
+  String get permNotifTitle => 'Allow notifications?';
+
+  @override
+  String get permNotifBody =>
+      'DailyLoop uses notifications only to remind you at the times you set. Without them, reminders will not appear. You can still use the rest of the app.';
+
+  @override
+  String get permExactTitle => 'Remind on time?';
+
+  @override
+  String get permExactBody =>
+      'To remind you at the exact minute, Android needs the \"Alarms & reminders\" permission. Without it, reminders may arrive a few minutes late.';
+
+  @override
+  String get permFullTitle => 'Show alarms on the lock screen?';
+
+  @override
+  String get permFullBody =>
+      'Alarms can fill the screen like a clock alarm. Without this permission, alarms appear as a pop-up notification instead.';
+
+  @override
+  String get warnNotifications =>
+      'Notifications are off, reminders will not appear';
+
+  @override
+  String get warnExact => 'Reminders may be a few minutes late';
+
+  @override
+  String get warnFullScreen => 'Alarms will show as a pop-up notification';
+
+  @override
+  String get alarmFor => 'Time for';
 }

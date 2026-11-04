@@ -967,6 +967,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get started'**
   String get getStarted;
+
+  /// No description provided for @reminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get reminders;
+
+  /// No description provided for @addReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Add reminder'**
+  String get addReminder;
+
+  /// No description provided for @removeReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove reminder'**
+  String get removeReminder;
+
+  /// No description provided for @reminderNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get reminderNotification;
+
+  /// No description provided for @reminderAlarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm'**
+  String get reminderAlarm;
+
+  /// No description provided for @channelReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get channelReminders;
+
+  /// No description provided for @channelAlarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarms'**
+  String get channelAlarms;
+
+  /// No description provided for @actionDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get actionDone;
+
+  /// No description provided for @actionSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze 10 min'**
+  String get actionSnooze;
+
+  /// No description provided for @actionDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get actionDismiss;
+
+  /// No description provided for @allow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get allow;
+
+  /// No description provided for @notNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get notNow;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get openSettings;
+
+  /// No description provided for @permNotifTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications?'**
+  String get permNotifTitle;
+
+  /// No description provided for @permNotifBody.
+  ///
+  /// In en, this message translates to:
+  /// **'DailyLoop uses notifications only to remind you at the times you set. Without them, reminders will not appear. You can still use the rest of the app.'**
+  String get permNotifBody;
+
+  /// No description provided for @permExactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind on time?'**
+  String get permExactTitle;
+
+  /// No description provided for @permExactBody.
+  ///
+  /// In en, this message translates to:
+  /// **'To remind you at the exact minute, Android needs the \"Alarms & reminders\" permission. Without it, reminders may arrive a few minutes late.'**
+  String get permExactBody;
+
+  /// No description provided for @permFullTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show alarms on the lock screen?'**
+  String get permFullTitle;
+
+  /// No description provided for @permFullBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarms can fill the screen like a clock alarm. Without this permission, alarms appear as a pop-up notification instead.'**
+  String get permFullBody;
+
+  /// No description provided for @warnNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off, reminders will not appear'**
+  String get warnNotifications;
+
+  /// No description provided for @warnExact.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders may be a few minutes late'**
+  String get warnExact;
+
+  /// No description provided for @warnFullScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarms will show as a pop-up notification'**
+  String get warnFullScreen;
+
+  /// No description provided for @alarmFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Time for'**
+  String get alarmFor;
 }
 
 class _AppLocalizationsDelegate

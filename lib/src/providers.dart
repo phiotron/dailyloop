@@ -9,6 +9,7 @@ import 'data/day_repository.dart';
 import 'data/entry_repository.dart';
 import 'data/schedule.dart';
 import 'data/settings_repository.dart';
+import 'reminders/reminder_service.dart';
 
 /// Cơ sở dữ liệu của app; test ghi đè bằng cơ sở dữ liệu trong bộ nhớ.
 final databaseProvider = Provider<AppDatabase>((ref) {
@@ -74,6 +75,18 @@ final entryRepositoryProvider = Provider<EntryRepository>(
 );
 final dayRepositoryProvider = Provider<DayRepository>(
   (ref) => DayRepository(ref.watch(databaseProvider)),
+);
+
+/// Cổng nhắc giờ với hệ điều hành. `main` ghi đè bằng bản thật; test dùng
+/// bản giả mặc định để không gọi Android.
+final reminderGatewayProvider = Provider<ReminderGateway>(
+  (ref) => FakeReminderGateway(),
+);
+
+/// Quyền thông báo, báo thức chính xác, toàn màn hình; làm mới khi quay lại
+/// app (AC-18, AC-20).
+final reminderPermissionsProvider = FutureProvider<ReminderPermissions>(
+  (ref) => ref.watch(reminderGatewayProvider).permissions(),
 );
 
 final onboardingDoneProvider = StreamProvider<bool>(

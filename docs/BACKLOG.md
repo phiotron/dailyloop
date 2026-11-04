@@ -39,12 +39,17 @@ Mỗi giai đoạn kết thúc bằng: `flutter analyze` sạch, `flutter test` 
 - [ ] CHƯA thử trên máy: Số lượng / Thời gian / Danh sách con ở màn Hôm nay, bỏ qua ngày này, việc quá hạn, các bộ lọc khác của màn Việc, cỡ chữ lớn, TalkBack
 - [ ] Lỗi đã biết BUG-001 (bên dưới)
 
-### G4 · Nhắc giờ và chuông báo thức — trạng thái: todo
-- [ ] Tra chính sách Google Play và tài liệu Android hiện hành về `SCHEDULE_EXACT_ALARM`, `USE_EXACT_ALARM`, `USE_FULL_SCREEN_INTENT`; chọn thư viện; ghi D-xxx
-- [ ] Đặt, hủy, đặt lại giờ nhắc khi khởi động máy, đổi giờ hoặc đổi múi giờ (AC-17, AC-21, AC-22)
-- [ ] Xin quyền đúng lúc, xử lý khi bị từ chối (AC-18)
-- [ ] Thông báo có nút "Xong" (AC-19); chuông toàn màn hình, hoãn, tự dừng sau 5 phút (AC-20)
-- [ ] Thử máy thật: 20 lần nhắc, máy khóa màn hình hơn 30 phút, khởi động lại máy (NFR mục 5b)
+### G4 · Nhắc giờ và chuông báo thức — trạng thái: code xong, test tự động đạt, đã thử một phần trên Galaxy A13 (biên bản bên dưới)
+- [x] Đã tra chính sách Google Play và tài liệu Android (nguồn và ngày tra trong D-007): không khai `USE_EXACT_ALARM` (chỉ cho app báo thức hoặc lịch); khai `SCHEDULE_EXACT_ALARM` để người dùng tự cấp; `USE_FULL_SCREEN_INTENT` phải xin người dùng và nên khai trong Play Console. Chọn `flutter_local_notifications` (D-007)
+- [x] Mỗi mục có 0 tới 5 giờ nhắc, mỗi giờ chọn Thông báo hoặc Chuông; lập lịch lăn 7 ngày, chỉ vào ngày đến hạn, bỏ lần đã qua giờ, bỏ lần của mục đã xong hoặc bỏ qua trong ngày, tối đa 100 lần (AC-17, AC-22): test `reminder_planner_test`
+- [x] Xin quyền đúng lúc: giải thích rồi mới xin thông báo, báo thức chính xác; chọn chuông thì xin thêm toàn màn hình; từ chối thì vẫn lưu giờ nhắc, hiện cảnh báo và nút "Mở cài đặt" (AC-18): test `reminders_flow_test`
+- [x] Thông báo có nút "Xong" chạy được cả khi app đóng, màn chuông toàn màn hình với Xong, Hoãn 10 phút, Tắt, chuông tự tắt sau 5 phút, đặt lại lịch khi mở app, quay lại app và khi dữ liệu đổi (AC-19, AC-20, AC-21). Phần gọi thẳng Android test tự động không phủ được; đã thử trên máy thật một phần, xem biên bản
+- [x] Lỗi tìm ra khi thử máy: nút "Hoãn" đặt một báo thức riêng, báo thức này vẫn đổ chuông dù mục đã xóa hoặc đã xong. Đã sửa: khi đặt lại lịch, lần hoãn của mục không còn cần làm hôm nay bị hủy (test `reminder_planner_test`). Bản sửa CHƯA cài lên máy thật
+- [x] Manifest: `SCHEDULE_EXACT_ALARM`, `USE_FULL_SCREEN_INTENT`, `RECEIVE_BOOT_COMPLETED` (+ `VIBRATE`, `POST_NOTIFICATIONS` của thư viện); không có INTERNET, không có `USE_EXACT_ALARM`: `aapt2 dump permissions` 2026-11-04. Build release đạt (63,3 MB)
+- [x] Đã thử máy thật: lịch đăng ký với hệ thống, thông báo đúng giờ khi màn hình tắt, nút "Xong" khi app đóng, chuông đánh thức màn hình và hiện toàn màn hình, hoãn 10 phút
+- [ ] CHƯA thử: âm thanh chuông (máy đang ở chế độ im lặng/rung nên không nghe được), nút "Xong" và "Tắt" trên màn chuông, chuông tự tắt sau 5 phút (mới kiểm thuộc tính `timeout=5 phút`), chuông khi máy có khóa PIN (máy thử không đặt khóa), khởi động lại máy, 20 lần nhắc đo độ lệch (NFR mục 5b), một máy hãng khác, đổi giờ hoặc múi giờ khi app tắt
+- [ ] AC-21 chỉ đạt một phần: đổi giờ hoặc múi giờ khi app đang tắt thì lịch giữ giờ cũ tới lần mở app kế tiếp (ghi ở D-007). Cần quyết: chấp nhận ở v1 hay thêm bộ nhận `TIMEZONE_CHANGED`
+- [ ] Khai báo full-screen intent trong Play Console khi phát hành (ghi vào docs/RELEASE.md ở G8)
 
 ### G5 · Chuỗi ngày, điểm, lịch và thống kê — trạng thái: todo
 - [ ] Chuỗi hiện tại, chuỗi dài nhất, tỉ lệ thành công, công thức điểm (ghi D-xxx) (AC-23 tới AC-25)
@@ -71,8 +76,8 @@ Mỗi giai đoạn kết thúc bằng: `flutter analyze` sạch, `flutter test` 
 - [ ] Closed test 12 người trong 14 ngày (P-09), rồi `/release`
 
 ## Việc kế tiếp (tối đa 5, theo thứ tự)
-1. Người dùng duyệt G3 (bản G3 đã cài trên Galaxy A13; còn việc thử "Goi dien cho me")
-2. G4: nhắc giờ và chuông báo thức (tra chính sách Google Play trước)
+1. Duyệt G3 và G4; thử nốt phần chưa thử của G4 (checklist ở G4, cần cài lại bản có sửa lần hoãn)
+2. G5: chuỗi ngày, điểm, lịch tháng, thống kê (AC-23 tới AC-29)
 3. Người dùng: tạo remote git cho APP-002 và chạy `bash scripts/backup.sh <thư mục ngoài ổ D>`
 
 ## Lỗi đã biết (đang mở)
@@ -95,3 +100,4 @@ Mỗi lỗi: BUG-xxx · nguyên nhân gốc · cách sửa · làm sao tránh l�
 Mỗi lần thử: ngày · máy và phiên bản hệ điều hành · bản app · đã thử gì · kết quả · lỗi phát hiện.
 - 2026-11-03 · Galaxy A13 (SM-A135F, Android 14) · APK release G2 (60,1 MB, đủ kiến trúc) · Người dùng cho phép, Claude điều khiển qua adb: chuyển tab Thói quen; tạo "Uong nuoc" kiểu Số lượng, lưu khi chưa có mục tiêu thì hiện "Nhập mục tiêu lớn hơn 0", nhập 8 thì lưu được; mở lại thấy đúng dữ liệu; đổi lịch sang Các thứ trong tuần, lưu khi chưa chọn thứ thì hiện "Chọn ít nhất một thứ", chọn Th 2 và Th 6 thì danh sách hiện "Th 2, Th 6"; xóa có hộp xác nhận, thanh "Đã xóa · Hoàn tác" hiện, bấm Hoàn tác thì thói quen trở lại · Đạt · Không có lỗi trong logcat.
 - 2026-11-03 · Galaxy A13 (SM-A135F, Android 14) · APK release G3 (61,4 MB) · Người dùng cho phép, Claude điều khiển qua adb: cài đè bản G2, màn chào 3 trang hiện một lần, bấm Tiếp tới Bắt đầu; màn Hôm nay có dải ngày Th 7 31 tới Th 6 6, chấm "Doc sach" thì có dấu xong và gạch ngang; chọn Th 4 thì tiêu đề "Thứ Tư, 4 tháng 11", chạm mục thì báo "Chỉ ghi được kết quả tới hôm nay"; nút + mở chọn Thói quen mới / Việc mới; tạo việc "Goi dien cho me" lúc 20:00, hiện trên mục đã xong; tab Việc lọc Hôm nay hiện "3 thg 11 · 20:00"; cài lại bản sửa lỗi thì dữ liệu còn nguyên · Đạt sau khi sửa 1 lỗi (bàn phím bật lên sau hộp chọn giờ) · Không có lỗi trong logcat.
+- 2026-11-04 08:49–09:00 · Galaxy A13 (SM-A135F, Android 14) · APK release G4 (63,3 MB, đã có bản sửa dùng chung kết nối cơ sở dữ liệu cho nút Xong; CHƯA có bản sửa lần hoãn) · Người dùng cho phép, Claude điều khiển qua adb, luôn kiểm tra app đang ở trước khi chạm: thêm giờ nhắc 08:54 kiểu Thông báo thì app giải thích rồi mới xin quyền (AC-18), quyền cuối cùng đều được cấp (`dumpsys package`: thông báo, toàn màn hình; báo thức chính xác `appops allow`); `dumpsys alarm` có báo thức `RTC_WAKEUP` lúc 08:54 và 3 ngày kế tiếp, `exactAllowReason=permission`; tắt màn hình, tới 08:54 thông báo được đăng lúc 08:54:00.100 (lệch 0,1 giây), importance cao, 1 nút "Xong"; tắt tiến trình app (`am kill`, không còn pid), mở khay thông báo, bấm "Xong": thông báo biến mất, một tiến trình nền khởi động, mở app thấy mục đã xong (AC-19); thêm giờ nhắc 08:58 kiểu Chuông, tắt màn hình, tới 08:58 màn hình tự sáng (Dozing sang Awake) và hiện màn chuông toàn màn hình "Test chuong" với Xong, Hoãn 10 phút, Tắt (AC-20); thông báo chuông importance 5, cờ 0x86 (lặp âm thanh, giữ nguyên, ưu tiên cao), timeout 5 phút; bấm Hoãn thì có thêm báo thức lúc 09:08:36, app về màn Hôm nay, mục chưa xong · Đạt phần đã nêu · Lỗi: lần hoãn vẫn đổ chuông dù mục đã xóa (đã sửa trong code). Ghi chú: một lần chạm trúng hộp chọn ngày bất ngờ (ảnh chụp trước đó đã khác), đã hủy, không đổi ngày nào. Dọn: xóa 2 thói quen thử "Test nhac", "Test chuong", dừng app để hủy báo thức hoãn; không còn báo thức nào của app. Không đụng tới mục "Test" 07:59 của người dùng.

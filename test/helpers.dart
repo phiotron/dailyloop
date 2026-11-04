@@ -7,6 +7,7 @@ import 'package:dailyloop/src/app.dart';
 import 'package:dailyloop/src/data/database.dart';
 import 'package:dailyloop/src/data/settings_repository.dart';
 import 'package:dailyloop/src/providers.dart';
+import 'package:dailyloop/src/reminders/reminder_service.dart';
 
 /// Ngày cố định cho test.
 final testToday = DateTime(2026, 11, 3, 9);
@@ -31,6 +32,7 @@ Future<AppDatabase> pumpApp(
   String? localeCode = 'vi',
   AppDatabase? db,
   bool onboarded = true,
+  ReminderGateway? reminders,
 }) async {
   usePhoneScreen(tester);
   final database = db ?? memoryDatabase();
@@ -44,6 +46,8 @@ Future<AppDatabase> pumpApp(
       overrides: [
         databaseProvider.overrideWithValue(database),
         clockProvider.overrideWithValue(() => testToday),
+        if (reminders != null)
+          reminderGatewayProvider.overrideWithValue(reminders),
       ],
       child: DailyLoopApp(router: createRouter()),
     ),

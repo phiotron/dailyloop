@@ -22,6 +22,7 @@ class ActivityDraft {
     this.endDate,
     this.timeOfDay,
     this.rule = ScheduleRule.daily,
+    this.reminders = const [],
   });
 
   final ActivityKind kind;
@@ -42,12 +43,16 @@ class ActivityDraft {
   final int? timeOfDay;
   final ScheduleRule rule;
 
+  /// Giờ nhắc: số phút từ 00:00 và kiểu nhắc, tối đa 5 (AC-17).
+  final List<({int minute, ReminderKind kind})> reminders;
+
   /// Lỗi nhập liệu đầu tiên tìm thấy, null nếu hợp lệ. Giá trị trả về là
   /// tên trường để màn hình hiện lỗi đúng chỗ.
   String? validate() {
     final n = name.trim();
     if (n.isEmpty || n.length > 60) return 'name';
     if ((description?.length ?? 0) > 300) return 'description';
+    if (reminders.length > 5) return 'reminders';
     if (evaluation == Evaluation.quantity ||
         evaluation == Evaluation.duration) {
       if (target == null || target! <= 0) return 'target';
@@ -204,6 +209,7 @@ class ActivityRepository {
             ),
           );
       await _writeChecklist(id, draft._checklistToSave);
+      await _writeReminders(id, draft.reminders);
       return id;
     });
   }
@@ -241,6 +247,7 @@ class ActivityRepository {
             .insert(draft.rule.toCompanion(id, todayKey));
       }
       await _writeChecklist(id, draft._checklistToSave);
+      await _writeReminders(id, draft.reminders);
     });
   }
 
@@ -274,6 +281,35 @@ class ActivityRepository {
       }
     }
   }
+
+  /// Ghi lại toàn bộ giờ nhắc của mục, bỏ giờ trùng (AC-17).
+  Future<void> _writeReminders(
+    int id,
+    List<({int minute, ReminderKind kind})> items,
+  ) async {
+    await (_db.delete(
+      _db.reminders,
+    )..where((r) => r.activityId.equals(id))).go();
+    final seen = <int>{};
+    for (final r in items) {
+      if (!seen.add(r.minute)) continue;
+      await _db
+          .into(_db.reminders)
+          .insert(
+            RemindersCompanion.insert(
+              activityId: id,
+              minuteOfDay: r.minute,
+              kind: r.kind,
+            ),
+          );
+    }
+  }
+
+  Future<List<Reminder>> remindersOf(int id) =>
+      (_db.select(_db.reminders)
+            ..where((r) => r.activityId.equals(id))
+            ..orderBy([(r) => OrderingTerm.asc(r.minuteOfDay)]))
+          .get();
 
   /// Lưu trữ hoặc khôi phục; lịch sử giữ nguyên (AC-05).
   Future<void> setArchived(int id, bool archived) =>

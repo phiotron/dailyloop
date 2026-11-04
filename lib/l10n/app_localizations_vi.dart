@@ -478,4 +478,76 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get getStarted => 'Bắt đầu';
+
+  @override
+  String get reminders => 'Giờ nhắc';
+
+  @override
+  String get addReminder => 'Thêm giờ nhắc';
+
+  @override
+  String get removeReminder => 'Bỏ giờ nhắc';
+
+  @override
+  String get reminderNotification => 'Thông báo';
+
+  @override
+  String get reminderAlarm => 'Chuông báo thức';
+
+  @override
+  String get channelReminders => 'Nhắc giờ';
+
+  @override
+  String get channelAlarms => 'Chuông báo thức';
+
+  @override
+  String get actionDone => 'Xong';
+
+  @override
+  String get actionSnooze => 'Hoãn 10 phút';
+
+  @override
+  String get actionDismiss => 'Tắt';
+
+  @override
+  String get allow => 'Cho phép';
+
+  @override
+  String get notNow => 'Để sau';
+
+  @override
+  String get openSettings => 'Mở cài đặt';
+
+  @override
+  String get permNotifTitle => 'Cho phép thông báo?';
+
+  @override
+  String get permNotifBody =>
+      'DailyLoop chỉ dùng thông báo để nhắc bạn đúng giờ đã đặt. Không cho phép thì sẽ không có nhắc giờ, các phần khác của app vẫn dùng bình thường.';
+
+  @override
+  String get permExactTitle => 'Nhắc đúng giờ?';
+
+  @override
+  String get permExactBody =>
+      'Để nhắc đúng từng phút, Android cần quyền \"Báo thức và lời nhắc\". Không có quyền này thì nhắc có thể trễ vài phút.';
+
+  @override
+  String get permFullTitle => 'Hiện chuông trên màn hình khóa?';
+
+  @override
+  String get permFullBody =>
+      'Chuông báo thức có thể hiện toàn màn hình như đồng hồ báo thức. Không có quyền này thì chuông hiện dạng thông báo nổi.';
+
+  @override
+  String get warnNotifications => 'Thông báo đang tắt, nhắc giờ sẽ không hiện';
+
+  @override
+  String get warnExact => 'Nhắc có thể trễ vài phút';
+
+  @override
+  String get warnFullScreen => 'Chuông sẽ hiện dạng thông báo nổi';
+
+  @override
+  String get alarmFor => 'Tới giờ';
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'
+    show NotificationResponse;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +16,8 @@ import 'features/tasks/tasks_screen.dart';
 import 'features/today/today_screen.dart';
 import 'features/welcome/welcome_screen.dart';
 import 'providers.dart';
+import 'reminders/alarm_screen.dart';
+import 'reminders/reminder_host.dart';
 import 'ui/messenger.dart';
 
 /// Mỗi lần gọi tạo router mới; test dùng để mỗi test bắt đầu ở màn Hôm nay.
@@ -92,6 +96,12 @@ GoRouter createRouter() {
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
       ),
+      GoRoute(
+        parentNavigatorKey: rootKey,
+        path: '/alarm',
+        builder: (context, state) =>
+            AlarmScreen(response: state.extra! as NotificationResponse),
+      ),
     ],
   );
 }
@@ -111,16 +121,21 @@ class DailyLoopApp extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider).value ?? ThemeMode.system;
     final localeCode = ref.watch(localeCodeProvider).value;
     final onboarding = ref.watch(onboardingDoneProvider);
+    final routerConfig = router ?? _router;
     return MaterialApp.router(
       // Lần mở đầu thì màn chào phủ lên app (AC-34). Đang đọc cài đặt thì
-      // để trống, tránh màn chào nháy lên rồi tắt.
-      builder: (context, child) => switch (onboarding.value) {
-        true => child!,
-        false => const WelcomeScreen(),
-        null => const Scaffold(),
-      },
+      // để trống, tránh màn chào nháy lên rồi tắt. Lịch nhắc luôn được giữ
+      // khớp dữ liệu (D-007).
+      builder: (context, child) => ReminderHost(
+        router: routerConfig,
+        child: switch (onboarding.value) {
+          true => child!,
+          false => const WelcomeScreen(),
+          null => const Scaffold(),
+        },
+      ),
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-      routerConfig: router ?? _router,
+      routerConfig: routerConfig,
       scaffoldMessengerKey: rootMessengerKey,
       themeMode: themeMode,
       theme: ThemeData(

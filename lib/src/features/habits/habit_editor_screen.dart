@@ -13,6 +13,7 @@ import '../../l10n_names.dart';
 import '../../providers.dart';
 import '../../ui/messenger.dart';
 import '../../ui/schedule_text.dart';
+import 'reminder_fields.dart';
 
 /// Tạo hoặc sửa thói quen (AC-01 tới AC-05) hoặc việc cần làm (AC-13,
 /// AC-14). [habitId] null là tạo mới loại [kind]; sửa thì lấy loại của mục.
@@ -74,6 +75,9 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
   /// Giờ của việc, số phút từ 00:00.
   int? _timeOfDay;
 
+  /// Giờ nhắc đang soạn, tối đa 5 (AC-17).
+  final _reminders = <({int minute, ReminderKind kind})>[];
+
   bool get _isTask => _kind == ActivityKind.task;
 
   /// Lỗi đang hiện, theo tên trường của [ActivityDraft.validate].
@@ -96,6 +100,10 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
       final a = await repo.find(id);
       final items = await repo.checklistOf(id);
       final rule = await repo.currentRule(id);
+      _reminders.addAll([
+        for (final r in await repo.remindersOf(id))
+          (minute: r.minuteOfDay, kind: r.kind),
+      ]);
       if (a != null) {
         _kind = a.kind;
         _timeOfDay = a.timeOfDay;
@@ -167,6 +175,7 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
     startDate: _startDate,
     endDate: _endDate,
     rule: _rule,
+    reminders: [..._reminders],
   );
 
   Future<void> _save() async {
@@ -580,6 +589,12 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
                       onTap: () => _pickDate(end: true),
                     ),
                   errorLine('endDate'),
+                  header(l.reminders),
+                  ReminderFields(
+                    reminders: _reminders,
+                    onChanged: () => setState(() {}),
+                    beforePick: _unfocus,
+                  ),
                 ],
               ),
             ),

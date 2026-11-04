@@ -2,6 +2,28 @@
 
 Mỗi quyết định một mục, mới nhất ở trên cùng.
 
+## D-007 · Nhắc giờ: flutter_local_notifications, SCHEDULE_EXACT_ALARM do người dùng cấp, lịch lăn 7 ngày · 2026-11-03
+- Bối cảnh: SPEC F-04 (AC-17 tới AC-22). Đã tra ngày 2026-11-03:
+  - Tài liệu Android (developer.android.com/about/versions/14/changes/schedule-exact-alarms): từ Android 14, `SCHEDULE_EXACT_ALARM` bị tắt sẵn với app mới cài, người dùng phải tự bật trong "Báo thức và lời nhắc". `USE_EXACT_ALARM` chỉ dành cho app báo thức hoặc lịch.
+  - Chính sách Google Play (support.google.com/googleplay/android-developer/answer/13986130): app không phải báo thức hoặc lịch mà khai `USE_EXACT_ALARM` thì bị chặn phát hành. `USE_FULL_SCREEN_INTENT` chỉ tự cấp cho app báo thức hoặc gọi điện, app khác phải xin người dùng, và nên nộp khai báo trong Play Console.
+  - Tài liệu AOSP (source.android.com/docs/core/permissions/fsi-limits): không được cấp quyền toàn màn hình thì hiện thông báo nổi khoảng 60 giây.
+- Quyết định:
+  - Dùng `flutter_local_notifications` 22 cùng `timezone` và `flutter_timezone`.
+  - Khai `SCHEDULE_EXACT_ALARM` (KHÔNG khai `USE_EXACT_ALARM`), `USE_FULL_SCREEN_INTENT`, `RECEIVE_BOOT_COMPLETED`; `POST_NOTIFICATIONS` và `VIBRATE` do thư viện khai.
+  - Có quyền báo thức chính xác thì nhắc đúng giờ (`exactAllowWhileIdle`, chuông dùng `alarmClock`). Không có thì vẫn nhắc nhưng có thể trễ (`inexactAllowWhileIdle`), và app hiện cảnh báo.
+  - Chuông: kênh riêng mức cao nhất, `fullScreenIntent`, âm thanh loại báo thức lặp lại (`FLAG_INSISTENT`), tự tắt sau 5 phút (`timeoutAfter`), có nút Xong, Hoãn 10 phút, Tắt.
+  - Lập lịch kiểu "lăn": mỗi lần mở app, quay lại app hoặc dữ liệu đổi thì tính các lần nhắc trong 7 ngày tới (tối đa 100 lần, vì Samsung giới hạn 500 báo thức mỗi app), hủy lịch cũ rồi đặt lại. Mục đã xong hoặc bỏ qua trong ngày thì không nhắc nữa.
+  - Nút "Xong" trên thông báo chạy ở tiến trình nền, mở cơ sở dữ liệu và ghi kết quả, không mở app. Khi app đang mở thì dùng chung kết nối cơ sở dữ liệu của app.
+  - Lần hoãn (mã thông báo đánh dấu bằng bit 30) được giữ qua các lần đặt lại lịch, nhưng bị hủy nếu mục đã xóa hoặc đã xong. Thử máy thật 2026-11-04: lịch đăng ký đúng, thông báo lệch 0,1 giây, nút Xong chạy khi app đóng, chuông toàn màn hình hiện khi màn hình tắt.
+  - Một kênh nhỏ viết bằng Kotlin (`dailyloop/system`) để kiểm quyền toàn màn hình và mở cài đặt thông báo của app.
+- Lý do / phương án đã loại: `USE_EXACT_ALARM` (loại: trái chính sách Google Play với app thói quen). Lặp lại bằng `matchDateTimeComponents` (loại: không biểu diễn được "cứ N ngày", "ngày 31", ngày kết thúc, và không bỏ được lần nhắc khi đã xong). Dịch vụ chạy nền liên tục (loại: tốn pin, phải khai báo foreground service).
+- Hệ quả cần nhớ:
+  - Khởi động lại máy: thư viện tự đặt lại các lần nhắc đã lưu.
+  - Đổi giờ hoặc múi giờ khi app đang tắt: các lần nhắc giữ giờ tuyệt đối cũ cho tới lần mở app kế tiếp. AC-21 chỉ đạt một phần, ghi ở BACKLOG.
+  - Không mở app quá 7 ngày thì hết lịch nhắc.
+  - Trình tối ưu pin của từng hãng vẫn có thể làm trễ.
+  - Khi phát hành phải nộp khai báo full-screen intent trong Play Console và khai trong Data safety rằng không có dữ liệu nào rời máy.
+
 ## D-006 · Việc cần làm ghi kết quả vào ngày của việc; một màn soạn cho cả thói quen và việc · 2026-11-03
 - Bối cảnh: G3, SPEC F-03 (AC-13 tới AC-16) và F-02 (AC-07 tới AC-12).
 - Quyết định: Việc một lần là mục `kind = task` có lịch `once`, ngày của việc ở `startDate` (null là "Chưa xếp lịch"). Xong việc thì ghi `entries` với `value = 1` vào chính ngày của việc, kể cả khi đánh xong lúc đã quá hạn. Việc chưa xếp lịch ghi vào ngày đánh xong. Việc lặp lại dùng chung bảng lịch với thói quen. Việc con lưu ở `checklist_items`, chỉ để đánh dấu, không quyết định xong hay chưa. Màn Hôm nay và màn Việc đọc qua `DayRepository`, phát lại mỗi khi các bảng liên quan đổi (`tableUpdates`). Màn soạn thói quen dùng chung cho việc (tham số `kind`): ẩn phần "Cách theo dõi", thêm "Không lặp lại", ngày bỏ trống được, có giờ.
