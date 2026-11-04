@@ -739,4 +739,139 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get widgetAllDone => 'Đã xong hết';
+
+  @override
+  String get dataSection => 'Dữ liệu';
+
+  @override
+  String get securitySection => 'Bảo mật';
+
+  @override
+  String get backupExport => 'Xuất bản sao lưu';
+
+  @override
+  String get backupExportHint =>
+      'Tạo file .dailyloop để cất giữ hoặc chuyển sang máy khác';
+
+  @override
+  String get backupRestore => 'Khôi phục từ file';
+
+  @override
+  String get backupRestoreHint => 'Chọn file .dailyloop đã xuất trước đó';
+
+  @override
+  String get restore => 'Khôi phục';
+
+  @override
+  String get restoreConfirm =>
+      'Dữ liệu hiện tại sẽ bị thay thế bằng nội dung của file sao lưu.';
+
+  @override
+  String get restoreDone => 'Đã khôi phục dữ liệu';
+
+  @override
+  String get restoreFailed =>
+      'File sao lưu hỏng, sai định dạng hoặc do bản DailyLoop mới hơn tạo ra. Dữ liệu hiện tại được giữ nguyên.';
+
+  @override
+  String get exportFailed => 'Không xuất được file';
+
+  @override
+  String get csvExport => 'Xuất lịch sử ra CSV';
+
+  @override
+  String get csvExportHint => 'Mở được bằng Excel hoặc Google Sheets';
+
+  @override
+  String get csvHabit => 'Thói quen';
+
+  @override
+  String get csvTask => 'Việc';
+
+  @override
+  String get csvDone => 'Đạt';
+
+  @override
+  String get csvNotDone => 'Chưa đạt';
+
+  @override
+  String get confirm => 'Xác nhận';
+
+  @override
+  String get pinLock => 'Khóa bằng mã PIN';
+
+  @override
+  String get pinLockHintOff => 'Đang tắt';
+
+  @override
+  String get pinLockHintOn => 'Đang bật';
+
+  @override
+  String get pinChange => 'Đổi mã PIN';
+
+  @override
+  String get pinDisable => 'Tắt khóa PIN';
+
+  @override
+  String get enterPin => 'Nhập mã PIN';
+
+  @override
+  String get enterCurrentPin => 'Nhập mã PIN hiện tại';
+
+  @override
+  String get wrongPin => 'Sai mã PIN';
+
+  @override
+  String get newPin => 'Đặt mã PIN 4 số';
+
+  @override
+  String get confirmPin => 'Nhập lại mã PIN';
+
+  @override
+  String get pinMismatch => 'Hai lần nhập không khớp';
+
+  @override
+  String get pinWarning =>
+      'PIN chỉ ngăn người tò mò mở app, không mã hóa dữ liệu. Quên mã thì chỉ còn cách xóa toàn bộ dữ liệu để dùng lại.';
+
+  @override
+  String get forgotPin => 'Quên mã';
+
+  @override
+  String get forgotPinBody =>
+      'Quên mã thì chỉ có thể xóa toàn bộ dữ liệu trên máy để dùng lại app. Dữ liệu đã xuất ra file sao lưu thì khôi phục lại được.';
+
+  @override
+  String digit(String d) {
+    return 'Số $d';
+  }
+
+  @override
+  String pinProgress(int n) {
+    return 'Đã nhập $n trên 4 số';
+  }
+
+  @override
+  String get keypadBackspace => 'Xóa số cuối';
+
+  @override
+  String get lockedOpenApp => 'Mở app (cần mã PIN)';
+
+  @override
+  String get deleteAll => 'Xóa toàn bộ dữ liệu';
+
+  @override
+  String get deleteAllHint =>
+      'Xóa thói quen, việc, lịch sử, giờ nhắc, cài đặt và mã PIN';
+
+  @override
+  String get deleteAllConfirm =>
+      'Toàn bộ thói quen, việc, lịch sử, giờ nhắc và cài đặt sẽ bị xóa khỏi máy này. Không hoàn tác được.';
+
+  @override
+  String get deleteAllConfirm2 =>
+      'Chắc chắn xóa hết? Hãy xuất bản sao lưu trước nếu còn cần dữ liệu.';
+
+  @override
+  String get deleteAllDone => 'Đã xóa toàn bộ dữ liệu';
 }

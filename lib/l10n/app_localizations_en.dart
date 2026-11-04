@@ -759,4 +759,139 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get widgetAllDone => 'All done';
+
+  @override
+  String get dataSection => 'Data';
+
+  @override
+  String get securitySection => 'Security';
+
+  @override
+  String get backupExport => 'Export backup';
+
+  @override
+  String get backupExportHint =>
+      'Creates a .dailyloop file to keep or move to another device';
+
+  @override
+  String get backupRestore => 'Restore from file';
+
+  @override
+  String get backupRestoreHint => 'Pick a .dailyloop file you exported earlier';
+
+  @override
+  String get restore => 'Restore';
+
+  @override
+  String get restoreConfirm =>
+      'Your current data will be replaced by the contents of the backup file.';
+
+  @override
+  String get restoreDone => 'Data restored';
+
+  @override
+  String get restoreFailed =>
+      'The backup file is damaged, in the wrong format or made by a newer DailyLoop. Your current data was left untouched.';
+
+  @override
+  String get exportFailed => 'Could not export the file';
+
+  @override
+  String get csvExport => 'Export history as CSV';
+
+  @override
+  String get csvExportHint => 'Opens in Excel or Google Sheets';
+
+  @override
+  String get csvHabit => 'Habit';
+
+  @override
+  String get csvTask => 'Task';
+
+  @override
+  String get csvDone => 'Done';
+
+  @override
+  String get csvNotDone => 'Not done';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get pinLock => 'PIN lock';
+
+  @override
+  String get pinLockHintOff => 'Off';
+
+  @override
+  String get pinLockHintOn => 'On';
+
+  @override
+  String get pinChange => 'Change PIN';
+
+  @override
+  String get pinDisable => 'Turn off PIN lock';
+
+  @override
+  String get enterPin => 'Enter PIN';
+
+  @override
+  String get enterCurrentPin => 'Enter your current PIN';
+
+  @override
+  String get wrongPin => 'Wrong PIN';
+
+  @override
+  String get newPin => 'Set a 4-digit PIN';
+
+  @override
+  String get confirmPin => 'Enter the PIN again';
+
+  @override
+  String get pinMismatch => 'The two entries do not match';
+
+  @override
+  String get pinWarning =>
+      'The PIN only keeps curious people out of the app; it does not encrypt your data. If you forget it, the only way back in is to erase all data.';
+
+  @override
+  String get forgotPin => 'Forgot PIN';
+
+  @override
+  String get forgotPinBody =>
+      'If you forgot the PIN, the only option is to erase all data on this device and start over. Data you exported to a backup file can be restored.';
+
+  @override
+  String digit(String d) {
+    return 'Digit $d';
+  }
+
+  @override
+  String pinProgress(int n) {
+    return '$n of 4 digits entered';
+  }
+
+  @override
+  String get keypadBackspace => 'Delete last digit';
+
+  @override
+  String get lockedOpenApp => 'Open app (PIN required)';
+
+  @override
+  String get deleteAll => 'Erase all data';
+
+  @override
+  String get deleteAllHint =>
+      'Deletes habits, tasks, history, reminders, settings and the PIN';
+
+  @override
+  String get deleteAllConfirm =>
+      'All habits, tasks, history, reminders and settings will be erased from this device. This cannot be undone.';
+
+  @override
+  String get deleteAllConfirm2 =>
+      'Really erase everything? Export a backup first if you still need your data.';
+
+  @override
+  String get deleteAllDone => 'All data erased';
 }

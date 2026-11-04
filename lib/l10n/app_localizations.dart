@@ -1447,6 +1447,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All done'**
   String get widgetAllDone;
+
+  /// No description provided for @dataSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get dataSection;
+
+  /// No description provided for @securitySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get securitySection;
+
+  /// No description provided for @backupExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export backup'**
+  String get backupExport;
+
+  /// No description provided for @backupExportHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Creates a .dailyloop file to keep or move to another device'**
+  String get backupExportHint;
+
+  /// No description provided for @backupRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from file'**
+  String get backupRestore;
+
+  /// No description provided for @backupRestoreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a .dailyloop file you exported earlier'**
+  String get backupRestoreHint;
+
+  /// No description provided for @restore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restore;
+
+  /// No description provided for @restoreConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current data will be replaced by the contents of the backup file.'**
+  String get restoreConfirm;
+
+  /// No description provided for @restoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Data restored'**
+  String get restoreDone;
+
+  /// No description provided for @restoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The backup file is damaged, in the wrong format or made by a newer DailyLoop. Your current data was left untouched.'**
+  String get restoreFailed;
+
+  /// No description provided for @exportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not export the file'**
+  String get exportFailed;
+
+  /// No description provided for @csvExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export history as CSV'**
+  String get csvExport;
+
+  /// No description provided for @csvExportHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens in Excel or Google Sheets'**
+  String get csvExportHint;
+
+  /// No description provided for @csvHabit.
+  ///
+  /// In en, this message translates to:
+  /// **'Habit'**
+  String get csvHabit;
+
+  /// No description provided for @csvTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Task'**
+  String get csvTask;
+
+  /// No description provided for @csvDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get csvDone;
+
+  /// No description provided for @csvNotDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not done'**
+  String get csvNotDone;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @pinLock.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN lock'**
+  String get pinLock;
+
+  /// No description provided for @pinLockHintOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get pinLockHintOff;
+
+  /// No description provided for @pinLockHintOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get pinLockHintOn;
+
+  /// No description provided for @pinChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change PIN'**
+  String get pinChange;
+
+  /// No description provided for @pinDisable.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off PIN lock'**
+  String get pinDisable;
+
+  /// No description provided for @enterPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter PIN'**
+  String get enterPin;
+
+  /// No description provided for @enterCurrentPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current PIN'**
+  String get enterCurrentPin;
+
+  /// No description provided for @wrongPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong PIN'**
+  String get wrongPin;
+
+  /// No description provided for @newPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a 4-digit PIN'**
+  String get newPin;
+
+  /// No description provided for @confirmPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the PIN again'**
+  String get confirmPin;
+
+  /// No description provided for @pinMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The two entries do not match'**
+  String get pinMismatch;
+
+  /// No description provided for @pinWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'The PIN only keeps curious people out of the app; it does not encrypt your data. If you forget it, the only way back in is to erase all data.'**
+  String get pinWarning;
+
+  /// No description provided for @forgotPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot PIN'**
+  String get forgotPin;
+
+  /// No description provided for @forgotPinBody.
+  ///
+  /// In en, this message translates to:
+  /// **'If you forgot the PIN, the only option is to erase all data on this device and start over. Data you exported to a backup file can be restored.'**
+  String get forgotPinBody;
+
+  /// No description provided for @digit.
+  ///
+  /// In en, this message translates to:
+  /// **'Digit {d}'**
+  String digit(String d);
+
+  /// No description provided for @pinProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} of 4 digits entered'**
+  String pinProgress(int n);
+
+  /// No description provided for @keypadBackspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete last digit'**
+  String get keypadBackspace;
+
+  /// No description provided for @lockedOpenApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Open app (PIN required)'**
+  String get lockedOpenApp;
+
+  /// No description provided for @deleteAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Erase all data'**
+  String get deleteAll;
+
+  /// No description provided for @deleteAllHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletes habits, tasks, history, reminders, settings and the PIN'**
+  String get deleteAllHint;
+
+  /// No description provided for @deleteAllConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'All habits, tasks, history, reminders and settings will be erased from this device. This cannot be undone.'**
+  String get deleteAllConfirm;
+
+  /// No description provided for @deleteAllConfirm2.
+  ///
+  /// In en, this message translates to:
+  /// **'Really erase everything? Export a backup first if you still need your data.'**
+  String get deleteAllConfirm2;
+
+  /// No description provided for @deleteAllDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All data erased'**
+  String get deleteAllDone;
 }
 
 class _AppLocalizationsDelegate
