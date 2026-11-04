@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Thông báo time-sensitive cho kiểu "Chuông" (D-010). Cần bật khả năng
+  "Time Sensitive Notifications" cho App ID com.phiotron.dailyloop trong
+  Apple Developer, và provisioning profile tạo lại sau khi bật.
+  App Group group.com.phiotron.dailyloop sẽ thêm khi làm widget iOS.
+-->
+<plist version="1.0">
+<dict>
+	<key>com.apple.developer.usernotifications.time-sensitive</key>
+	<true/>
+</dict>
+</plist>

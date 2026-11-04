@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
@@ -92,6 +93,33 @@ const pomodoroPayload = 'pomodoro';
 /// Chuông tự tắt sau 5 phút (AC-20).
 const alarmTimeout = Duration(minutes: 5);
 
+/// iOS chỉ giữ 64 thông báo chờ gần giờ nhất, phần xa hơn bị hệ điều hành bỏ
+/// im lặng (D-010).
+const iosPendingLimit = 64;
+
+/// Chỗ chừa lại cho iOS: 1 cho báo hết giờ Pomodoro và 2 cho lần hoãn mới.
+const iosReservedSlots = 3;
+
+/// Âm báo của chuông trên iOS: file `alarm.wav` trong gói app, dài dưới 30
+/// giây (giới hạn của iOS cho âm thông báo tùy chỉnh).
+const iosAlarmSound = 'alarm.wav';
+
+const _iosCategoryReminderDone = 'reminder_done';
+const _iosCategoryAlarmDone = 'alarm_done';
+const _iosCategoryAlarm = 'alarm';
+
+/// Các lần nhắc của lịch lăn được đặt trên iOS, khi đã có [snoozesPending]
+/// lần hoãn đang chờ (được giữ nguyên). Lịch xếp sớm nhất trước nên cắt đuôi
+/// là giữ lại các lần gần giờ nhất.
+List<PlannedReminder> limitPlanForIos(
+  List<PlannedReminder> plan, {
+  int snoozesPending = 0,
+}) {
+  final room = iosPendingLimit - iosReservedSlots - snoozesPending;
+  if (room <= 0) return const [];
+  return plan.length > room ? plan.sublist(0, room) : plan;
+}
+
 const _channelReminders = 'reminders';
 const _channelAlarms = 'alarms_v1';
 const _system = MethodChannel('dailyloop/system');
@@ -143,7 +171,10 @@ Future<bool> handleNotificationAction(
             .add(const Duration(minutes: snoozeMinutes)),
         notificationDetails: p.kind == ReminderKind.alarm
             ? _alarmDetails(_lastTexts, yesNo: yesNo)
-            : NotificationDetails(android: _reminderAndroid(_lastTexts, yesNo)),
+            : NotificationDetails(
+                android: _reminderAndroid(_lastTexts, yesNo),
+                iOS: _darwinDetails(ReminderKind.notification, yesNo),
+              ),
         androidScheduleMode:
             await plugin
                     .resolvePlatformSpecificImplementation<
@@ -189,6 +220,72 @@ var _lastTexts = const ReminderTexts(
   dismiss: 'Dismiss',
 );
 
+String? _iosCategory(ReminderKind kind, bool yesNo) =>
+    kind == ReminderKind.alarm
+    ? (yesNo ? _iosCategoryAlarmDone : _iosCategoryAlarm)
+    : (yesNo ? _iosCategoryReminderDone : null);
+
+/// Chi tiết thông báo iOS (D-010). Chuông: time-sensitive (xuyên chế độ
+/// Focus), âm báo dài, nút Xong/Hoãn/Tắt. Thông báo thường: mức mặc định.
+/// Máy khác iOS trả về null để Android giữ nguyên hành vi.
+DarwinNotificationDetails? _darwinDetails(ReminderKind kind, bool yesNo) {
+  if (!Platform.isIOS) return null;
+  final alarm = kind == ReminderKind.alarm;
+  return DarwinNotificationDetails(
+    presentAlert: true,
+    presentSound: true,
+    presentBadge: false,
+    presentBanner: true,
+    presentList: true,
+    sound: alarm ? iosAlarmSound : null,
+    categoryIdentifier: _iosCategory(kind, yesNo),
+    threadIdentifier: 'dailyloop',
+    interruptionLevel: alarm
+        ? InterruptionLevel.timeSensitive
+        : InterruptionLevel.active,
+  );
+}
+
+/// Nhóm nút bấm trên thông báo iOS; đăng ký lúc khởi tạo plugin. Nút không
+/// mang tùy chọn `foreground` nên chạy ở nền, không mở app.
+DarwinInitializationSettings _iosInit(ReminderTexts t) =>
+    DarwinInitializationSettings(
+      // Quyền xin sau, đúng lúc đặt giờ nhắc đầu tiên (AC-18, AC-34).
+      requestAlertPermission: false,
+      requestSoundPermission: false,
+      requestBadgePermission: false,
+      defaultPresentBadge: false,
+      notificationCategories: [
+        DarwinNotificationCategory(
+          _iosCategoryReminderDone,
+          actions: [DarwinNotificationAction.plain(actionDone, t.done)],
+        ),
+        DarwinNotificationCategory(
+          _iosCategoryAlarmDone,
+          actions: [
+            DarwinNotificationAction.plain(actionDone, t.done),
+            DarwinNotificationAction.plain(actionSnooze, t.snooze),
+            DarwinNotificationAction.plain(
+              actionDismiss,
+              t.dismiss,
+              options: {DarwinNotificationActionOption.destructive},
+            ),
+          ],
+        ),
+        DarwinNotificationCategory(
+          _iosCategoryAlarm,
+          actions: [
+            DarwinNotificationAction.plain(actionSnooze, t.snooze),
+            DarwinNotificationAction.plain(
+              actionDismiss,
+              t.dismiss,
+              options: {DarwinNotificationActionOption.destructive},
+            ),
+          ],
+        ),
+      ],
+    );
+
 AndroidNotificationDetails _reminderAndroid(ReminderTexts t, bool yesNo) =>
     AndroidNotificationDetails(
       _channelReminders,
@@ -202,6 +299,7 @@ AndroidNotificationDetails _reminderAndroid(ReminderTexts t, bool yesNo) =>
 
 NotificationDetails _alarmDetails(ReminderTexts t, {bool yesNo = true}) =>
     NotificationDetails(
+      iOS: _darwinDetails(ReminderKind.alarm, yesNo),
       android: AndroidNotificationDetails(
         _channelAlarms,
         t.channelAlarms,
@@ -243,12 +341,20 @@ class PluginReminderGateway implements ReminderGateway {
         AndroidFlutterLocalNotificationsPlugin
       >();
 
-  @override
-  Future<void> init() async {
-    await _ensureTimeZone();
+  IOSFlutterLocalNotificationsPlugin? get _ios => _plugin
+      .resolvePlatformSpecificImplementation<
+        IOSFlutterLocalNotificationsPlugin
+      >();
+
+  /// Chữ đã dùng để đăng ký nhóm nút trên iOS (nhãn nút cố định lúc đăng ký).
+  ReminderTexts? _iosTexts;
+
+  Future<void> _initialize(ReminderTexts iosTexts) async {
+    _iosTexts = iosTexts;
     await _plugin.initialize(
-      settings: const InitializationSettings(
-        android: AndroidInitializationSettings('ic_notification'),
+      settings: InitializationSettings(
+        android: const AndroidInitializationSettings('ic_notification'),
+        iOS: Platform.isIOS ? _iosInit(iosTexts) : null,
       ),
       onDidReceiveNotificationResponse: (r) async {
         if (!await handleNotificationAction(r, db: database)) onTap?.call(r);
@@ -256,6 +362,12 @@ class PluginReminderGateway implements ReminderGateway {
       onDidReceiveBackgroundNotificationResponse:
           onBackgroundNotificationAction,
     );
+  }
+
+  @override
+  Future<void> init() async {
+    await _ensureTimeZone();
+    await _initialize(_lastTexts);
     final launch = await _plugin.getNotificationAppLaunchDetails();
     final r = launch?.notificationResponse;
     if (launch?.didNotificationLaunchApp == true && r != null) onTap?.call(r);
@@ -263,6 +375,16 @@ class PluginReminderGateway implements ReminderGateway {
 
   @override
   Future<ReminderPermissions> permissions() async {
+    final ios = _ios;
+    if (ios != null) {
+      // iOS không có báo thức chính xác hay toàn màn hình để xin riêng.
+      final o = await ios.checkPermissions();
+      return ReminderPermissions(
+        notifications: (o?.isEnabled ?? false) && (o?.isAlertEnabled ?? false),
+        exactAlarms: true,
+        fullScreen: true,
+      );
+    }
     final android = _android;
     if (android == null) return ReminderPermissions.allGranted;
     bool full;
@@ -279,8 +401,13 @@ class PluginReminderGateway implements ReminderGateway {
   }
 
   @override
-  Future<bool> requestNotifications() async =>
-      await _android?.requestNotificationsPermission() ?? true;
+  Future<bool> requestNotifications() async {
+    final ios = _ios;
+    if (ios != null) {
+      return await ios.requestPermissions(alert: true, sound: true) ?? false;
+    }
+    return await _android?.requestNotificationsPermission() ?? true;
+  }
 
   @override
   Future<bool> requestExactAlarms() async =>
@@ -291,8 +418,11 @@ class PluginReminderGateway implements ReminderGateway {
       await _android?.requestFullScreenIntentPermission() ?? true;
 
   @override
-  Future<void> openNotificationSettings() =>
-      _system.invokeMethod<void>('openNotificationSettings');
+  Future<void> openNotificationSettings() {
+    final ios = _ios;
+    if (ios != null) return ios.openAppNotificationSettings();
+    return _system.invokeMethod<void>('openNotificationSettings');
+  }
 
   @override
   Future<void> scheduleTimerEnd(
@@ -312,6 +442,12 @@ class PluginReminderGateway implements ReminderGateway {
           importance: Importance.high,
           priority: Priority.high,
           category: AndroidNotificationCategory.alarm,
+        ),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentSound: true,
+          presentBadge: false,
+          interruptionLevel: InterruptionLevel.timeSensitive,
         ),
       ),
       androidScheduleMode: exact
@@ -334,8 +470,28 @@ class PluginReminderGateway implements ReminderGateway {
   }) async {
     _lastTexts = texts;
     await _ensureTimeZone();
-    final keep = {for (final p in plan) p.id};
-    for (final pending in await _plugin.pendingNotificationRequests()) {
+    // iOS: nhãn nút Xong/Hoãn/Tắt cố định lúc đăng ký nhóm nút, nên đăng ký
+    // lại khi chữ (ngôn ngữ) đổi so với lần trước.
+    if (Platform.isIOS && !_sameTexts(_iosTexts, texts)) {
+      await _initialize(texts);
+    }
+    final pendingNow = await _plugin.pendingNotificationRequests();
+    // iOS giữ tối đa 64 thông báo chờ (D-010): chỉ đặt phần gần giờ nhất, chừa
+    // chỗ cho lần hoãn đang chờ. Máy khác: đặt toàn bộ lịch như cũ.
+    var target = plan;
+    if (Platform.isIOS) {
+      var snoozes = 0;
+      for (final pending in pendingNow) {
+        if (pending.id & 0x40000000 == 0) continue;
+        final p = parsePayload(pending.payload);
+        if (p != null && liveItems.contains('${p.activityId}|${p.date}')) {
+          snoozes++;
+        }
+      }
+      target = limitPlanForIos(plan, snoozesPending: snoozes);
+    }
+    final keep = {for (final p in target) p.id};
+    for (final pending in pendingNow) {
       if (pending.id & 0x40000000 != 0) {
         // Lần hoãn (bit 30): giữ tới khi tự báo, trừ khi mục đã xóa hoặc xong.
         final p = parsePayload(pending.payload);
@@ -348,14 +504,17 @@ class PluginReminderGateway implements ReminderGateway {
       if (!keep.contains(pending.id)) await _plugin.cancel(id: pending.id);
     }
     final exact = await _android?.canScheduleExactNotifications() ?? true;
-    for (final p in plan) {
+    for (final p in target) {
       final alarm = p.kind == ReminderKind.alarm;
       await _plugin.zonedSchedule(
         id: p.id,
         scheduledDate: tz.TZDateTime.from(p.at, tz.local),
         notificationDetails: alarm
             ? _alarmDetails(texts, yesNo: p.yesNo)
-            : NotificationDetails(android: _reminderAndroid(texts, p.yesNo)),
+            : NotificationDetails(
+                android: _reminderAndroid(texts, p.yesNo),
+                iOS: _darwinDetails(p.kind, p.yesNo),
+              ),
         // Không có quyền báo thức chính xác thì vẫn nhắc, có thể trễ (D-007).
         androidScheduleMode: !exact
             ? AndroidScheduleMode.inexactAllowWhileIdle
@@ -369,6 +528,12 @@ class PluginReminderGateway implements ReminderGateway {
     }
   }
 }
+
+bool _sameTexts(ReminderTexts? a, ReminderTexts b) =>
+    a != null &&
+    a.done == b.done &&
+    a.snooze == b.snooze &&
+    a.dismiss == b.dismiss;
 
 /// Bản giả cho test: ghi lại lịch đã đặt.
 class FakeReminderGateway implements ReminderGateway {
