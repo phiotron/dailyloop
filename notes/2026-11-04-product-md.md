@@ -32,3 +32,10 @@ Phiên con của phiên điều phối #1 · 2026-11-04 · phạm vi sửa: ch�
 - **Script kiểm product.md ↔ `.arb`/route** (chạy như trên): nên đưa vào `playbook/` thành lệnh một dòng để mọi app có bước kiểm cuối.
 - **Quy tắc thứ tự:** viết product.md **sau khi** phiên G7-tương-đương đã chốt chữ `.arb`, hoặc cho phiên con product.md đọc lại `.arb` lần cuối trước commit (đã làm ở đây; G7 chạy song song làm chữ đổi giữa chừng).
 - Khi dùng "bộ nhận diện mới", product.md nên có sẵn mục "deliverables bắt buộc cho mapping token → Flutter" (đã đưa vào 10.3) để phiên F (áp design system) không phải hỏi lại.
+
+## Cập nhật: đổi tên hiển thị DailyLoop → Streakloom (2026-11-04)
+- Theo quyết định của Phương (DailyLoop trùng nặng trên 2 store, xem `store/name-check.md`): `product.md` và `CONTEXT.md` đổi mọi tên hiển thị sang **Streakloom** (tiêu đề, mô tả, chữ mẫu trong màn, About, thông báo khi PIN, chữ trong bảng chuỗi dài VI/EN, mục insight). Tên store EN/VI ghi ở đầu product.md.
+- **Giữ nguyên:** mã app `A003-dailyloop`, bundle ID `com.phiotron.dailyloop`, repo, đường dẫn, đuôi file sao lưu `.dailyloop` và tên file mẫu `dailyloop-YYYYMMDD-HHMM.dailyloop/.csv`. Đầu product.md ghi rõ "internal code name A003-dailyloop; file extension .dailyloop stays".
+- Mục 2.3 thêm đoạn thương hiệu: Streakloom = streak + loom (dệt chuỗi ngày) — gợi ý tùy chọn cho logo/icon; logo/màu phải khác hẳn 3 app DailyLoop cũ.
+- **`.arb` còn chữ "DailyLoop" ở 3 khóa** (EN + VI): `appTitle`, `permNotifBody`, `restoreFailed`. Trong product.md đã viết bằng Streakloom và đánh dấu `NEW:` (đầu file + bảng 2.5 + SCR-22). Không sửa `.arb`; phiên điều phối đổi sau (kèm tên app Android/iOS, tiêu đề app, widget, thông báo). Script đối chiếu `.arb` ↔ product.md sẽ báo lệch ở đúng 3 khóa này — là chủ ý.
+- Tên trong `ios/`/Android manifest (display name) cũng cần đổi ở phiên áp UI — ngoài phạm vi phiên này.

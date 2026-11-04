@@ -1,22 +1,25 @@
-# DailyLoop — Product brief for Hi-Fi UI design
+# Streakloom — Product brief for Hi-Fi UI design
 
 > **What this file is for:** the brief to send to **Claude Design** to produce Hi-Fi mockups (UX/UI optimised) for the
-> mobile app **DailyLoop** on **Android + iOS**. It says *what* each screen must do and *why*; *how it looks* is Claude
+> mobile app **Streakloom** on **Android + iOS**. It says *what* each screen must do and *why*; *how it looks* is Claude
 > Design's proposal, within the limits in §2 and §10.
 >
-> **Direction: NEW identity + NEW design system.** Keep the name **DailyLoop**; everything else visual — logo, app icon
+> **Direction: NEW identity + NEW design system.** Use the name **Streakloom** (renamed from "DailyLoop" on 2026-11-04 because the old name clashed heavily on both stores); everything else visual — logo, app icon
 > concept, colour palette, typography, icon style, component shapes, motion — is **yours to propose**. The app that exists
 > today is an unstyled Material 3 prototype (seed colour indigo); use it **only to understand the flows**, not as a visual
 > starting point. **Keep every flow and the exact scope** of the spec (`docs/SPEC.md`, F-01..F-14 / AC-01..AC-53).
 > Do **not** add features; ideas outside the spec go to §9 only. **Do not imitate any existing habit app** (names, logos,
 > colours, layouts, icons) — the spec forbids copying HabitNow; §8.2 lists competitor *insights*, not looks to copy.
 >
-> Internal code `A003-dailyloop` · Bundle ID `com.phiotron.dailyloop` · Version 1.0 · Date 2026-11-04
+> Display name **Streakloom** (store EN: "Streakloom: Habits & To-Do"; store VI: "Streakloom: Thói Quen & Việc"). **Internal code name: `A003-dailyloop`**; Bundle ID `com.phiotron.dailyloop`; the backup file extension **`.dailyloop` stays** (and so do file names like `dailyloop-YYYYMMDD-HHMM.dailyloop`) — never show "DailyLoop" as the product name in any frame · Version 1.0 · Date 2026-11-04
 > Glossary: `CONTEXT.md` (Activity, Habit, Task, Schedule, Entry, Evaluation, Skip, Overdue, Streak, Habit score,
 > Reminder, Pomodoro session, Backup…). Use those words in layer names and labels.
 > All UI copy below is the real copy from `lib/l10n/app_en.arb` and `app_vi.arb`. Where a design needs **new** copy
 > (the G7 screens — backup, restore, CSV, PIN, lock, erase — already have copy in the `.arb` files as of 2026-11-04, work in progress; **About**, notification-with-PIN text and a few hints still have none), write it in the mockup marked
 > `NEW:` so the developer adds it to both `.arb` files.
+> **Rename note:** the `.arb` files still contain the old name "DailyLoop" in exactly three strings — `appTitle`, `permNotifBody`
+> and `restoreFailed` (EN + VI). This brief already writes them with **Streakloom**; treat those three as `NEW:` (the `.arb` is updated
+> later by the orchestrator). The text ".dailyloop" in the backup hints is the file extension and stays.
 
 ---
 
@@ -37,13 +40,13 @@
 ## 1. Product overview
 
 ### 1.1 One line
-**DailyLoop** — plan the habits and to-dos of your day in one list, get reminded at the right time, and see your streaks
+**Streakloom** — plan the habits and to-dos of your day in one list, get reminded at the right time, and see your streaks
 and progress. Free, fully offline, no account, no data collection.
 
 ### 1.2 Problem
 People who want a steadier routine (drink enough water, exercise, read, take medicine on time) quit after a few days:
 they forget, and they cannot see how far they have come. Today they juggle sticky notes, phone alarms and loose notes,
-so nothing gathers the day's habits and tasks in one place or counts consecutive days. DailyLoop puts habits and tasks on
+so nothing gathers the day's habits and tasks in one place or counts consecutive days. Streakloom puts habits and tasks on
 one **Today** screen, reminds at the chosen times, and shows streaks, a score and statistics.
 
 ### 1.3 Target users (personas)
@@ -112,7 +115,8 @@ one **Today** screen, reminds at the chosen times, and shows streaks, a score an
 
 ### 2.3 Theme and visual identity (yours to propose)
 - Deliver **Light and Dark** (and "System", follows device). Every main frame in both.
-- **Propose a full identity:** logo/wordmark (name stays "DailyLoop", camel-case as written), app-icon concept (the
+- **Brand name — Streakloom** = *streak* (consecutive days) + *loom* (weaving). The idea "weaving your days into a streak" (threads, a woven pattern, a loom shuttle) is a **free source of inspiration for the logo and icon — not mandatory**. The logo, icon and palette must look **clearly different from the three existing "DailyLoop" apps** on the stores (the reason for the rename: see `store/name-check.md`) and from any benchmarked habit app. Never show "DailyLoop" as the product name in any frame.
+- **Propose a full identity:** logo/wordmark (the name is written **Streakloom**, one word, capital S only), app-icon concept (the
   icon image itself is **not final**), brand colours, neutral ramp, semantic colours (done, not done, skipped, overdue,
   warning), typography, icon style, corner radii, elevation, motion. The brand idea hinted by the name is a **loop /
   daily cycle** — free to use or ignore; avoid generic clip-art (checkmark in a circle as the whole logo, calendars,
@@ -143,13 +147,13 @@ one **Today** screen, reminds at the chosen times, and shows streaks, a score an
 - Visible 2 px focus ring for keyboard / switch access. Respect **reduce motion**.
 
 ### 2.5 Languages and copy length
-- **Vietnamese and English**, follows the device by default, switchable in Settings (AC-48). App name "DailyLoop" is
+- **Vietnamese and English**, follows the device by default, switchable in Settings (AC-48). App name "Streakloom" is
   the same in both. **Design in English, then check Vietnamese** — VI is often 30–100 % longer for short labels.
 - Longest / riskiest VI strings (real, from `app_vi.arb`):
 
 | Key | EN | VI | Where it bites |
 |---|---|---|---|
-| `permNotifBody` | DailyLoop uses notifications only to remind you at the times you set. Without them, reminders will not appear. You can still use the rest of the app. | DailyLoop chỉ dùng thông báo để nhắc bạn đúng giờ đã đặt. Không cho phép thì sẽ không có nhắc giờ, các phần khác của app vẫn dùng bình thường. | Permission explain dialog |
+| `permNotifBody` **(NEW: .arb still says "DailyLoop")** | Streakloom uses notifications only to remind you at the times you set. Without them, reminders will not appear. You can still use the rest of the app. | Streakloom chỉ dùng thông báo để nhắc bạn đúng giờ đã đặt. Không cho phép thì sẽ không có nhắc giờ, các phần khác của app vẫn dùng bình thường. | Permission explain dialog |
 | `permExactBody` | To remind you at the exact minute, Android needs the "Alarms & reminders" permission. Without it, reminders may arrive a few minutes late. | Để nhắc đúng từng phút, Android cần quyền "Báo thức và lời nhắc". Không có quyền này thì nhắc có thể trễ vài phút. | Permission dialog |
 | `permFullBody` | Alarms can fill the screen like a clock alarm. Without this permission, alarms appear as a pop-up notification instead. | Chuông báo thức có thể hiện toàn màn hình như đồng hồ báo thức. Không có quyền này thì chuông hiện dạng thông báo nổi. | Permission dialog |
 | `welcomeBody1` | Track yes-or-no habits, amounts, time or checklists, on the days you choose. | Theo dõi thói quen kiểu có hoặc không, số lượng, thời gian hay danh sách con, vào đúng những ngày bạn chọn. | Welcome page 1 |
@@ -700,10 +704,10 @@ Erase all data / Xóa toàn bộ dữ liệu · Deletes habits, tasks, history, 
 - **Export backup:** creates `dailyloop-YYYYMMDD-HHMM.dailyloop` (JSON) → OS share sheet (**placeholder**; anchored to the row on iPad). Optional brief progress state (local, < 1 s). No storage permission. Failure → snackbar "Could not export the file".
 - **Export history as CSV:** `dailyloop-YYYYMMDD-HHMM.csv`; columns carry the localised words **Habit / Task**, **Done / Not done / Skipped** → share sheet.
 - **Restore from file:** OS file picker (placeholder) → file validated **before** anything changes:
-  - invalid → **snackbar** "The backup file is damaged, in the wrong format or made by a newer DailyLoop. Your current data was left untouched." (3 lines at 360 dp / VI) — no dialog;
+  - invalid → **snackbar** "The backup file is damaged, in the wrong format or made by a newer Streakloom. Your current data was left untouched." **(NEW: `.arb` still says "DailyLoop")** (3 lines at 360 dp / VI) — no dialog;
   - valid → **confirm dialog**: title **Restore**, body "Your current data will be replaced by the contents of the backup file.", **Cancel** · **Restore** → (brief progress) → snackbar "Data restored"; filters reset; reminders re-scheduled.
 - **States:** each action default · exporting · system picker · invalid file · valid-file confirm · restoring · success · very large history (still quick) · export error · VI.
-- **Copy:** Export backup / Xuất bản sao lưu · Restore from file / Khôi phục từ file · Restore / Khôi phục · Confirm / Xác nhận · Cancel / Hủy · Data restored / Đã khôi phục dữ liệu · The backup file is damaged… / File sao lưu hỏng, sai định dạng hoặc do bản DailyLoop mới hơn tạo ra. Dữ liệu hiện tại được giữ nguyên. · Could not export the file / Không xuất được file · restore-confirm VI: Dữ liệu hiện tại sẽ bị thay thế bằng nội dung của file sao lưu.
+- **Copy:** Export backup / Xuất bản sao lưu · Restore from file / Khôi phục từ file · Restore / Khôi phục · Confirm / Xác nhận · Cancel / Hủy · Data restored / Đã khôi phục dữ liệu · The backup file is damaged… / File sao lưu hỏng, sai định dạng hoặc do bản Streakloom mới hơn tạo ra. Dữ liệu hiện tại được giữ nguyên. · Could not export the file / Không xuất được file · restore-confirm VI: Dữ liệu hiện tại sẽ bị thay thế bằng nội dung của file sao lưu.
 - **NEW (spec AC-42):** a reminder that backups are **not encrypted** near the export action.
 
 ### SCR-23 · PIN setup, change and turn-off (full-screen dialogs from Settings) — AC-45
@@ -734,10 +738,10 @@ VI: Xóa toàn bộ dữ liệu · Toàn bộ thói quen, việc, lịch sử, g
 Note: the dialogs have a title, a body and one filled action; the destructive level should be visible in step 2 (colour **and** the word).
 
 ### SCR-26 · About — AC-51 (**NEW screen; no prototype**)
-**Components:** logo/wordmark "DailyLoop" · "Version {version}" · one reassuring privacy line ("Your data is stored only on this phone. DailyLoop does not send it anywhere.") · rows: **Privacy policy** (opens the browser; **disabled with subtitle
+**Components:** logo/wordmark "Streakloom" · "Version {version}" · one reassuring privacy line ("Your data is stored only on this phone. Streakloom does not send it anywhere.") · rows: **Privacy policy** (opens the browser; **disabled with subtitle
 "Web page coming soon"** while no URL exists — design the disabled state so it does not look broken), **Report a security issue** (subtitle "Contact email: {email}", opens the mail app), **Open source licenses** (OS-style licence list).
 **States:** policy enabled / pending · "Could not open it. You can write to {target} yourself." snackbar · VI. Placeholder email in mocks: `hello@example.com`.
-All NEW copy; VI suggestions: Giới thiệu · Phiên bản {version} · Dữ liệu chỉ lưu trên máy này. DailyLoop không gửi dữ liệu đi đâu. · Chính sách quyền riêng tư · Đang chuẩn bị trang web · Báo lỗi bảo mật · Email liên hệ: {email} · Giấy phép nguồn mở.
+All NEW copy; VI suggestions: Giới thiệu · Phiên bản {version} · Dữ liệu chỉ lưu trên máy này. Streakloom không gửi dữ liệu đi đâu. · Chính sách quyền riêng tư · Đang chuẩn bị trang web · Báo lỗi bảo mật · Email liên hệ: {email} · Giấy phép nguồn mở.
 Also state clearly (one line, quiet): free, no ads, no purchases — it is a differentiator (§8.2).
 
 ---
@@ -755,7 +759,7 @@ no full-screen permission (this screen never shows; heads-up notification instea
 - **Reminder notification:** title = **item name**; body empty today — propose NEW subtle body (e.g. time or "Reminder"); channel "Reminders". Action **Done** (Yes/No & tasks only; marks done without opening the app); tap → opens the app at the item.
 - **Alarm notification (heads-up fallback on Android / the iPhone representation):** same title; channel "Alarms"; actions **Done** (Yes/No & tasks), **Snooze 10 min**, **Dismiss**; iPhone: **time-sensitive** interruption level, longer sound.
 - **Pomodoro end:** title **Time is up**, body **This phase has ended.**; sound.
-- **PIN on:** title/body hide the item name — NEW: "DailyLoop" / "You have a reminder" (VI: "DailyLoop" / "Bạn có một lời nhắc"); Done action is not offered (cannot verify) — to confirm with G7.
+- **PIN on:** title/body hide the item name — NEW: "Streakloom" / "You have a reminder" (VI: "Streakloom" / "Bạn có một lời nhắc"); Done action is not offered (cannot verify) — to confirm with G7.
 - **Frames:** Android lock-screen and shade, expanded with actions; iPhone lock screen and expanded; the small-icon/status-bar icon (Android, monochrome); notification category icon. Show a stack of 3 reminders too.
 **Copy:** Reminders / Nhắc giờ (channel) · Alarms / Chuông báo thức (channel) · Done / Xong · Snooze 10 min / Hoãn 10 phút · Dismiss / Tắt · Time is up / Hết giờ · This phase has ended. / Giai đoạn đã kết thúc.
 
@@ -764,7 +768,7 @@ no full-screen permission (this screen never shows; heads-up notification instea
 **Android widget (resizable; min 4×2):** header **Today** (start) + summary (end): `3 left` / `All done` / `Nothing planned for today` · scrollable list of rows: **tick box** (Yes/No habits and tasks tick right in the widget; Amount/Time/Checklist rows show a
 **non-ticking** indicator and tapping the name opens the app) · name (struck when done; **skipped** = skip icon) · tap on the **name** opens `/habits/:id` or `/tasks/:id`. Sizes to design: **4×2 (≈ 3 rows), 4×3, 4×4**; light/dark follows the system.
 **iPhone widget (WidgetKit):** **small** (count left + a ring; no list), **medium** (≈ 4 rows), **large** (≈ 8 rows); tapping a circle ticks (iOS 17+ interactive; earlier: opens the app); tap name → opens the item. Lock-screen widgets are out of scope (§9).
-**States for each size:** list with some done · all done · empty ("Nothing planned for today") · more rows than fit (truncate: "+N more" NEW) · **PIN on** (no names: only the summary `3 left`, plus a lock mark and "Open DailyLoop" — NEW copy; rows hidden, AC-41) ·
+**States for each size:** list with some done · all done · empty ("Nothing planned for today") · more rows than fit (truncate: "+N more" NEW) · **PIN on** (no names: only the summary `3 left`, plus a lock mark and "Open Streakloom" — NEW copy; rows hidden, AC-41) ·
 widget not yet loaded / app never opened (placeholder) · dark · VI (`Còn 3 mục`, `Đã xong hết`) · long names (1 line, ellipsis) · large system text.
 **Copy:** Today / Hôm nay · {n} left / Còn {n} mục · All done / Đã xong hết · Nothing planned for today / Hôm nay chưa có việc nào.
 **A11y:** each row = "Drink water, not done" button; header reads the summary.
@@ -893,13 +897,13 @@ Filter counts for the Tasks tab: Today 3 (1 done) · Upcoming 2 · Overdue 1 · 
 ### 8.2 Competitor insights (quick desk research, 2026-11-04 — secondary sources, not user testing; no look-and-feel to copy)
 Sources skimmed: reviews/comparisons of Loop Habit Tracker, Streaks, Habitify, HabitNow, TickTick and articles on streak-guilt. Many are affiliate/vendor pages; treat as directional.
 1. **Speed and simplicity win loyalty** (Loop is praised for being usable within minutes; Habitify is criticised for feature overload and analytics beginners ignore) → keep Today to "tick and go"; push advanced options behind progressive disclosure in the editor and detail.
-2. **Caps and paywalls are the most repeated complaint** (habit limits of roughly 3–24 in the other apps' free tiers; a "free app pretending to be free" sentiment) → DailyLoop is free with no limits: design lists for 40+ habits and say "free, no ads, no purchases" once, quietly (About/Welcome), never as a banner.
+2. **Caps and paywalls are the most repeated complaint** (habit limits of roughly 3–24 in the other apps' free tiers; a "free app pretending to be free" sentiment) → Streakloom is free with no limits: design lists for 40+ habits and say "free, no ads, no purchases" once, quietly (About/Welcome), never as a banner.
 3. **Grouping is a gap** (reviewers miss categories/folders in Loop, HabitNow, TickTick) → category chips on Today and Habits are a real differentiator; make them fast and visible.
 4. **Widgets and notification actions are the daily surface** (praised in Streaks; Loop lets you act from the notification) but stale-state bugs get complaints → design the widget and the notification as first-class screens with a clear done/not-done state, and keep the app and widget visually consistent.
 5. **A streak reset feels like shame; forgiveness and rate-based progress are widely recommended** (secondary sources, evidence is weak) → lead with score + streak + success rate, use neutral language and icons for "Not done", never send "you'll lose your streak" nudges, and treat Skip as normal.
 6. **History you can edit is valued** (Loop's calendar view for correcting past entries) → make the month calendar the obvious place to fix a day, with clear state icons (AC-26).
 7. **Habits + tasks in one app can feel cluttered if tasks dominate** (TickTick users) → one Today list with a clear visual difference between a recurring habit and a one-off task (shape/icon), overdue pinned but calm, tasks never get streaks.
-8. **Privacy/offline is a trust differentiator** (Loop's open/offline stance is a headline strength; DailyLoop adds PIN-hidden names) → surface it as calm reassurance in Welcome page 3, About and the backup warning, not as marketing.
+8. **Privacy/offline is a trust differentiator** (Loop's open/offline stance is a headline strength; Streakloom adds PIN-hidden names) → surface it as calm reassurance in Welcome page 3, About and the backup warning, not as marketing.
 
 ---
 

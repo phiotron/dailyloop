@@ -1,4 +1,4 @@
-# A003-dailyloop · DailyLoop — CONTEXT (glossary)
+# A003-dailyloop · Streakloom — CONTEXT (glossary)
 
 > Chỉ là bảng thuật ngữ nghiệp vụ. Không ghi chi tiết kỹ thuật ở đây.
 > Thuật ngữ chuẩn dùng tiếng Anh trong code; cột VI là chữ hiển thị/tài liệu. Chữ hiển thị thật nằm ở `lib/l10n/*.arb`.
