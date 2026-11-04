@@ -61,6 +61,14 @@ abstract class ReminderGateway {
   Future<bool> requestFullScreen();
   Future<void> openNotificationSettings();
 
+  /// Báo khi giai đoạn Pomodoro kết thúc (AC-36), kể cả lúc app đóng.
+  Future<void> scheduleTimerEnd(
+    DateTime at, {
+    required String title,
+    required String body,
+  });
+  Future<void> cancelTimerEnd();
+
   /// Thay toàn bộ lịch đang chờ bằng [plan]. [liveItems] là các mục còn cần
   /// làm hôm nay, dạng `activityId|date`; lần hoãn của mục không còn trong
   /// đó (đã xóa hoặc đã xong) thì bị hủy.
@@ -76,6 +84,10 @@ const actionDone = 'done';
 const actionSnooze = 'snooze';
 const actionDismiss = 'dismiss';
 const snoozeMinutes = 10;
+
+/// Mã thông báo và nội dung gửi kèm của đồng hồ Pomodoro.
+const pomodoroNotificationId = 0x3FFFFFFF;
+const pomodoroPayload = 'pomodoro';
 
 /// Chuông tự tắt sau 5 phút (AC-20).
 const alarmTimeout = Duration(minutes: 5);
@@ -283,6 +295,38 @@ class PluginReminderGateway implements ReminderGateway {
       _system.invokeMethod<void>('openNotificationSettings');
 
   @override
+  Future<void> scheduleTimerEnd(
+    DateTime at, {
+    required String title,
+    required String body,
+  }) async {
+    await _ensureTimeZone();
+    final exact = await _android?.canScheduleExactNotifications() ?? true;
+    await _plugin.zonedSchedule(
+      id: pomodoroNotificationId,
+      scheduledDate: tz.TZDateTime.from(at, tz.local),
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'pomodoro',
+          'Pomodoro',
+          importance: Importance.high,
+          priority: Priority.high,
+          category: AndroidNotificationCategory.alarm,
+        ),
+      ),
+      androidScheduleMode: exact
+          ? AndroidScheduleMode.exactAllowWhileIdle
+          : AndroidScheduleMode.inexactAllowWhileIdle,
+      title: title,
+      body: body,
+      payload: pomodoroPayload,
+    );
+  }
+
+  @override
+  Future<void> cancelTimerEnd() => _plugin.cancel(id: pomodoroNotificationId);
+
+  @override
   Future<void> replaceAll(
     List<PlannedReminder> plan,
     ReminderTexts texts, {
@@ -300,6 +344,7 @@ class PluginReminderGateway implements ReminderGateway {
         }
         continue;
       }
+      if (pending.id == pomodoroNotificationId) continue;
       if (!keep.contains(pending.id)) await _plugin.cancel(id: pending.id);
     }
     final exact = await _android?.canScheduleExactNotifications() ?? true;
@@ -360,6 +405,18 @@ class FakeReminderGateway implements ReminderGateway {
 
   @override
   Future<void> openNotificationSettings() async => requests.add('settings');
+
+  DateTime? timerEnd;
+
+  @override
+  Future<void> scheduleTimerEnd(
+    DateTime at, {
+    required String title,
+    required String body,
+  }) async => timerEnd = at;
+
+  @override
+  Future<void> cancelTimerEnd() async => timerEnd = null;
 
   @override
   Future<void> replaceAll(

@@ -17,7 +17,7 @@ class TodayScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context).toString();
-    final today = dayOf(ref.watch(clockProvider)());
+    final today = ref.watch(todayProvider);
     final day = ref.watch(selectedDayProvider);
     final items = ref.watch(dayItemsProvider).value ?? const <DayItem>[];
     final isToday = day == today;
@@ -54,6 +54,11 @@ class TodayScreen extends ConsumerWidget {
                 ref.read(selectedDayProvider.notifier).select(picked);
               }
             },
+          ),
+          IconButton(
+            icon: const Icon(Icons.timer_outlined),
+            tooltip: l.pomodoro,
+            onPressed: () => context.push('/pomodoro'),
           ),
           IconButton(
             icon: const Icon(Icons.settings_outlined),

@@ -11,6 +11,7 @@ import 'features/habits/habit_detail_screen.dart';
 import 'features/habits/habit_editor_screen.dart';
 import 'features/habits/habits_screen.dart';
 import 'data/database.dart';
+import 'features/pomodoro/pomodoro_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/shell/home_shell.dart';
 import 'features/stats/stats_screen.dart';
@@ -102,6 +103,13 @@ GoRouter createRouter() {
         path: '/habits/:id/edit',
         builder: (context, state) =>
             HabitEditorScreen(habitId: int.parse(state.pathParameters['id']!)),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootKey,
+        path: '/pomodoro',
+        builder: (context, state) => PomodoroScreen(
+          habitId: int.tryParse(state.uri.queryParameters['habit'] ?? ''),
+        ),
       ),
       GoRoute(
         parentNavigatorKey: rootKey,

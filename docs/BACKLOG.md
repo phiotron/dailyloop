@@ -64,10 +64,14 @@ Mỗi giai đoạn kết thúc bằng: `flutter analyze` sạch, `flutter test` 
 - [ ] CHƯA thử: biểu đồ theo tuần và bảng của nó, cỡ chữ lớn (đổi cỡ chữ là đổi cài đặt máy nên cần người dùng làm hoặc cho phép), TalkBack, đo thời gian mở màn Thống kê trên máy, chạm ngày kiểu Có/Không đã bỏ qua, mục "Xem tiến độ" ở màn Hôm nay, kiểu Danh sách con và Thời gian
 - [ ] Dữ liệu thử "Test nuoc" (Số lượng, mục tiêu 8, bắt đầu 1/11) còn trên máy; xóa khi máy rảnh
 
-### G6 · Pomodoro và widget — trạng thái: todo
-- [ ] Đồng hồ Pomodoro theo mốc thời gian, báo hết giờ, nối với thói quen kiểu Thời gian (AC-35 tới AC-38)
-- [ ] Chọn cách làm widget (gói cầu nối và mã Kotlin), ghi D-xxx; widget Hôm nay đánh xong được, cập nhật được (AC-39, AC-40)
-- [ ] Thử máy thật: tắt màn hình khi đang bấm giờ, widget sau 00:00
+### G6 · Pomodoro và widget — trạng thái: code xong, test tự động đạt (169); CHƯA thử máy thật
+- [x] Đồng hồ Pomodoro: 4 thông số chỉnh được, mặc định 25/5/15 phút và 4 phiên (AC-35); thời gian tính từ mốc lưu, đúng khi giờ máy lùi (AC-36); thông báo hẹn giờ lúc hết (AC-36, CHƯA nghe thử trên máy); cộng phút vào thói quen kiểu Thời gian khi dừng hoặc hết giờ, đúng một lần (AC-37); mở lại giữa chừng hoặc sau khi đã hết giờ vẫn đúng (AC-38): test `pomodoro_test` (22), `pomodoro_flow_test` (4)
+- [x] Lối vào: biểu tượng đồng hồ ở màn Hôm nay (chọn thói quen để cộng) và ở màn tiến độ của thói quen kiểu Thời gian (đã chọn sẵn)
+- [x] Widget Hôm nay (D-009): bản chụp 7 ngày, chạm ô đánh dấu để xong mà không mở app, chạm tên mở app tại mục, hẹn vẽ lại sau 00:00, đổi sáng/tối theo máy (AC-39, AC-40): test `home_widget_test` cho dữ liệu; mã Kotlin chỉ mới build được, CHƯA chạy
+- [x] AC-41 (widget ẩn tên khi có PIN): phần dữ liệu đã có và có test (`hideNames`); nối với PIN ở G7
+- [x] BUG-001 sửa: `todayProvider` tự sang ngày mới lúc 00:00 và khi quay lại app; đang xem ngày khác thì không bị kéo đi (`midnight_test`)
+- [x] Build APK release đạt
+- [ ] Thử máy thật (cần người dùng cho phép dùng điện thoại): thêm widget vào màn hình chính; chạm ô đánh dấu; chạm tên; thêm/xóa mục trong app và đếm giây tới khi widget đổi (AC-40: 5 giây); chờ qua 00:00; Pomodoro tắt màn hình rồi nghe thông báo hết giờ (AC-36); tắt hẳn app lúc đang chạy rồi mở lại (AC-38)
 
 ### G7 · Sao lưu, khóa PIN, xóa dữ liệu — trạng thái: todo
 - [ ] Xuất và khôi phục file `.dailyloop`, đặt lại giờ nhắc sau khi khôi phục, xuất CSV (AC-42 tới AC-44)
@@ -84,16 +88,16 @@ Mỗi giai đoạn kết thúc bằng: `flutter analyze` sạch, `flutter test` 
 
 ## Việc kế tiếp (tối đa 5, theo thứ tự)
 1. Duyệt G3, G4, G5; thử máy thật G5 và nốt phần chưa thử của G4 (cần cài lại bản có sửa lần hoãn)
-2. G6: Pomodoro và widget màn hình chính (AC-35 tới AC-41), sửa BUG-001 (qua nửa đêm)
+2. Thử máy thật G6 (widget và Pomodoro), duyệt G6; rồi G7 (sao lưu, khóa PIN, nối AC-41)
 3. Người dùng: chạy `bash scripts/backup.sh <thư mục ngoài ổ D>` (remote GitHub đã có, đã đẩy G1 tới G4)
 
 ## Lỗi đã biết (đang mở)
 Mỗi lỗi: BUG-xxx · mô tả · cách tái hiện · mức độ (chặn / nặng / nhẹ) · cách tạm tránh.
-- BUG-001 · Để app mở qua 00:00 thì màn Hôm nay vẫn coi ngày cũ là hôm nay (dải ngày, việc quá hạn, ngày tương lai) · mở app trước nửa đêm, chờ qua 00:00 · nhẹ · tắt hẳn app rồi mở lại. Sửa ở G6 cùng lúc widget đổi ngày (AC-40)
+(Không có)
 
 ## Lỗi đã sửa đáng nhớ (nguồn cho bài học)
 Mỗi lỗi: BUG-xxx · nguyên nhân gốc · cách sửa · làm sao tránh lần sau.
-(Chưa có)
+- BUG-001 · màn Hôm nay giữ ngày cũ khi app mở qua 00:00 · nguyên nhân: ngày hôm nay chỉ đọc một lần lúc dựng provider · sửa: `todayProvider` có bộ hẹn giờ tới 00:00 và làm mới khi quay lại app · lần sau: mọi chỗ cần "hôm nay" đọc từ `todayProvider`, không gọi giờ máy trực tiếp
 
 ## Ý tưởng ngoài SPEC (chưa được duyệt, KHÔNG tự làm)
 - Hộp nhập giá trị (và hộp đánh dấu mục con) ghi rõ ngày đang sửa khi mở từ lịch tháng; bảng thay thế đặt tiêu đề cột ở đầu bảng thay vì phụ đề của dòng đầu

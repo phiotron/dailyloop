@@ -1309,6 +1309,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View progress'**
   String get viewProgress;
+
+  /// No description provided for @pomodoro.
+  ///
+  /// In en, this message translates to:
+  /// **'Pomodoro'**
+  String get pomodoro;
+
+  /// No description provided for @pomodoroStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get pomodoroStart;
+
+  /// No description provided for @pomodoroStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get pomodoroStop;
+
+  /// No description provided for @pomodoroNextPhase.
+  ///
+  /// In en, this message translates to:
+  /// **'Next phase'**
+  String get pomodoroNextPhase;
+
+  /// No description provided for @pomodoroSkipBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip break'**
+  String get pomodoroSkipBreak;
+
+  /// No description provided for @phaseFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get phaseFocus;
+
+  /// No description provided for @phaseShortBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Short break'**
+  String get phaseShortBreak;
+
+  /// No description provided for @phaseLongBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Long break'**
+  String get phaseLongBreak;
+
+  /// No description provided for @pomodoroSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Session {n}'**
+  String pomodoroSession(int n);
+
+  /// No description provided for @pomodoroSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Durations (minutes)'**
+  String get pomodoroSettings;
+
+  /// No description provided for @pomodoroFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get pomodoroFocus;
+
+  /// No description provided for @pomodoroShortBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Short break'**
+  String get pomodoroShortBreak;
+
+  /// No description provided for @pomodoroLongBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Long break'**
+  String get pomodoroLongBreak;
+
+  /// No description provided for @pomodoroSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions before long break'**
+  String get pomodoroSessions;
+
+  /// No description provided for @pomodoroHabit.
+  ///
+  /// In en, this message translates to:
+  /// **'Add minutes to habit'**
+  String get pomodoroHabit;
+
+  /// No description provided for @pomodoroNoHabit.
+  ///
+  /// In en, this message translates to:
+  /// **'Not linked'**
+  String get pomodoroNoHabit;
+
+  /// No description provided for @pomodoroCredited.
+  ///
+  /// In en, this message translates to:
+  /// **'Added {minutes} min'**
+  String pomodoroCredited(int minutes);
+
+  /// No description provided for @pomodoroDoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time is up'**
+  String get pomodoroDoneTitle;
+
+  /// No description provided for @pomodoroDoneBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This phase has ended.'**
+  String get pomodoroDoneBody;
+
+  /// No description provided for @pomodoroFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished'**
+  String get pomodoroFinished;
+
+  /// No description provided for @pomodoroStartTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Start timer'**
+  String get pomodoroStartTimer;
+
+  /// No description provided for @widgetLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} left'**
+  String widgetLeft(int n);
+
+  /// No description provided for @widgetAllDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All done'**
+  String get widgetAllDone;
 }
 
 class _AppLocalizationsDelegate

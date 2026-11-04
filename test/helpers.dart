@@ -33,6 +33,7 @@ Future<AppDatabase> pumpApp(
   AppDatabase? db,
   bool onboarded = true,
   ReminderGateway? reminders,
+  DateTime Function()? clock,
 }) async {
   usePhoneScreen(tester);
   final database = db ?? memoryDatabase();
@@ -45,7 +46,7 @@ Future<AppDatabase> pumpApp(
     ProviderScope(
       overrides: [
         databaseProvider.overrideWithValue(database),
-        clockProvider.overrideWithValue(() => testToday),
+        clockProvider.overrideWithValue(clock ?? () => testToday),
         if (reminders != null)
           reminderGatewayProvider.overrideWithValue(reminders),
       ],

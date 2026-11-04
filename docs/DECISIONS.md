@@ -2,6 +2,15 @@
 
 Mỗi quyết định một mục, mới nhất ở trên cùng.
 
+## D-009 · Pomodoro tính theo mốc thời gian đã lưu; widget không dùng gói ngoài · 2026-11-04
+- Bối cảnh: G6, SPEC F-09 (AC-35 tới AC-38) và F-10 (AC-39, AC-40).
+- Quyết định:
+  - **Pomodoro**: cấu hình và lần chạy lưu trong bảng `settings` (khóa `pomodoroConfig`, `pomodoroRun`, JSON; dữ liệu hỏng thì dùng mặc định hoặc coi như không chạy). Thời gian còn lại = giờ kết thúc (mốc bắt đầu + thời lượng) trừ giờ máy, kẹp trong [0, thời lượng]; bộ hẹn giờ trên màn hình chỉ để vẽ lại mỗi giây. Hết giờ báo bằng thông báo hẹn giờ của hệ thống (mã 0x3FFFFFFF, không đụng lịch nhắc), không có dịch vụ chạy nền.
+  - **Cộng phút**: chỉ phiên tập trung có liên kết thói quen kiểu Thời gian. Dừng giữa chừng: cộng số phút đã chạy làm tròn tới phút gần nhất, vào ngày lúc dừng. Hết giờ: cộng đủ, đúng một lần (cờ `credited`), vào ngày giờ kết thúc, kể cả khi app đóng và mở lại sau đó (`settleIfFinished` chạy khi mở app và khi quay lại app). Nghỉ không cộng gì. Nghỉ dài sau phiên thứ N (mặc định 4).
+  - **Widget**: KHÔNG dùng gói home_widget (thêm phụ thuộc, thêm mục SBOM). Dart dựng bản chụp 7 ngày tới (mục, trạng thái xong, chữ theo ngôn ngữ) và gửi qua kênh `dailyloop/system` (`updateWidget`) vào SharedPreferences; Kotlin vẽ widget bằng RemoteViews và tự chọn ngày theo giờ máy, nên sang ngày mới kể cả khi app đóng; hẹn báo thức không chính xác lúc 00:01 để vẽ lại (AC-40). Chạm ô đánh dấu của mục Có/Không hoặc việc: hoạt động trong suốt `WidgetActionActivity` ghi thẳng vào SQLite (bảng `entries`, thư mục app_flutter) rồi vẽ lại, không mở app. Chạm tên: mở app tại `/habits/ID` hoặc `/tasks/ID`. Khi bật PIN (G7) bản chụp không có tên, chỉ có số mục còn lại (AC-41, tham số `hideNames` đã có).
+- Lý do / phương án đã loại: `home_widget` (loại: thêm gói bên thứ ba cho việc 4 file Kotlin làm được). Dịch vụ nền cho bộ đếm (loại: tốn pin, phải khai báo với Google Play). Tính lại danh sách đến hạn bằng Kotlin (loại: phải viết lại logic lịch lặp lần hai; bản chụp 7 ngày đủ cho nửa đêm).
+- Hệ quả cần nhớ: Ghi từ widget khi app đang mở: giao diện cập nhật ở lần quay lại app kế tiếp (đã làm mới khi resume). Widget cũ hơn 7 ngày mà chưa mở app thì trống tới lần mở app. Tên file cơ sở dữ liệu `dailyloop.sqlite` và tên bảng `entries` được Kotlin dùng trực tiếp: đổi chúng phải sửa `WidgetStore.kt`.
+
 ## D-008 · Chuỗi ngày, tỉ lệ, điểm tính từ "đơn vị", biểu đồ tự vẽ · 2026-11-04
 - Bối cảnh: G5, SPEC F-05 (AC-23 tới AC-25) và F-06 (AC-26 tới AC-29).
 - Quyết định:

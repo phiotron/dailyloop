@@ -664,4 +664,79 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get viewProgress => 'Xem tiến độ';
+
+  @override
+  String get pomodoro => 'Pomodoro';
+
+  @override
+  String get pomodoroStart => 'Bắt đầu';
+
+  @override
+  String get pomodoroStop => 'Dừng';
+
+  @override
+  String get pomodoroNextPhase => 'Giai đoạn kế tiếp';
+
+  @override
+  String get pomodoroSkipBreak => 'Bỏ qua nghỉ';
+
+  @override
+  String get phaseFocus => 'Tập trung';
+
+  @override
+  String get phaseShortBreak => 'Nghỉ ngắn';
+
+  @override
+  String get phaseLongBreak => 'Nghỉ dài';
+
+  @override
+  String pomodoroSession(int n) {
+    return 'Phiên $n';
+  }
+
+  @override
+  String get pomodoroSettings => 'Thời gian (phút)';
+
+  @override
+  String get pomodoroFocus => 'Tập trung';
+
+  @override
+  String get pomodoroShortBreak => 'Nghỉ ngắn';
+
+  @override
+  String get pomodoroLongBreak => 'Nghỉ dài';
+
+  @override
+  String get pomodoroSessions => 'Số phiên trước nghỉ dài';
+
+  @override
+  String get pomodoroHabit => 'Cộng phút vào thói quen';
+
+  @override
+  String get pomodoroNoHabit => 'Không liên kết';
+
+  @override
+  String pomodoroCredited(int minutes) {
+    return 'Đã cộng $minutes phút';
+  }
+
+  @override
+  String get pomodoroDoneTitle => 'Hết giờ';
+
+  @override
+  String get pomodoroDoneBody => 'Giai đoạn đã kết thúc.';
+
+  @override
+  String get pomodoroFinished => 'Đã hết giờ';
+
+  @override
+  String get pomodoroStartTimer => 'Bấm giờ';
+
+  @override
+  String widgetLeft(int n) {
+    return 'Còn $n mục';
+  }
+
+  @override
+  String get widgetAllDone => 'Đã xong hết';
 }

@@ -684,4 +684,79 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get viewProgress => 'View progress';
+
+  @override
+  String get pomodoro => 'Pomodoro';
+
+  @override
+  String get pomodoroStart => 'Start';
+
+  @override
+  String get pomodoroStop => 'Stop';
+
+  @override
+  String get pomodoroNextPhase => 'Next phase';
+
+  @override
+  String get pomodoroSkipBreak => 'Skip break';
+
+  @override
+  String get phaseFocus => 'Focus';
+
+  @override
+  String get phaseShortBreak => 'Short break';
+
+  @override
+  String get phaseLongBreak => 'Long break';
+
+  @override
+  String pomodoroSession(int n) {
+    return 'Session $n';
+  }
+
+  @override
+  String get pomodoroSettings => 'Durations (minutes)';
+
+  @override
+  String get pomodoroFocus => 'Focus';
+
+  @override
+  String get pomodoroShortBreak => 'Short break';
+
+  @override
+  String get pomodoroLongBreak => 'Long break';
+
+  @override
+  String get pomodoroSessions => 'Sessions before long break';
+
+  @override
+  String get pomodoroHabit => 'Add minutes to habit';
+
+  @override
+  String get pomodoroNoHabit => 'Not linked';
+
+  @override
+  String pomodoroCredited(int minutes) {
+    return 'Added $minutes min';
+  }
+
+  @override
+  String get pomodoroDoneTitle => 'Time is up';
+
+  @override
+  String get pomodoroDoneBody => 'This phase has ended.';
+
+  @override
+  String get pomodoroFinished => 'Finished';
+
+  @override
+  String get pomodoroStartTimer => 'Start timer';
+
+  @override
+  String widgetLeft(int n) {
+    return '$n left';
+  }
+
+  @override
+  String get widgetAllDone => 'All done';
 }

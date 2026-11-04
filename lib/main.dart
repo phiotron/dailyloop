@@ -7,6 +7,7 @@ import 'src/data/database.dart';
 import 'src/providers.dart';
 import 'src/reminders/reminder_host.dart';
 import 'src/reminders/reminder_service.dart';
+import 'src/widget/home_widget_sync.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,7 @@ Future<void> main() async {
       overrides: [
         databaseProvider.overrideWithValue(database),
         reminderGatewayProvider.overrideWithValue(reminders),
+        homeWidgetGatewayProvider.overrideWithValue(PluginHomeWidgetGateway()),
       ],
       child: const DailyLoopApp(),
     ),

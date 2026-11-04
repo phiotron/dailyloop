@@ -56,7 +56,7 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
     final l = AppLocalizations.of(context);
     final history = ref.watch(habitHistoryProvider(widget.habitId));
     final weekStart = ref.watch(weekStartProvider).value ?? DateTime.monday;
-    final today = dayOf(ref.read(clockProvider)());
+    final today = ref.watch(todayProvider);
 
     final h = history.value;
     if (history.hasValue) {
@@ -98,6 +98,12 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
       appBar: AppBar(
         title: Text(a.name),
         actions: [
+          if (a.evaluation == Evaluation.duration)
+            IconButton(
+              icon: const Icon(Icons.timer_outlined),
+              tooltip: l.pomodoroStartTimer,
+              onPressed: () => context.push('/pomodoro?habit=${a.id}'),
+            ),
           IconButton(
             icon: const Icon(Icons.edit_outlined),
             tooltip: l.edit,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,7 +13,10 @@ import 'data/habit_stats.dart';
 import 'data/stats_repository.dart';
 import 'data/schedule.dart';
 import 'data/settings_repository.dart';
+import 'pomodoro/pomodoro_repository.dart';
+import 'pomodoro/pomodoro_state.dart';
 import 'reminders/reminder_service.dart';
+import 'widget/home_widget_sync.dart';
 
 /// Cơ sở dữ liệu của app; test ghi đè bằng cơ sở dữ liệu trong bộ nhớ.
 final databaseProvider = Provider<AppDatabase>((ref) {
@@ -22,6 +27,43 @@ final databaseProvider = Provider<AppDatabase>((ref) {
 
 /// Giờ hiện tại; test ghi đè để cố định ngày.
 final clockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
+
+/// Hôm nay (ngày UTC 00:00 cùng ngày địa phương). Tự chuyển sang ngày mới lúc
+/// 00:00 và khi app quay lại từ nền, để màn Hôm nay, dải ngày, việc quá hạn và
+/// thống kê không dính ngày cũ khi app mở qua nửa đêm (BUG-001).
+class TodayNotifier extends Notifier<DateTime> {
+  Timer? _timer;
+
+  @override
+  DateTime build() {
+    ref.onDispose(() => _timer?.cancel());
+    final now = ref.read(clockProvider)();
+    _scheduleMidnight(now);
+    return dayOf(now);
+  }
+
+  void _scheduleMidnight(DateTime now) {
+    _timer?.cancel();
+    final midnight = DateTime(now.year, now.month, now.day + 1);
+    // Chậm 1 giây để chắc chắn đã qua 00:00.
+    _timer = Timer(
+      midnight.difference(now) + const Duration(seconds: 1),
+      refresh,
+    );
+  }
+
+  /// Đọc lại giờ máy; đổi ngày thì các màn đang xem "hôm nay" tự dựng lại.
+  void refresh() {
+    final now = ref.read(clockProvider)();
+    final t = dayOf(now);
+    if (t != state) state = t;
+    _scheduleMidnight(now);
+  }
+}
+
+final todayProvider = NotifierProvider<TodayNotifier, DateTime>(
+  TodayNotifier.new,
+);
 
 final settingsRepositoryProvider = Provider<SettingsRepository>(
   (ref) => SettingsRepository(ref.watch(databaseProvider)),
@@ -105,7 +147,7 @@ final rankingProvider = StreamProvider<List<HabitRank>>(
   (ref) => ref
       .watch(statsRepositoryProvider)
       .watchRanking(
-        today: dayOf(ref.read(clockProvider)()),
+        today: ref.watch(todayProvider),
         weekStart: ref.watch(weekStartProvider).value ?? DateTime.monday,
       ),
 );
@@ -115,7 +157,7 @@ final dailyCountsProvider = StreamProvider.family<Map<String, DayCount>, int>((
   ref,
   days,
 ) {
-  final today = dayOf(ref.read(clockProvider)());
+  final today = ref.watch(todayProvider);
   return ref
       .watch(statsRepositoryProvider)
       .watchDailyCounts(today.subtract(Duration(days: days - 1)), today);
@@ -128,7 +170,13 @@ final onboardingDoneProvider = StreamProvider<bool>(
 /// Ngày đang xem ở màn Hôm nay; mặc định hôm nay (AC-08).
 class SelectedDayNotifier extends Notifier<DateTime> {
   @override
-  DateTime build() => dayOf(ref.read(clockProvider)());
+  DateTime build() {
+    // Đang xem hôm nay mà qua nửa đêm thì chuyển theo sang ngày mới.
+    ref.listen<DateTime>(todayProvider, (prev, next) {
+      if (state == prev) state = next;
+    });
+    return ref.read(todayProvider);
+  }
 
   void select(DateTime day) => state = dayOf(day);
 }
@@ -143,7 +191,7 @@ final dayItemsProvider = StreamProvider<List<DayItem>>(
       .watch(dayRepositoryProvider)
       .watchDay(
         ref.watch(selectedDayProvider),
-        today: ref.read(clockProvider)(),
+        today: ref.watch(todayProvider),
       ),
 );
 
@@ -164,7 +212,7 @@ final taskItemsProvider = StreamProvider<List<DayItem>>(
       .watch(dayRepositoryProvider)
       .watchTasks(
         ref.watch(taskFilterProvider),
-        today: ref.read(clockProvider)(),
+        today: ref.watch(todayProvider),
       ),
 );
 
@@ -177,3 +225,21 @@ final currentRuleProvider = FutureProvider.family<ScheduleRule?, int>((
   ref.watch(habitsProvider);
   return ref.watch(activityRepositoryProvider).currentRule(id);
 });
+
+final pomodoroRepositoryProvider = Provider<PomodoroRepository>(
+  (ref) => PomodoroRepository(ref.watch(databaseProvider)),
+);
+
+/// Cấu hình và lần chạy Pomodoro hiện tại (F-09).
+final pomodoroConfigProvider = StreamProvider<PomodoroConfig>(
+  (ref) => ref.watch(pomodoroRepositoryProvider).watchConfig(),
+);
+
+final pomodoroRunProvider = StreamProvider<PomodoroRun?>(
+  (ref) => ref.watch(pomodoroRepositoryProvider).watchRun(),
+);
+
+/// Cổng tới widget màn hình chính. `main` ghi đè bằng bản thật.
+final homeWidgetGatewayProvider = Provider<HomeWidgetGateway>(
+  (ref) => FakeHomeWidgetGateway(),
+);

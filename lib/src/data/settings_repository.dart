@@ -24,6 +24,19 @@ class SettingsRepository {
   Future<void> _remove(String key) =>
       (_db.delete(_db.settings)..where((s) => s.key.equals(key))).go();
 
+  Future<String?> _read(String key) async {
+    final row = await (_db.select(
+      _db.settings,
+    )..where((s) => s.key.equals(key))).getSingleOrNull();
+    return row?.value;
+  }
+
+  /// Đọc, ghi, theo dõi một giá trị chữ tự do (ví dụ JSON của Pomodoro, D-009).
+  Stream<String?> watchValue(String key) => _watch(key);
+  Future<String?> readValue(String key) => _read(key);
+  Future<void> writeValue(String key, String value) => _write(key, value);
+  Future<void> removeValue(String key) => _remove(key);
+
   /// Giao diện sáng, tối hoặc theo hệ thống (AC-48). Mặc định theo hệ thống.
   Stream<ThemeMode> watchThemeMode() =>
       _watch(themeModeKey)
