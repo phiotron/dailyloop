@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>DailyLoop — Support · Hỗ trợ</title>
+<style>
+:root{--bg:#fff;--fg:#1d2227;--muted:#59636e;--line:#d8dee4;--accent:#0b5cad;--mark:#fff1b8;--markfg:#5b4300}
+@media (prefers-color-scheme:dark){:root{--bg:#14181d;--fg:#e6eaee;--muted:#a3adb8;--line:#2d343c;--accent:#7fb7f0;--mark:#4a3b00;--markfg:#ffe9a3}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:46rem;margin:0 auto;padding:1.25rem 16px 3rem}
+h1{font-size:1.6rem;line-height:1.25;margin:.2rem 0 .4rem}
+h2{font-size:1.3rem;margin:2.2rem 0 .3rem;padding-top:1rem;border-top:1px solid var(--line)}
+h3{font-size:1.05rem;margin:1.5rem 0 .3rem}
+p,li{margin:.5rem 0}
+ul{padding-left:1.3rem}
+a{color:var(--accent)}
+nav.lang{display:flex;gap:.75rem;margin:.5rem 0 1rem;font-size:.95rem}
+nav.lang a{padding:.35rem .7rem;border:1px solid var(--line);border-radius:999px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+mark{background:var(--mark);color:var(--markfg);padding:0 .2em;border-radius:3px}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92em;background:rgba(127,127,127,.15);padding:0 .25em;border-radius:3px}
+footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+<!-- Sinh bởi docs/legal/build_web.py từ support.md — sửa file .md rồi chạy lại script, không sửa tay file này.
+     Còn chỗ chưa điền (phần tô vàng) thì KHÔNG đăng. -->
+<main>
+<nav class="lang" aria-label="Language"><a href="#vi">Tiếng Việt</a><a href="#en">English</a></nav>
+<section id="vi" lang="vi">
+<h1>Hỗ trợ DailyLoop</h1>
+<p>Email: <mark>[ĐIỀN: email liên hệ]</mark>. Chúng tôi cố gắng trả lời trong vài ngày làm việc. Hãy ghi rõ loại máy (ví dụ Samsung Galaxy A13, iPhone 15), phiên bản Android/iOS và phiên bản DailyLoop (màn "Giới thiệu"). <strong>Đừng gửi file sao lưu hay ảnh chụp có thông tin riêng tư</strong> nếu không cần.</p>
+<h3>Câu hỏi thường gặp</h3>
+<p><strong>Nhắc giờ không kêu hoặc bị trễ (Android)?</strong></p>
+<p>1. Vào cài đặt thông báo của DailyLoop và bật thông báo.</p>
+<p>2. Từ Android 14, bật "Báo thức và lời nhắc" cho DailyLoop để nhắc đúng giờ (app có nút dẫn tới cài đặt này khi bạn đặt giờ nhắc).</p>
+<p>3. Với kiểu "Chuông báo thức": cho phép thông báo toàn màn hình cho DailyLoop nếu hệ thống hỏi.</p>
+<p>4. Nhiều hãng (Samsung, Xiaomi, Oppo, Huawei…) tự tắt app chạy nền: tắt "tối ưu pin" hoặc bỏ DailyLoop khỏi danh sách "app ngủ" / "app tự động tắt".</p>
+<p>5. Mở lại DailyLoop ít nhất mỗi vài ngày: app đặt lịch nhắc cho 7 ngày tới mỗi lần mở.</p>
+<p><strong>Nhắc giờ không hiện (iPhone)?</strong> Kiểm Cài đặt → Thông báo → DailyLoop đã bật; chế độ Tập trung/Không làm phiền có thể chặn thông báo. Nhắc kiểu "Chuông" là thông báo khẩn theo thời gian (time-sensitive) — bật "Thông báo khẩn" cho DailyLoop để nó vượt qua chế độ Tập trung. iPhone không cho chuông toàn màn hình.</p>
+<p><strong>Chuyển sang điện thoại mới, giữ dữ liệu?</strong> Trên máy cũ: Cài đặt → "Xuất bản sao lưu" (tạo file <code>.dailyloop</code>) → lưu vào nơi bạn giữ (Tệp, Google Drive, email…). Trên máy mới: cài DailyLoop → Cài đặt → "Khôi phục" → chọn file. Dữ liệu hiện có trên máy mới sẽ bị thay thế. File sao lưu <strong>không mã hóa</strong>, hãy cất kỹ.</p>
+<p><strong>Quên mã PIN?</strong> Ở màn khóa chọn "Quên mã". Cách duy nhất là xóa toàn bộ dữ liệu của app (có hai bước xác nhận) rồi dùng lại; nếu bạn có file sao lưu <code>.dailyloop</code>, khôi phục sau đó.</p>
+<p><strong>Xuất lịch sử ra Excel / Google Sheets?</strong> Cài đặt → xuất CSV (ngày, tên mục, loại, kết quả, giá trị), file dùng mã hóa chữ UTF-8 nên tiếng Việt không bị lỗi font.</p>
+<p><strong>Widget không cập nhật?</strong> Widget cập nhật vài giây sau khi bạn đổi dữ liệu trong app và tự sang ngày mới sau nửa đêm (có thể trễ tới 15 phút). Nếu bị đơ, mở DailyLoop một lần hoặc xóa rồi thêm lại widget. Khi bật khóa PIN, widget chỉ hiện số mục còn lại.</p>
+<p><strong>Dữ liệu của tôi ở đâu? Các bạn có thấy không?</strong> Chỉ trên điện thoại của bạn. DailyLoop không có tài khoản, không có máy chủ và không gửi dữ liệu đi. Xem Chính sách quyền riêng tư.</p>
+<p><strong>Xóa hết dữ liệu?</strong> Cài đặt → "Xóa toàn bộ dữ liệu" (hai bước xác nhận), hoặc gỡ app.</p>
+<p><strong>Báo lỗ hổng bảo mật:</strong> gửi email tới địa chỉ ở trên với tiêu đề "Security".</p>
+</section>
+<section id="en" lang="en">
+<h1>DailyLoop Support</h1>
+<p>Email: <mark>[FILL: contact email]</mark>. We try to reply within a few working days. Please include your phone model (for example Samsung Galaxy A13, iPhone 15), your Android/iOS version and your DailyLoop version (on the "About" screen). <strong>Please do not send backup files or screenshots containing private information</strong> unless needed.</p>
+<h3>Frequently asked questions</h3>
+<p><strong>Reminders do not ring or arrive late (Android)?</strong></p>
+<p>1. Open DailyLoop's notification settings and turn notifications on.</p>
+<p>2. From Android 14, allow "Alarms &amp; reminders" for DailyLoop so reminders arrive on time (the app has a button that takes you to this setting when you set a reminder).</p>
+<p>3. For the "Alarm" style: allow full-screen notifications for DailyLoop if the system asks.</p>
+<p>4. Many phone makers (Samsung, Xiaomi, Oppo, Huawei…) stop background apps on their own: turn off battery optimization for DailyLoop or remove it from the "sleeping apps" / "auto-close" list.</p>
+<p>5. Open DailyLoop at least every few days: each time you open it the app schedules the next 7 days of reminders.</p>
+<p><strong>Reminders do not show (iPhone)?</strong> Check Settings → Notifications → DailyLoop is on; a Focus mode or Do Not Disturb can block notifications. The "Alarm" style is a time-sensitive notification — turn on "Time Sensitive Notifications" for DailyLoop so it can break through a Focus mode. iPhone does not allow a full-screen alarm.</p>
+<p><strong>Moving to a new phone and keeping your data?</strong> On the old phone: Settings → "Export backup" (creates a <code>.dailyloop</code> file) → save it somewhere you keep (Files, Google Drive, email…). On the new phone: install DailyLoop → Settings → "Restore" → pick the file. Data already on the new phone is replaced. The backup file is <strong>not encrypted</strong>; keep it safe.</p>
+<p><strong>Forgot your PIN?</strong> On the lock screen choose "Forgot PIN". The only way back in is to erase all of the app's data (with two confirmation steps) and start again; if you have a <code>.dailyloop</code> backup, restore it afterwards.</p>
+<p><strong>Export your history to Excel / Google Sheets?</strong> Settings → export CSV (date, item name, type, result, value). The file uses UTF-8 so Vietnamese text displays correctly.</p>
+<p><strong>The widget does not update?</strong> The widget updates a few seconds after you change data in the app and moves to the new day after midnight (up to 15 minutes late). If it seems stuck, open DailyLoop once or remove and re-add the widget. With the PIN lock on, the widget shows only the number of items left.</p>
+<p><strong>Where is my data? Can you see it?</strong> Only on your phone. DailyLoop has no account, no server and sends no data anywhere. See the Privacy Policy.</p>
+<p><strong>Delete everything?</strong> Settings → "Delete all data" (two confirmation steps), or uninstall the app.</p>
+<p><strong>Report a security vulnerability:</strong> email the address above with the subject "Security".</p>
+</section>
+<footer>DailyLoop · <a href="privacy-policy.html">Privacy / Quyền riêng tư</a> · <a href="support.html">Support / Hỗ trợ</a> · <a href="terms-of-use.html">Terms / Điều khoản</a></footer>
+</main>
+</body>
+</html>

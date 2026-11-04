@@ -1,10 +1,12 @@
 # COMPLIANCE — DailyLoop (A003-dailyloop)
 
 Hồ sơ tuân thủ theo `D:/DemoChung/shared/standards/tieu-chuan-ban-app-toan-cau.md` (tài liệu gốc, cập nhật 28/10/2026; ghi "L<n>" là Lớp n trong tài liệu đó).
+**Nguồn ngoài xưởng:** file trên nằm ở thư mục DemoChung (ngoài `D:/Mobile App`); còn đọc được tại 2026-11-04. Nếu sau này mất truy cập: bảng dưới là bản chụp các yêu cầu tại 2026-11-04, mọi mốc ngày lấy từ tài liệu gốc cập nhật 28/10/2026 và phải kiểm lại bằng trang chính thức của Apple/Google trước mỗi lần phát hành (mục 3). Đề xuất cho phiên điều phối: chép tài liệu gốc sang `D:/Mobile App/reference/` để cả xưởng dùng chung.
 Không phải tư vấn pháp lý: trước khi mở bán ở nước nào cần luật sư địa phương xác nhận (tài liệu gốc, phần Tóm tắt).
 
 ## 1. Phạm vi (điền ở /spec, quyết định mục nào áp dụng)
 - Thị trường định bán (ghi nhóm theo "Ma trận theo thị trường": A/B/C; nhóm D không được bán): Việt Nam và toàn cầu: nhóm A và nhóm B (gồm Việt Nam). Nhóm C (Trung Quốc đại lục, Nga) chưa mở. Nhóm D chặn trong Play Console.
+- Nền tảng: **Android + iOS** (D-001, sửa 2026-11-04). Tài khoản nhà phát triển Google Play và Apple đều **cá nhân** (APP.md, 2026-11-04).
 - Có tài khoản người dùng: không
 - Dữ liệu cá nhân thu thập (loại, mục đích, nơi lưu, bên nhận, thời gian giữ): nhà phát triển không thu thập. Người dùng tự ghi thói quen, việc cần làm, kết quả theo ngày, giờ nhắc, danh mục. Mọi thứ chỉ lưu trong SQLite trên máy, không có bên nhận, giữ tới khi người dùng xóa hoặc gỡ app. File sao lưu do người dùng tự xuất và giữ.
 - Dữ liệu rủi ro cao (nhạy cảm, vị trí chính xác, trẻ em, sinh trắc học, hồ sơ hóa bằng AI): không gửi đi đâu. Tên thói quen do người dùng tự đặt có thể lộ thông tin sức khỏe (ví dụ uống thuốc), nhưng chỉ nằm trên máy. Cần luật sư xác nhận việc này có kéo theo D-07 không.
@@ -13,53 +15,94 @@ Không phải tư vấn pháp lý: trước khi mở bán ở nước nào cần
 - SDK bên thứ ba (analytics, quảng cáo, đăng nhập xã hội, AI): không có
 - Gửi dữ liệu cho AI bên thứ ba, hoặc app có chatbot/nội dung do AI tạo: không
 - Ngành có quy định riêng (y tế, tài chính, trẻ em, ô tô...): không (app thói quen và việc cần làm, không chẩn đoán hay tư vấn y tế)
-- Doanh nghiệp siêu nhỏ (dưới 10 người và doanh thu không quá 2 triệu euro, miễn EAA khi cung cấp dịch vụ, L4): chưa rõ, chờ người dùng xác nhận phát hành dưới tên cá nhân hay công ty. Dù thế nào vẫn giữ mục tiêu WCAG 2.2 AA.
+- Doanh nghiệp siêu nhỏ (dưới 10 người và doanh thu không quá 2 triệu euro, miễn EAA khi cung cấp dịch vụ, L4): phát hành dưới **tên cá nhân** trên cả Google Play và App Store (APP.md, 2026-11-04); app miễn phí, cá nhân không kinh doanh nên khả năng cao thuộc diện miễn EAA, cần luật sư xác nhận; dù thế nào vẫn giữ mục tiêu WCAG 2.2 AA.
+
+## 1b. Bản đồ dữ liệu (RoPA rút gọn — D-01)
+Nhà phát triển KHÔNG thu thập: không máy chủ, không tài khoản, không SDK bên thứ ba, bản release không có quyền INTERNET (AC-53). Mọi dữ liệu nằm trên máy người dùng. Căn cứ pháp lý: không phát sinh việc nhà phát triển xử lý dữ liệu cá nhân của người dùng; xác nhận theo luật VN chờ luật sư (D-07).
+| Dữ liệu | Mục đích | Nơi lưu (trên máy) | Bên nhận | Giữ bao lâu | Người dùng xóa bằng |
+|---|---|---|---|---|---|
+| Thói quen, việc, lịch lặp, mục con, danh mục (tên có thể lộ thông tin sức khỏe do người dùng tự đặt) | Chức năng cốt lõi | SQLite `dailyloop.sqlite` trong bộ nhớ riêng của app (Android `allowBackup=false`; iOS nằm trong sao lưu iPhone nếu người dùng bật) | Không có | Tới khi người dùng xóa hoặc gỡ app | Xóa từng mục (AC-05); "Xóa toàn bộ dữ liệu" (AC-52); gỡ app |
+| Kết quả theo ngày (đạt, bỏ qua, giá trị) | Chuỗi, điểm, thống kê | Cùng cơ sở dữ liệu (bảng `entries`) | Không có | Như trên | Như trên |
+| Giờ nhắc và lịch thông báo | Nhắc đúng giờ | Cơ sở dữ liệu + lịch của hệ điều hành (AlarmManager / thông báo cục bộ iOS) | Không có (hệ điều hành của máy) | Tới khi mục bị xóa hoặc đã xong | AC-52 hủy mọi giờ nhắc |
+| Cài đặt, cấu hình và trạng thái Pomodoro | Chạy app và đồng hồ | Bảng `settings` trong cơ sở dữ liệu | Không có | Như trên | AC-52 |
+| Bản chụp dữ liệu cho widget (tên mục, trạng thái; khi bật PIN chỉ có số mục) | Hiện widget | SharedPreferences của app (iOS: App Group cục bộ) | Không có | Tới khi cập nhật hoặc xóa | AC-52 làm trống widget |
+| Mã PIN (băm có muối) | Khóa app | Kho an toàn của hệ điều hành (Keystore / Keychain), không đồng bộ | Không có | Tới khi tắt khóa hoặc xóa dữ liệu | Tắt PIN; AC-52; "Quên mã" (AC-47) |
+| File sao lưu `.dailyloop` và CSV (người dùng tự xuất; không mã hóa) | Sao lưu, chuyển máy, mở bằng bảng tính | Thư mục tạm của app → nơi người dùng chọn trong bảng chia sẻ | Nơi do người dùng chọn (không phải nhà phát triển) | Do người dùng quản lý | Người dùng tự xóa file |
+| Số liệu cài đặt/sự cố tổng hợp, ẩn danh | Quản lý bản phát hành | Google Play Console / App Store Connect (do Google/Apple thu) | Nhà phát triển chỉ thấy số liệu tổng hợp | Theo Google/Apple | Không áp dụng |
+
+## 1c. Quy trình tiếp nhận và xử lý lỗ hổng / sự cố (D-08, S-05, S-06) — bản nháp, người dùng duyệt
+- **Kênh:** email liên hệ của nhà phát triển (điền ở `docs/legal/`), ghi trong chính sách, trang hỗ trợ và màn Giới thiệu của app (AC-51).
+- **Tiếp nhận:** trả lời xác nhận trong 3 ngày; phân loại mức độ trong 72 giờ kể từ khi nhận được báo cáo (khớp mốc 72 giờ ngắn nhất của EU/Việt Nam, L3 nền chung 5).
+- **Sửa:** lỗi ảnh hưởng dữ liệu hoặc quyền riêng tư → sửa và phát hành bản cập nhật qua Play/App Store càng sớm càng tốt (ưu tiên trước tính năng mới); ghi trong ghi chú phát hành và `notes/`.
+- **Phạm vi sự cố:** vì nhà phát triển không giữ dữ liệu người dùng, "vi phạm dữ liệu" chủ yếu là lỗi trong app làm lộ dữ liệu trên máy (ví dụ lỗi PIN, widget hiện tên khi bật PIN) hoặc lộ khóa ký. Lộ keystore/khóa ký: dùng Play App Signing để đặt lại upload key; thu hồi chứng chỉ Apple; xoay vòng khóa API trong GitHub Secrets.
+- **Thông báo người dùng:** qua trang hỗ trợ và ghi chú bản cập nhật; nếu luật ở thị trường nào đòi thông báo cơ quan quản lý trong hạn thì luật sư/người dùng thực hiện.
+- **CRA (S-06):** nếu luật sư xác nhận thuộc phạm vi, bổ sung cảnh báo sớm 24 giờ / thông báo 72 giờ và công bố thời hạn hỗ trợ cập nhật bảo mật.
 
 ## 2. Danh mục kiểm (Trạng thái: đạt / không áp dụng / chưa. "Bằng chứng": file:dòng, ảnh chụp, đường dẫn, lệnh đã chạy; ghi ngày kiểm)
 | ID | Áp dụng khi | Yêu cầu | Nguồn | Trạng thái | Bằng chứng, ngày |
 |----|-------------|---------|-------|------------|------------------|
-| M-01 | Mọi app | Danh sách thị trường đã chốt; đã loại nước và vùng bị cấm vận toàn diện (rà danh sách OFAC, EU, Anh, LHQ hiện hành) và chặn theo địa lý nếu cần | Tóm tắt, L6, Ma trận | chưa | |
-| D-01 | Có dữ liệu cá nhân | Kiểm kê dữ liệu (RoPA) và bản đồ luồng dữ liệu: loại, mục đích, căn cứ pháp lý, nơi lưu, bên nhận, thời gian giữ | L3 nền chung 1 | chưa | |
-| D-02 | Có dữ liệu cá nhân | Chính sách quyền riêng tư; đường dẫn đặt trong Play Console và trong app | L3, L5 Google "Dữ liệu người dùng" | chưa | |
+| M-01 | Mọi app | Danh sách thị trường đã chốt; đã loại nước và vùng bị cấm vận toàn diện (rà danh sách OFAC, EU, Anh, LHQ hiện hành) và chặn theo địa lý nếu cần | Tóm tắt, L6, Ma trận | chưa | Kế hoạch: bán mọi nước/vùng trừ nhóm C (Nga, Trung Quốc đại lục); nhóm D không bán (`store/listing.md` mục Phân phối, `store/app-store.md` mục Thông tin chung), 2026-11-04. CHƯA: người dùng chọn danh sách nước trong Play Console và App Store Connect, và rà danh sách cấm vận OFAC/EU/Anh/LHQ hiện hành lúc phát hành (phiên #3). |
+| D-01 | Có dữ liệu cá nhân | Kiểm kê dữ liệu (RoPA) và bản đồ luồng dữ liệu: loại, mục đích, căn cứ pháp lý, nơi lưu, bên nhận, thời gian giữ | L3 nền chung 1 | đạt | Bản đồ dữ liệu ở mục 1b bên dưới (loại, mục đích, nơi lưu, bên nhận, thời gian giữ): nhà phát triển không nhận dữ liệu; căn cứ pháp lý theo luật VN chờ luật sư (D-07), 2026-11-04. `docs/SECURITY.md` còn là mẫu rỗng — phiên điều phối nên chép mục 1b sang đó |
+| D-02 | Có dữ liệu cá nhân | Chính sách quyền riêng tư; đường dẫn đặt trong Play Console và trong app | L3, L5 Google "Dữ liệu người dùng" | chưa | Chính sách vi/en cho **Android + iOS** đã soạn và đối chiếu manifest/SPEC: `docs/legal/privacy-policy.md`; bản web `docs/legal/web/privacy-policy.html` (+ `support.html`, `terms-of-use.html`), 2026-11-04. CHƯA: người dùng điền email/tên/ngày và host lên web; điền URL vào app (`AppInfo.privacyPolicyUrl`, màn Giới thiệu AC-51 — phiên code), Play Console (App content → Privacy policy) và App Store Connect. Đối chiếu lại đoạn PIN/Keychain và sao lưu khi G7 + iOS xong |
 | D-03 | Có dữ liệu cá nhân | Đồng ý theo từng mục đích, không gộp, rút lại dễ như lúc cho; im lặng không coi là đồng ý (Luật VN 91/2025 Điều 9) | L3 nền chung 2 | không áp dụng | Nhà phát triển không nhận dữ liệu; mọi xử lý chỉ trên máy người dùng (D-002), 2026-11-03 |
 | D-04 | Có SDK bên thứ ba | SDK analytics/quảng cáo/AI không khởi động trước khi có đồng ý ở nơi luật đòi (EU, Anh); dùng nền tảng quản lý đồng ý hỗ trợ iOS và Android | L3 "Điểm riêng của app mobile" | không áp dụng | Không có SDK bên thứ ba (D-002), 2026-11-03 |
 | D-05 | Có tài khoản | Xóa tài khoản ngay trong app (Apple 5.1.1(v)) và qua một trang web ngoài (Google Play) | L3 nền chung 3, L5 | không áp dụng | Không có tài khoản; thay bằng "Xóa toàn bộ dữ liệu" AC-52, 2026-11-03 |
-| D-06 | Có dữ liệu cá nhân | Quy trình quyền người dùng: truy cập, sửa, xóa, mang dữ liệu đi, rút đồng ý, phản đối quyết định tự động | L3 nền chung 3 | chưa | |
+| D-06 | Có dữ liệu cá nhân | Quy trình quyền người dùng: truy cập, sửa, xóa, mang dữ liệu đi, rút đồng ý, phản đối quyết định tự động | L3 nền chung 3 | chưa | Quy trình ghi ở chính sách mục 8: người dùng tự xem/sửa từng mục, xuất sao lưu `.dailyloop` và CSV (AC-42, AC-44), xóa toàn bộ (AC-52); không có quyết định tự động, 2026-11-04. Đạt khi G7 (đang làm ở phiên #1) chạy được trên máy: kiểm AC-42/44/52 |
 | D-07 | Dữ liệu rủi ro cao | Đánh giá tác động (DPIA/PIA); bán ở Việt Nam: nộp hồ sơ trong 60 ngày kể từ khi bắt đầu xử lý (Điều 21) | L3 nền chung 4 | chưa | Tên thói quen có thể lộ thông tin sức khỏe, chỉ nằm trên máy; cần luật sư xác nhận có phải lập DPIA hoặc nộp hồ sơ ở VN không |
-| D-08 | Có dữ liệu cá nhân | Kịch bản xử lý vi phạm theo hạn ngắn nhất trong các thị trường đã chọn (ví dụ 72 giờ ở EU và Việt Nam; xem ma trận L3) | L3 nền chung 5 | chưa | |
+| D-08 | Có dữ liệu cá nhân | Kịch bản xử lý vi phạm theo hạn ngắn nhất trong các thị trường đã chọn (ví dụ 72 giờ ở EU và Việt Nam; xem ma trận L3) | L3 nền chung 5 | đạt | Kịch bản ở mục 1c bên dưới (tiếp nhận, phân loại, sửa và phát hành, thông báo; mốc 72 giờ); nhà phát triển không giữ dữ liệu người dùng, 2026-11-04 (bản nháp, người dùng duyệt) |
 | D-09 | Có dữ liệu cá nhân, bán ở VN | Chỉ định bộ phận hoặc nhân sự bảo vệ dữ liệu (Điều 33(2)); đại diện pháp lý ở nơi luật đòi (EU/Anh, Brazil, Trung Quốc, Hàn Quốc, Thổ Nhĩ Kỳ) | L3 nền chung 6 | chưa | Cần luật sư xác nhận khi nhà phát triển không nhận dữ liệu |
 | D-10 | Dùng nhà cung cấp xử lý dữ liệu | Hợp đồng xử lý dữ liệu với cloud, analytics, push, thanh toán, AI; cơ chế chuyển dữ liệu ra nước ngoài hợp pháp (VN: hồ sơ trong 60 ngày từ lần chuyển đầu) | L3 nền chung 7, "Kiến trúc chuyển dữ liệu" | không áp dụng | Không dùng nhà cung cấp xử lý dữ liệu (D-002), 2026-11-03 |
-| D-11 | Mọi app | Quyền hệ thống (vị trí, danh bạ, camera, micro, thông báo) chỉ xin khi cần cho tính năng, không ép bật để dùng app | L3 "Điểm riêng", L5 Apple 5.1.1 | chưa | Quyền thông báo, báo thức chính xác, toàn màn hình chỉ xin khi bật nhắc giờ (SPEC mục 5, AC-18, AC-20); kiểm ở G4 |
-| D-12 | Người dưới 18 có thể dùng | Dùng tín hiệu tuổi của hệ điều hành (Declared Age Range của Apple, Play Age Signals của Google) và đối chiếu luật tuổi theo thị trường ở L3 | L3 "Điểm riêng", L5 | chưa | Chờ người dùng quyết có tích hợp Play Age Signals (SPEC mục 7) |
+| D-11 | Mọi app | Quyền hệ thống (vị trí, danh bạ, camera, micro, thông báo) chỉ xin khi cần cho tính năng, không ép bật để dùng app | L3 "Điểm riêng", L5 Apple 5.1.1 | chưa | Đã đạt: màn đặt giờ nhắc giải thích trước rồi mới xin quyền thông báo, báo thức chính xác, toàn màn hình (`lib/src/features/habits/reminder_fields.dart` `_ensurePermissions`, AC-18); từ chối thì vẫn lưu giờ nhắc. Manifest bản release (APK 2026-11-04) chỉ có `SCHEDULE_EXACT_ALARM`, `USE_FULL_SCREEN_INTENT`, `RECEIVE_BOOT_COMPLETED`, `VIBRATE`, `POST_NOTIFICATIONS`; không bộ nhớ/vị trí/danh bạ/camera/micro, không `USE_EXACT_ALARM` (`aapt2 dump badging`). CHƯA: `lib/src/features/pomodoro/pomodoro_screen.dart:79` gọi `requestNotifications()` ngay khi bấm giờ, không có màn giải thích riêng (SPEC mục 5 "giải thích trước"; AC-18 [M] chưa thử máy) → phiên code #2; iOS chưa có |
+| D-12 | Người dưới 18 có thể dùng | Dùng tín hiệu tuổi của hệ điều hành (Declared Age Range của Apple, Play Age Signals của Google) và đối chiếu luật tuổi theo thị trường ở L3 | L3 "Điểm riêng", L5 | chưa | Đề xuất của phiên store: app không thu dữ liệu, không có tương tác xã hội, nội dung 4+/Everyone, Play target audience 13+ → **chưa tích hợp** Play Age Signals / Declared Age Range ở bản 1. Người dùng quyết rồi ghi vào `docs/DECISIONS.md` (phiên điều phối), 2026-11-04 |
 | D-13 | Gửi dữ liệu cho AI bên thứ ba | Nêu rõ nơi dữ liệu được chia sẻ, kể cả AI bên thứ ba, và xin phép rõ ràng trước khi chia sẻ (Apple 5.1.2(i)) | L3, L5 | không áp dụng | Không dùng AI, 2026-11-03 |
-| S-01 | Mọi app | Tự kiểm theo 8 nhóm OWASP MASVS v2.1.0: STORAGE, CRYPTO, AUTH, NETWORK, PLATFORM, CODE, RESILIENCE, PRIVACY (ghi kết quả từng nhóm) | L2 "Tiêu chí kỹ thuật" | chưa | |
+| S-01 | Mọi app | Tự kiểm theo 8 nhóm OWASP MASVS v2.1.0: STORAGE, CRYPTO, AUTH, NETWORK, PLATFORM, CODE, RESILIENCE, PRIVACY (ghi kết quả từng nhóm) | L2 "Tiêu chí kỹ thuật" | chưa | Chưa viết bản tự kiểm MASVS 8 nhóm. Mẫu: `apps/A002-vigon/docs/security/MASVS-SELF-CHECK.md`. Ai: phiên con sau G7 (PIN, sao lưu) — phiên #2 hoặc #3 |
 | S-02 | Có API/backend | Kiểm API theo OWASP ASVS 5.0.0; truyền tải mã hóa TLS 1.3 | L2 | không áp dụng | Không có API hay backend, 2026-11-03 |
 | S-03 | Có đăng nhập | Đăng nhập theo OAuth 2.0/OIDC (RFC 9700) hoặc passkey (WebAuthn/FIDO2); có đăng nhập bên thứ ba trên iOS thì có thêm một lựa chọn tương đương theo Apple 4.8 | L2, L5 | không áp dụng | Không có đăng nhập, 2026-11-03 |
-| S-04 | Mọi app | SBOM sinh tự động (SPDX hoặc CycloneDX) và rà giấy phép nguồn mở theo danh sách SPDX | L2 "Chuỗi cung ứng", L6 | chưa | |
-| S-05 | Mọi app | Kênh tiếp nhận lỗ hổng công khai (ví dụ security.txt theo RFC 9116 hoặc email) và thủ tục xử lý | L2 | chưa | |
-| S-06 | Bán ở EU | CRA: kế hoạch báo lỗ hổng đang bị khai thác và sự cố nghiêm trọng (cảnh báo sớm 24 giờ, thông báo 72 giờ, từ 11/09/2026); công bố thời hạn hỗ trợ cập nhật bảo mật (Recital 60: không dưới năm năm trừ khi tuổi thọ dự kiến ngắn hơn) | L2 CRA | chưa | Cần luật sư xác nhận app miễn phí có thuộc phạm vi CRA không (SPEC mục 7) |
+| S-04 | Mọi app | SBOM sinh tự động (SPDX hoặc CycloneDX) và rà giấy phép nguồn mở theo danh sách SPDX | L2 "Chuỗi cung ứng", L6 | chưa | Chưa có SBOM. Mẫu: `tool/make_sbom.py` của A002 (CycloneDX). Gói hiện có: xem `pubspec.lock`. Ai: phiên con sau G7 (G7 thêm gói) — phiên #2/#3 |
+| S-05 | Mọi app | Kênh tiếp nhận lỗ hổng công khai (ví dụ security.txt theo RFC 9116 hoặc email) và thủ tục xử lý | L2 | chưa | Kênh = email trong chính sách và trang hỗ trợ (`docs/legal/`, soạn 2026-11-04) + màn Giới thiệu (AC-51). CHƯA: người dùng điền email và host chính sách; màn Giới thiệu có email báo lỗi bảo mật (phiên code). Quy trình xử lý: mục 1c |
+| S-06 | Bán ở EU | CRA: kế hoạch báo lỗ hổng đang bị khai thác và sự cố nghiêm trọng (cảnh báo sớm 24 giờ, thông báo 72 giờ, từ 11/09/2026); công bố thời hạn hỗ trợ cập nhật bảo mật (Recital 60: không dưới năm năm trừ khi tuổi thọ dự kiến ngắn hơn) | L2 CRA | chưa | Cần luật sư xác nhận app miễn phí của cá nhân có thuộc phạm vi CRA không (SPEC mục 7). Ai: người dùng + luật sư |
 | S-07 | Lưu, xử lý hoặc truyền dữ liệu thẻ | PCI DSS v4.0.1; gợi ý của tài liệu: dùng cổng thanh toán bên thứ ba (hosted page/redirect) để thu hẹp phạm vi | L2 | không áp dụng | Không xử lý dữ liệu thẻ, 2026-11-03 |
-| A-01 | Mọi app | Mục tiêu thiết kế WCAG 2.2 mức AA; bán ở EU: chứng minh theo EN 301 549 v3.2.1; kiểm bằng VoiceOver và TalkBack; lưu tuyên bố accessibility cho từng bản phát hành | L4 | chưa | |
+| A-01 | Mọi app | Mục tiêu thiết kế WCAG 2.2 mức AA; bán ở EU: chứng minh theo EN 301 549 v3.2.1; kiểm bằng VoiceOver và TalkBack; lưu tuyên bố accessibility cho từng bản phát hành | L4 | chưa | Mục tiêu WCAG 2.2 AA đã đưa vào SPEC AC-49/50; mô tả store nói app dùng được với TalkBack/VoiceOver và cỡ chữ lớn — **chỉ giữ câu đó sau khi thử thật**. CHƯA: test tự động vùng chạm/nhãn/tương phản/cỡ chữ 200% cho UI mới (phiên #2), thử TalkBack + cỡ chữ lớn nhất trên Galaxy A13, **VoiceOver chưa thử** (không có iPhone; TestFlight/tester iPhone), tuyên bố accessibility mỗi bản phát hành. Ai: phiên #2 (test) + người dùng (thử máy) |
 | C-01 | Bán hàng số/thuê bao | Hiển thị giá và điều kiện trước khi thanh toán; cho hủy ngay trong app; nhắc trước khi gia hạn | L4 "Bảo vệ người tiêu dùng" | không áp dụng | Miễn phí, không bán gì, 2026-11-03 |
 | C-02 | Bán trực tuyến cho người tiêu dùng EU | Chức năng rút khỏi hợp đồng (Điều 11a Chỉ thị 2023/2673, áp dụng từ 19/06/2026) | L4 | không áp dụng | Không bán trực tuyến, 2026-11-03 |
-| C-03 | Bán ở EU | Trách nhiệm sản phẩm (Chỉ thị 2024/2853, sản phẩm đưa ra thị trường sau 09/12/2026): công bố thời hạn cập nhật bảo mật, lưu hồ sơ kiểm thử và vòng đời | L4 | chưa | |
-| P-01 | Phát hành iOS | Build bằng Xcode 26 trở lên với SDK iOS 26 trở lên (từ 28/04/2026) | L5 Apple | không áp dụng | v1 chỉ Android (D-001), 2026-11-03 |
-| P-02 | Phát hành iOS | App privacy details khi nộp; tệp `PrivacyInfo.xcprivacy`; SDK phổ biến kèm privacy manifest và chữ ký | L5 Apple | không áp dụng | v1 chỉ Android (D-001), 2026-11-03 |
-| P-03 | Phát hành iOS | `ITSAppUsesNonExemptEncryption` trong Info.plist (NO nếu không mã hóa hoặc chỉ mã hóa miễn trừ) | L5 Apple, L6 | không áp dụng | v1 chỉ Android (D-001), 2026-11-03 |
-| P-04 | Phát hành iOS, có theo dõi | App Tracking Transparency (từ iOS 14.5; màn hình riêng cho EU từ iOS 27.2) | L5 Apple | không áp dụng | v1 chỉ Android, không theo dõi, 2026-11-03 |
-| P-05 | Phát hành iOS | Bảng câu hỏi xếp hạng độ tuổi mới (Việt Nam: 00+, 12+, 16+, 18+ từ 18/06/2026) | L5 Apple | không áp dụng | v1 chỉ Android (D-001), 2026-11-03 |
-| P-06 | Phát hành Android | targetSdk = API 36 cho app mới và bản cập nhật (từ 31/08/2026, gia hạn tới 01/11/2026) | L5 Google | chưa | |
-| P-07 | Phát hành Android | Hỗ trợ trang bộ nhớ 16 KB (bắt buộc với bản cập nhật từ 01/02/2027) | L5 Google | chưa | |
-| P-08 | Phát hành Android | Xác minh nhà phát triển (từ 30/09/2026 tại Brazil, Indonesia, Singapore, Thái Lan; toàn cầu năm 2027) | L5 Google | chưa | |
-| P-09 | Tài khoản Play cá nhân mới | Closed test với ít nhất 12 người thử, liên tục tối thiểu 14 ngày | L5 Google | chưa | |
-| P-10 | Phát hành Android | Khai báo Data safety khớp với dữ liệu SDK thực sự thu thập; xếp hạng nội dung | L5 Google | chưa | |
+| C-03 | Bán ở EU | Trách nhiệm sản phẩm (Chỉ thị 2024/2853, sản phẩm đưa ra thị trường sau 09/12/2026): công bố thời hạn cập nhật bảo mật, lưu hồ sơ kiểm thử và vòng đời | L4 | chưa | Cần luật sư xác nhận phạm vi và hạn công bố thời hạn cập nhật bảo mật (sau 09/12/2026). Ai: người dùng + luật sư |
+| P-01 | Phát hành iOS | Build bằng Xcode 26 trở lên với SDK iOS 26 trở lên (từ 28/04/2026) | L5 Apple | chưa | iOS thêm vào bản 1 (D-001, 2026-11-04). CHƯA: xác nhận số phiên bản Xcode trong log CI của một lần chạy thật (`.github/workflows/`, phiên con nền iOS). Ai: phiên con nền iOS / #3 |
+| P-02 | Phát hành iOS | App privacy details khi nộp; tệp `PrivacyInfo.xcprivacy`; SDK phổ biến kèm privacy manifest và chữ ký | L5 Apple | chưa | Nhãn App Privacy đã chốt "Data Not Collected" kèm lý do: `store/app-store.md` mục App Privacy. CHƯA: `ios/Runner/PrivacyInfo.xcprivacy` (khung iOS thô 2026-11-04 chưa có; cần khai API "required reason": file timestamp, disk space, và UserDefaults nếu dùng App Group); điền nhãn trong App Store Connect; xem báo cáo Privacy của Xcode Archive ở build ký đầu tiên. Ai: phiên con nền iOS + #3 |
+| P-03 | Phát hành iOS | `ITSAppUsesNonExemptEncryption` trong Info.plist (NO nếu không mã hóa hoặc chỉ mã hóa miễn trừ) | L5 Apple, L6 | chưa | Kết luận: **NO** — app không tự mã hóa, không kết nối mạng; băm PIN và checksum file `.dailyloop` là miễn trừ (`store/app-store.md` mục Export compliance). CHƯA: `Info.plist` chưa có `ITSAppUsesNonExemptEncryption = false` (đọc 2026-11-04). Ai: phiên con nền iOS |
+| P-04 | Phát hành iOS, có theo dõi | App Tracking Transparency (từ iOS 14.5; màn hình riêng cho EU từ iOS 27.2) | L5 Apple | không áp dụng | Không theo dõi, không SDK quảng cáo/analytics, không IDFA (D-002), 2026-11-04 |
+| P-05 | Phát hành iOS | Bảng câu hỏi xếp hạng độ tuổi mới (Việt Nam: 00+, 12+, 16+, 18+ từ 18/06/2026) | L5 Apple | chưa | Trả lời đã chuẩn bị (mọi mục None/No) → dự kiến 4+ và mức thấp nhất ở Việt Nam: `store/app-store.md` mục Age Rating. CHƯA: điền trong App Store Connect (cần tài khoản Apple Developer, chưa có) và ghi kết quả thật vào đây. Ai: người dùng/#3 |
+| P-06 | Phát hành Android | targetSdk = API 36 cho app mới và bản cập nhật (từ 31/08/2026, gia hạn tới 01/11/2026) | L5 Google | đạt | `targetSdkVersion:'36'` (`aapt2 dump badging build/app/outputs/flutter-apk/app-release.apk`, build 2026-11-04 14:45). Kiểm lại khi build AAB phát hành |
+| P-07 | Phát hành Android | Hỗ trợ trang bộ nhớ 16 KB (bắt buộc với bản cập nhật từ 01/02/2027) | L5 Google | đạt | `zipalign -c -P 16 -v 4` đạt; `llvm-readelf -lW` các `.so` 64-bit (arm64-v8a, x86_64): LOAD align 0x4000 hoặc 0x10000 (`libapp`, `libflutter`, `libsqlite3`, `libdartjni`), APK 2026-11-04. Kiểm lại khi thêm gói có mã native (G7) |
+| P-08 | Phát hành Android | Xác minh nhà phát triển (từ 30/09/2026 tại Brazil, Indonesia, Singapore, Thái Lan; toàn cầu năm 2027) | L5 Google | chưa | Chưa thấy thông báo xác minh nhà phát triển cho tài khoản Play cá nhân (fact xưởng `tai-khoan-store`); làm theo thông báo trong Play Console khi có. Ai: người dùng |
+| P-09 | Tài khoản Play cá nhân mới | Closed test với ít nhất 12 người thử, liên tục tối thiểu 14 ngày | L5 Google | chưa | Kế hoạch, lịch, mẫu mời/nhắc tester, câu trả lời mẫu form production, phương án chung nhóm tester với A002 và TestFlight: `store/closed-test-plan.md` (2026-11-04). CHƯA: chốt tên, host chính sách, keystore, build AAB, tạo app, gom ≥ 15 tester rồi chạy 14 ngày. Ai: người dùng |
+| P-10 | Phát hành Android | Khai báo Data safety khớp với dữ liệu SDK thực sự thu thập; xếp hạng nội dung | L5 Google | chưa | Nội dung khai đã chốt: Data safety "không thu thập, không chia sẻ"; quyền nhạy cảm kèm lời giải thích dán sẵn (SCHEDULE_EXACT_ALARM, USE_FULL_SCREEN_INTENT); IARC (Utility/Productivity, mọi câu No); target audience 13+; ads No; Advertising ID No; Health apps No: `store/listing.md` (2026-11-04). CHƯA: điền vào Play Console; rủi ro Google từ chối full-screen intent (xem `store/listing.md`). Ai: người dùng |
 | P-11 | Bán hàng số trong app | Apple: quy tắc thanh toán trong app của App Store (mục 3.1.1, xem L5); Google: Play Billing trừ khi thuộc §3, 8, 9 | L5 | không áp dụng | Không bán hàng số, 2026-11-03 |
 | P-12 | App cho trẻ em trên Play | Chương trình Families: khai báo đối tượng, chỉ SDK quảng cáo được chứng nhận cho Families, tuân thủ COPPA và GDPR | L5 Google | không áp dụng | Không nhắm tới trẻ em, 2026-11-03 |
 | T-01 | Bán có thu phí | Thuế giá trị gia tăng theo nơi bán (Apple làm đại lý theo Schedule 2; xem L6) | L6 | không áp dụng | Miễn phí, 2026-11-03 |
-| T-02 | Mọi app phát hành | Bản địa hóa và định dạng theo thị trường | L6 | chưa | |
+| T-02 | Mọi app phát hành | Bản địa hóa và định dạng theo thị trường | L6 | chưa | Có `lib/l10n/app_en.arb` + `app_vi.arb` (vi/en theo ngôn ngữ máy, AC-48); mô tả store có đủ en-US + vi. CHƯA đối chiếu test định dạng ngày/số theo ngôn ngữ (AC-48 [T]) — phiên #2 làm khi rà test |
 | AI-01 | Có chatbot hoặc nội dung do AI tạo, bán ở EU | Nghĩa vụ minh bạch Điều 50 AI Act (từ 02/08/2026) | L7, Mốc | không áp dụng | Không có AI, 2026-11-03 |
 
 ## 3. Trước mỗi lần phát hành
 - Kiểm lại trang Apple "Upcoming requirements" và bảng hạn chót của Google, vì đổi theo quý (L5 "Cách làm chung"); ghi ngày kiểm vào đây.
 - Tài liệu tiêu chuẩn gốc cũ hơn 3 tháng so với ngày phát hành: kiểm lại các mốc ở bảng đầu tài liệu.
-- Ngày kiểm lần cuối:
+- Ngày kiểm lần cuối: 2026-11-04 — chỉ kiểm phần kỹ thuật trên APK đã build (targetSdk, quyền, 16 KB); **chưa** mở trang chính thức Apple "Upcoming requirements" / Google bảng hạn chót (các mốc ngày trong bảng lấy từ tài liệu gốc 28/10/2026).
+
+## 4. Còn lại sau phiên store 2026-11-04 và ai làm
+Đã đạt trong phiên này: D-01, D-08, P-06, P-07; P-04 chuyển "không áp dụng". Các dòng iOS P-01, P-02, P-03, P-05 chuyển từ "không áp dụng" sang "chưa" vì iOS đã vào bản 1 (D-001, 2026-11-04). Các dòng còn "chưa" kèm việc cụ thể:
+| Dòng | Việc còn lại | Ai |
+|---|---|---|
+| M-01 | Chọn nước trong hai console, rà cấm vận | Người dùng (+ #3) |
+| D-02 | Điền email/tên/ngày, **host chính sách**, điền URL vào app + 2 console | Người dùng; phiên code (URL trong app, AC-51) |
+| D-06 | Thử AC-42/44/52 khi G7 xong | Phiên #1 (G7) → thử máy |
+| D-07, D-09, S-06, C-03 | Xác nhận pháp lý (DPIA/hồ sơ VN, người phụ trách dữ liệu, CRA, trách nhiệm sản phẩm) | Người dùng + luật sư |
+| D-11 | Thêm màn giải thích trước khi xin quyền thông báo ở Pomodoro; iOS; thử máy AC-18 | Phiên code #2 + người dùng |
+| D-12 | Quyết định không tích hợp Age Signals ở bản 1 và ghi DECISIONS | Người dùng + phiên điều phối |
+| S-01, S-04 | Tự kiểm MASVS; SBOM + giấy phép nguồn mở | Phiên con sau G7 (#2/#3) |
+| S-05 | Email trong màn Giới thiệu + host chính sách | Phiên code + người dùng |
+| A-01 | Test a11y UI mới; thử TalkBack/cỡ chữ lớn nhất; thử VoiceOver | Phiên #2 + người dùng |
+| P-01, P-02, P-03 | Xcode 26 trong log CI; `PrivacyInfo.xcprivacy`; `ITSAppUsesNonExemptEncryption` | Phiên con nền iOS |
+| P-05 | Điền age rating Apple | Người dùng (cần Apple Developer) |
+| P-08 | Theo thông báo xác minh nhà phát triển | Người dùng |
+| P-09 | Chạy closed test 12 × 14 ngày | Người dùng |
+| P-10 | Điền Data safety, content rating, khai báo quyền | Người dùng |
+| T-02 | Đối chiếu test định dạng ngày/số vi/en | Phiên #2 |
