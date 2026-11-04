@@ -1,5 +1,7 @@
 # Tra trùng tên "DailyLoop" — kết quả (2026-11-04)
 
+> **Cập nhật 2026-11-04:** người dùng đã loại cả DailyLoop và **Streakloom** (App Store đã có app "Streakloom" của Austin Michie, id6767362848). Ứng viên tên tiếng Anh mới và kết quả tra: [`store/name-candidates.md`](name-candidates.md) (khuyến nghị #1 Orbiday). Bảng "Tên dự phòng" bên dưới là bản cũ — Streakloom không còn dùng được.
+
 ## Kết luận (đọc phần này là đủ)
 **"DailyLoop" đang bị trùng nặng, cùng loại app, trên cả hai store.** Đã có **ít nhất 3 app thói quen/việc hằng ngày tên DailyLoop / Daily Loop trên
 Google Play** và **1 app tên "DailyLoop – Build Routines" trên App Store** (dạng thói quen, miễn phí, iPhone). Một trong số đó
