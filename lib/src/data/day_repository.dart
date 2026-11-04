@@ -183,6 +183,13 @@ class DayRepository {
     return b.activity.priority.index.compareTo(a.activity.priority.index);
   }
 
+  /// Mục [a] kèm kết quả của ngày [date], để sửa kết quả một ngày bất kỳ từ
+  /// lịch tháng (AC-26).
+  Future<DayItem> itemFor(Activity a, String date) async {
+    final s = await _snapshot([date]);
+    return s.item(a, date);
+  }
+
   Future<List<DayItem>> loadTasks(
     TaskFilter filter, {
     required DateTime today,

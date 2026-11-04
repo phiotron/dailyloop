@@ -11,6 +11,15 @@ Future<void> openHabits(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+/// Chạm một thói quen mở màn tiến độ; bấm "Sửa" ở đó để vào màn sửa. Màn tiến
+/// độ có vòng quay chờ dữ liệu nên không dùng `pumpAndSettle` ở giữa.
+Future<void> openHabitEditor(WidgetTester tester, String name) async {
+  await tester.tap(find.text(name));
+  await pumpUntilFound(tester, find.byTooltip('Sửa'));
+  await tester.tap(find.byTooltip('Sửa'));
+  await settle(tester);
+}
+
 Future<int> insertHabit(
   WidgetTester tester,
   AppDatabase db,
@@ -120,8 +129,7 @@ void main() {
       const ActivityDraft(name: 'Thiền', startDate: '2026-11-01'),
     );
     await openHabits(tester);
-    await tester.tap(find.text('Thiền'));
-    await settle(tester);
+    await openHabitEditor(tester, 'Thiền');
     await tester.tap(find.byType(PopupMenuButton<String>));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Lưu trữ'));
@@ -147,8 +155,7 @@ void main() {
       const ActivityDraft(name: 'Tập gym', startDate: '2026-11-01'),
     );
     await openHabits(tester);
-    await tester.tap(find.text('Tập gym'));
-    await settle(tester);
+    await openHabitEditor(tester, 'Tập gym');
     await tester.tap(find.byType(PopupMenuButton<String>));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Xóa'));
@@ -182,8 +189,7 @@ void main() {
     );
     await openHabits(tester);
     expect(find.text('Cứ 3 ngày một lần'), findsOneWidget);
-    await tester.tap(find.text('Học tiếng Anh'));
-    await settle(tester);
+    await openHabitEditor(tester, 'Học tiếng Anh');
     await tester.scrollUntilVisible(
       find.widgetWithText(TextField, 'Cứ mấy ngày một lần (2–365)'),
       200,
@@ -194,6 +200,11 @@ void main() {
       '2',
     );
     await tester.tap(find.text('Lưu'));
+    await settle(tester);
+    // Lưu xong quay về màn tiến độ; lùi một bước nữa về danh sách để xem lịch.
+    await pumpUntilFound(tester, find.byType(BackButton));
+    // `pageBack` tìm chú thích "Back" tiếng Anh, còn test chạy ở tiếng Việt.
+    await tester.tap(find.byType(BackButton));
     await settle(tester);
     expect(find.text('Cứ 2 ngày một lần'), findsOneWidget);
     final s = (await tester.runAsync(() => db.select(db.schedules).get()))!;

@@ -7,11 +7,13 @@ import 'package:go_router/go_router.dart';
 
 import '../l10n/app_localizations.dart';
 import 'features/categories/categories_screen.dart';
+import 'features/habits/habit_detail_screen.dart';
 import 'features/habits/habit_editor_screen.dart';
 import 'features/habits/habits_screen.dart';
 import 'data/database.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/shell/home_shell.dart';
+import 'features/stats/stats_screen.dart';
 import 'features/tasks/tasks_screen.dart';
 import 'features/today/today_screen.dart';
 import 'features/welcome/welcome_screen.dart';
@@ -54,6 +56,14 @@ GoRouter createRouter() {
               ),
             ],
           ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/stats',
+                builder: (context, state) => const StatsScreen(),
+              ),
+            ],
+          ),
         ],
       ),
       GoRoute(
@@ -80,9 +90,16 @@ GoRouter createRouter() {
         path: '/habits/archived',
         builder: (context, state) => const ArchivedHabitsScreen(),
       ),
+      // Chạm một thói quen mở tiến độ; từ đó mới sửa (F-05, F-06).
       GoRoute(
         parentNavigatorKey: rootKey,
         path: '/habits/:id',
+        builder: (context, state) =>
+            HabitDetailScreen(habitId: int.parse(state.pathParameters['id']!)),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootKey,
+        path: '/habits/:id/edit',
         builder: (context, state) =>
             HabitEditorScreen(habitId: int.parse(state.pathParameters['id']!)),
       ),

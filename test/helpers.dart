@@ -69,3 +69,14 @@ Future<void> disposeApp(WidgetTester tester, AppDatabase db) async {
   await tester.pumpWidget(const SizedBox());
   await tester.runAsync(db.close);
 }
+
+/// Đợi tới khi [finder] xuất hiện, tối đa 2 giây thật. Dùng cho màn có vòng
+/// quay chờ dữ liệu: `pumpAndSettle` không dừng khi vòng quay còn chạy.
+Future<void> pumpUntilFound(WidgetTester tester, Finder finder) async {
+  for (var i = 0; i < 100 && finder.evaluate().isEmpty; i++) {
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 20)),
+    );
+    await tester.pump();
+  }
+}

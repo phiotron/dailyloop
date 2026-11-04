@@ -7,6 +7,8 @@ import 'data/database.dart';
 import 'data/dates.dart';
 import 'data/day_repository.dart';
 import 'data/entry_repository.dart';
+import 'data/habit_stats.dart';
+import 'data/stats_repository.dart';
 import 'data/schedule.dart';
 import 'data/settings_repository.dart';
 import 'reminders/reminder_service.dart';
@@ -88,6 +90,36 @@ final reminderGatewayProvider = Provider<ReminderGateway>(
 final reminderPermissionsProvider = FutureProvider<ReminderPermissions>(
   (ref) => ref.watch(reminderGatewayProvider).permissions(),
 );
+
+final statsRepositoryProvider = Provider<StatsRepository>(
+  (ref) => StatsRepository(ref.watch(databaseProvider)),
+);
+
+/// Lịch sử một thói quen để tính chuỗi, điểm, lịch tháng (F-05, F-06).
+final habitHistoryProvider = StreamProvider.family<HabitHistory?, int>(
+  (ref, id) => ref.watch(statsRepositoryProvider).watchHistory(id),
+);
+
+/// Thói quen xếp theo chuỗi dài nhất (AC-28).
+final rankingProvider = StreamProvider<List<HabitRank>>(
+  (ref) => ref
+      .watch(statsRepositoryProvider)
+      .watchRanking(
+        today: dayOf(ref.read(clockProvider)()),
+        weekStart: ref.watch(weekStartProvider).value ?? DateTime.monday,
+      ),
+);
+
+/// Số mục xong trên tổng của [days] ngày kết thúc hôm nay (AC-28).
+final dailyCountsProvider = StreamProvider.family<Map<String, DayCount>, int>((
+  ref,
+  days,
+) {
+  final today = dayOf(ref.read(clockProvider)());
+  return ref
+      .watch(statsRepositoryProvider)
+      .watchDailyCounts(today.subtract(Duration(days: days - 1)), today);
+});
 
 final onboardingDoneProvider = StreamProvider<bool>(
   (ref) => ref.watch(settingsRepositoryProvider).watchOnboardingDone(),

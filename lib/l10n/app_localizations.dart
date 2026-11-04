@@ -1105,6 +1105,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time for'**
   String get alarmFor;
+
+  /// No description provided for @stats.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get stats;
+
+  /// No description provided for @statsLast7.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get statsLast7;
+
+  /// No description provided for @statsLast30.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 days'**
+  String get statsLast30;
+
+  /// No description provided for @statsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add habits or tasks to see statistics'**
+  String get statsEmpty;
+
+  /// No description provided for @statsTopStreaks.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest streaks'**
+  String get statsTopStreaks;
+
+  /// No description provided for @statsNoStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'No streaks yet'**
+  String get statsNoStreak;
+
+  /// No description provided for @doneOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} done'**
+  String doneOfTotal(int done, int total);
+
+  /// No description provided for @streakCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current streak'**
+  String get streakCurrent;
+
+  /// No description provided for @streakLongest.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest streak'**
+  String get streakLongest;
+
+  /// No description provided for @streakDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String streakDays(int count);
+
+  /// No description provided for @streakWeeks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 week} other{{count} weeks}}'**
+  String streakWeeks(int count);
+
+  /// No description provided for @streakMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 month} other{{count} months}}'**
+  String streakMonths(int count);
+
+  /// No description provided for @habitScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Score'**
+  String get habitScore;
+
+  /// No description provided for @successRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Success rate'**
+  String get successRate;
+
+  /// No description provided for @rate7.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get rate7;
+
+  /// No description provided for @rate30.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days'**
+  String get rate30;
+
+  /// No description provided for @rateAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get rateAll;
+
+  /// No description provided for @noRate.
+  ///
+  /// In en, this message translates to:
+  /// **'None yet'**
+  String get noRate;
+
+  /// No description provided for @calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get calendar;
+
+  /// No description provided for @prevMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get prevMonth;
+
+  /// No description provided for @nextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get nextMonth;
+
+  /// No description provided for @dayNotDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Not scheduled'**
+  String get dayNotDue;
+
+  /// No description provided for @dayFuture.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get dayFuture;
+
+  /// No description provided for @dayPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Today, not done yet'**
+  String get dayPending;
+
+  /// No description provided for @chartByDay.
+  ///
+  /// In en, this message translates to:
+  /// **'By day'**
+  String get chartByDay;
+
+  /// No description provided for @chartByWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'By week'**
+  String get chartByWeek;
+
+  /// No description provided for @chartTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Show as table'**
+  String get chartTable;
+
+  /// No description provided for @tableDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get tableDate;
+
+  /// No description provided for @tableValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get tableValue;
+
+  /// No description provided for @tableDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get tableDone;
+
+  /// No description provided for @tableTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get tableTotal;
+
+  /// No description provided for @chartSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart, {count} bars, highest value {max}'**
+  String chartSummary(int count, String max);
+
+  /// No description provided for @weekOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Week of {date}'**
+  String weekOf(String date);
+
+  /// No description provided for @viewProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'View progress'**
+  String get viewProgress;
 }
 
 class _AppLocalizationsDelegate

@@ -147,11 +147,13 @@ class DayItemTile extends ConsumerWidget {
                 switch (v) {
                   case 'skip':
                     entries.setSkipped(a.id, item.date, !item.skipped);
+                  case 'progress':
+                    context.push('/habits/${a.id}');
                   case 'edit':
                     context.push(
                       a.kind == ActivityKind.task
                           ? '/tasks/${a.id}'
-                          : '/habits/${a.id}',
+                          : '/habits/${a.id}/edit',
                     );
                 }
               },
@@ -161,6 +163,8 @@ class DayItemTile extends ConsumerWidget {
                     value: 'skip',
                     child: Text(item.skipped ? l.unskip : l.skipToday),
                   ),
+                if (a.kind == ActivityKind.habit)
+                  PopupMenuItem(value: 'progress', child: Text(l.viewProgress)),
                 PopupMenuItem(value: 'edit', child: Text(l.edit)),
               ],
             ),

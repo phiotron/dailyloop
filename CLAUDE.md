@@ -4,16 +4,16 @@ App mobile CHỈ dành cho điện thoại. Mở Claude ngay trong thư mục n�
 
 - Mã app: APP-002
 - Thư mục: apps/APP-002-dailyloop
-- Giai đoạn hiện tại: G4 xong, đã thử một phần, chờ duyệt
+- Giai đoạn hiện tại: G5 xong code, chờ thử máy và duyệt
 - Nền tảng: Android (v1; iOS để sau, D-001)
 - Quy mô: chuẩn
 - Stack: Flutter
 
 ## Điểm dừng (Claude cập nhật bằng /end; đọc mục này đầu tiên khi quay lại app sau thời gian dài)
-- Cập nhật lần cuối: 2026-11-03
-- Đang làm dở: G4 xong code, 93 test tự động đạt, `flutter analyze` sạch; đã thử một phần trên Galaxy A13 ngày 2026-11-04 (thông báo đúng giờ, nút Xong khi app đóng, chuông toàn màn hình, hoãn). Máy thử đang chạy bản trước bản sửa lần hoãn. G4 đã commit (d919287), chưa có remote
-- Bước tiếp theo: người dùng duyệt G3 và G4; quyết AC-21 (múi giờ khi app tắt); rồi G5 (chuỗi ngày, thống kê)
-- Đang chờ (ai/cái gì): người dùng: duyệt cổng, tạo remote git, sao lưu `D:/DemoChung` ra ngoài ổ D. Chỉ dùng điện thoại qua adb khi người dùng cho phép trong phiên
+- Cập nhật lần cuối: 2026-11-04
+- Đang làm dở: G5 xong code: 136 test tự động đạt, `flutter analyze` sạch, APK release build được; CHƯA thử máy thật, CHƯA commit G5. G1 tới G4 đã commit và đẩy lên github.com/phiotron/dailyloop (nhánh master)
+- Bước tiếp theo: commit G5; người dùng duyệt G3, G4, G5 và cho phép thử máy thật; quyết AC-21; rồi G6 (Pomodoro, widget)
+- Đang chờ (ai/cái gì): người dùng: duyệt cổng, sao lưu `D:/DemoChung` ra ngoài ổ D. Chỉ dùng điện thoại qua adb khi người dùng cho phép trong phiên
 - Lưu ý dễ vấp: (1) Galaxy A13 chạy 32-bit, không build APK chỉ arm64 (L-011). (2) Flutter và adb chưa có trong PATH, xem mục "Lệnh". Nhắc giờ: Google Play chỉ cho `USE_EXACT_ALARM` với app báo thức hoặc lịch, nên KHÔNG khai quyền đó (D-007). (3) `dart format` có thể dời dòng `// ignore: recursive_getters`, nên chạy `flutter analyze` sau khi định dạng.
 
 ## Mô tả

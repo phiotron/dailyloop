@@ -552,4 +552,136 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get alarmFor => 'Time for';
+
+  @override
+  String get stats => 'Statistics';
+
+  @override
+  String get statsLast7 => 'Last 7 days';
+
+  @override
+  String get statsLast30 => 'Last 30 days';
+
+  @override
+  String get statsEmpty => 'Add habits or tasks to see statistics';
+
+  @override
+  String get statsTopStreaks => 'Longest streaks';
+
+  @override
+  String get statsNoStreak => 'No streaks yet';
+
+  @override
+  String doneOfTotal(int done, int total) {
+    return '$done of $total done';
+  }
+
+  @override
+  String get streakCurrent => 'Current streak';
+
+  @override
+  String get streakLongest => 'Longest streak';
+
+  @override
+  String streakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String streakWeeks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count weeks',
+      one: '1 week',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String streakMonths(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count months',
+      one: '1 month',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get habitScore => 'Score';
+
+  @override
+  String get successRate => 'Success rate';
+
+  @override
+  String get rate7 => '7 days';
+
+  @override
+  String get rate30 => '30 days';
+
+  @override
+  String get rateAll => 'All time';
+
+  @override
+  String get noRate => 'None yet';
+
+  @override
+  String get calendar => 'Calendar';
+
+  @override
+  String get prevMonth => 'Previous month';
+
+  @override
+  String get nextMonth => 'Next month';
+
+  @override
+  String get dayNotDue => 'Not scheduled';
+
+  @override
+  String get dayFuture => 'Upcoming';
+
+  @override
+  String get dayPending => 'Today, not done yet';
+
+  @override
+  String get chartByDay => 'By day';
+
+  @override
+  String get chartByWeek => 'By week';
+
+  @override
+  String get chartTable => 'Show as table';
+
+  @override
+  String get tableDate => 'Date';
+
+  @override
+  String get tableValue => 'Value';
+
+  @override
+  String get tableDone => 'Done';
+
+  @override
+  String get tableTotal => 'Total';
+
+  @override
+  String chartSummary(int count, String max) {
+    return 'Chart, $count bars, highest value $max';
+  }
+
+  @override
+  String weekOf(String date) {
+    return 'Week of $date';
+  }
+
+  @override
+  String get viewProgress => 'View progress';
 }

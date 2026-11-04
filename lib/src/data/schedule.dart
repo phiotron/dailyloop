@@ -135,6 +135,9 @@ class DueCalculator {
     return current;
   }
 
+  /// Lịch áp dụng cho [date] (D-005); null nếu mục chưa có lịch.
+  ScheduleRule? ruleAt(DateTime date) => _ruleFor(dayOf(date))?.rule;
+
   bool isDue(DateTime date) {
     final day = dayOf(date);
     if (_start == null) return false;

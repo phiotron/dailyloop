@@ -550,4 +550,118 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get alarmFor => 'Tới giờ';
+
+  @override
+  String get stats => 'Thống kê';
+
+  @override
+  String get statsLast7 => '7 ngày gần nhất';
+
+  @override
+  String get statsLast30 => '30 ngày gần nhất';
+
+  @override
+  String get statsEmpty => 'Thêm thói quen hoặc việc để xem thống kê';
+
+  @override
+  String get statsTopStreaks => 'Chuỗi dài nhất';
+
+  @override
+  String get statsNoStreak => 'Chưa có chuỗi nào';
+
+  @override
+  String doneOfTotal(int done, int total) {
+    return '$done trên $total xong';
+  }
+
+  @override
+  String get streakCurrent => 'Chuỗi hiện tại';
+
+  @override
+  String get streakLongest => 'Chuỗi dài nhất';
+
+  @override
+  String streakDays(int count) {
+    return '$count ngày';
+  }
+
+  @override
+  String streakWeeks(int count) {
+    return '$count tuần';
+  }
+
+  @override
+  String streakMonths(int count) {
+    return '$count tháng';
+  }
+
+  @override
+  String get habitScore => 'Điểm';
+
+  @override
+  String get successRate => 'Tỉ lệ thành công';
+
+  @override
+  String get rate7 => '7 ngày';
+
+  @override
+  String get rate30 => '30 ngày';
+
+  @override
+  String get rateAll => 'Từ đầu';
+
+  @override
+  String get noRate => 'Chưa có';
+
+  @override
+  String get calendar => 'Lịch';
+
+  @override
+  String get prevMonth => 'Tháng trước';
+
+  @override
+  String get nextMonth => 'Tháng sau';
+
+  @override
+  String get dayNotDue => 'Không đến hạn';
+
+  @override
+  String get dayFuture => 'Sắp tới';
+
+  @override
+  String get dayPending => 'Hôm nay, chưa xong';
+
+  @override
+  String get chartByDay => 'Theo ngày';
+
+  @override
+  String get chartByWeek => 'Theo tuần';
+
+  @override
+  String get chartTable => 'Xem dạng bảng';
+
+  @override
+  String get tableDate => 'Ngày';
+
+  @override
+  String get tableValue => 'Giá trị';
+
+  @override
+  String get tableDone => 'Xong';
+
+  @override
+  String get tableTotal => 'Tổng';
+
+  @override
+  String chartSummary(int count, String max) {
+    return 'Biểu đồ, $count cột, giá trị cao nhất $max';
+  }
+
+  @override
+  String weekOf(String date) {
+    return 'Tuần từ $date';
+  }
+
+  @override
+  String get viewProgress => 'Xem tiến độ';
 }

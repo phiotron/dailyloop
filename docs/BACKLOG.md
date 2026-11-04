@@ -14,7 +14,7 @@ Mỗi giai đoạn kết thúc bằng: `flutter analyze` sạch, `flutter test` 
 - [x] Khung vi/en, giao diện sáng/tối/theo hệ thống, ngày đầu tuần, không tràn ở cỡ chữ 200% (AC-48, một phần AC-50): test `app_test`
 - [x] `allowBackup=false`, chỉ màn hình dọc, APK release không có INTERNET (AC-53): kiểm bằng `aapt2 dump` ngày 2026-11-03, chỉ có quyền `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` do AndroidX tự thêm; minSdk 24, targetSdk 36
 - [ ] Thử máy thật: mở app, đổi giao diện, đổi ngôn ngữ, nút Back, xoay máy. Chờ người dùng (máy đang bận); chỉ dùng điện thoại khi người dùng cho phép
-- [ ] CI `.github/workflows/ci.yml` CHƯA chạy (repo chưa có remote)
+- [x] CI `.github/workflows/ci.yml` đã chạy trên GitHub Actions ngày 2026-11-04 cho commit a368887 (`flutter analyze` và `flutter test`, Flutter 3.47.8): đạt, 2 phút 52 giây
 
 ### G2 · Thói quen và lịch lặp — trạng thái: done (chờ người dùng duyệt)
 - [x] Hàm tính ngày đến hạn `DueCalculator` cho mọi kiểu lịch lặp, kể cả năm nhuận, ngày 31, N ngày, K lần/tuần, ngày kết thúc, đổi lịch giữa chừng (AC-03, AC-04): test `schedule_test`
@@ -51,11 +51,16 @@ Mỗi giai đoạn kết thúc bằng: `flutter analyze` sạch, `flutter test` 
 - [ ] AC-21 chỉ đạt một phần: đổi giờ hoặc múi giờ khi app đang tắt thì lịch giữ giờ cũ tới lần mở app kế tiếp (ghi ở D-007). Cần quyết: chấp nhận ở v1 hay thêm bộ nhận `TIMEZONE_CHANGED`
 - [ ] Khai báo full-screen intent trong Play Console khi phát hành (ghi vào docs/RELEASE.md ở G8)
 
-### G5 · Chuỗi ngày, điểm, lịch và thống kê — trạng thái: todo
-- [ ] Chuỗi hiện tại, chuỗi dài nhất, tỉ lệ thành công, công thức điểm (ghi D-xxx) (AC-23 tới AC-25)
-- [ ] Lịch tháng từng thói quen, biểu đồ cột, thống kê chung, bảng thay thế cho trình đọc màn hình (AC-26 tới AC-29)
-- [ ] Đo hiệu năng với 50 thói quen và 3 năm dữ liệu giả (NFR)
-- [ ] Thử máy thật
+### G5 · Chuỗi ngày, điểm, lịch và thống kê — trạng thái: code xong, test tự động đạt; CHƯA thử máy thật
+- [x] Chuỗi hiện tại và dài nhất (ngày bỏ qua, ngày không đến hạn và hôm nay chưa xong không làm đứt chuỗi; kiểu "K lần mỗi tuần/tháng" tính theo tuần/tháng), tỉ lệ thành công 7 ngày, 30 ngày, từ đầu, điểm 0–100 có công thức (AC-23 tới AC-25, D-008): test `habit_stats_test` (25 test, kể cả điểm 54 và 46 tính tay)
+- [x] Màn tiến độ từng thói quen: chuỗi, điểm, tỉ lệ, lịch tháng tô trạng thái (đạt, chưa đạt, bỏ qua, không đến hạn, tương lai, hôm nay chưa xong) có cả biểu tượng; đổi tháng bằng mũi tên hoặc vuốt, không lùi trước tháng bắt đầu; chạm ngày đã qua để sửa kết quả (AC-26): test `stats_flow_test`. Chạm thói quen ở danh sách giờ mở màn này, màn sửa mở bằng nút "Sửa"
+- [x] Biểu đồ cột giá trị theo ngày (30 ngày) và theo tuần (8 tuần) có vạch mục tiêu cho kiểu Số lượng và Thời gian (AC-27): test `habit_stats_test`, `stats_flow_test`
+- [x] Tab Thống kê thứ 4: số mục xong trên tổng của 7 và 30 ngày, 3 thói quen có chuỗi dài nhất (AC-28): test `stats_repository_test`, `stats_flow_test`
+- [x] Bảng thay thế "Xem dạng bảng" và mô tả tóm tắt cho mọi biểu đồ (AC-29): test `stats_flow_test`. Dùng TalkBack thật CHƯA thử
+- [x] Đo hiệu năng: 50 thói quen × 3 năm (khoảng 54.000 kết quả) tính xong khoảng 0,4 giây trên máy phát triển (test `stats_repository_test`); CHƯA đo trên điện thoại (ngưỡng 1 giây)
+- [x] Lỗi tìm ra khi viết test: truy vấn mục con đã đánh dấu bằng `IN (...)` vượt giới hạn biến của SQLite khi lịch sử dài; đã đổi sang phép nối bảng. Hàng ba thẻ chuỗi bị lỗi chiều cao vô hạn trong danh sách cuộn; đã sửa
+- [x] Build APK release đạt (64,0 MB), không có quyền INTERNET
+- [ ] Thử máy thật (chờ người dùng cho phép): màn tiến độ, lịch tháng và vuốt đổi tháng, chạm ngày để sửa, biểu đồ, màn Thống kê, cỡ chữ lớn, TalkBack; đo thời gian mở màn Thống kê
 
 ### G6 · Pomodoro và widget — trạng thái: todo
 - [ ] Đồng hồ Pomodoro theo mốc thời gian, báo hết giờ, nối với thói quen kiểu Thời gian (AC-35 tới AC-38)
@@ -76,9 +81,9 @@ Mỗi giai đoạn kết thúc bằng: `flutter analyze` sạch, `flutter test` 
 - [ ] Closed test 12 người trong 14 ngày (P-09), rồi `/release`
 
 ## Việc kế tiếp (tối đa 5, theo thứ tự)
-1. Duyệt G3 và G4; thử nốt phần chưa thử của G4 (checklist ở G4, cần cài lại bản có sửa lần hoãn)
-2. G5: chuỗi ngày, điểm, lịch tháng, thống kê (AC-23 tới AC-29)
-3. Người dùng: tạo remote git cho APP-002 và chạy `bash scripts/backup.sh <thư mục ngoài ổ D>`
+1. Duyệt G3, G4, G5; thử máy thật G5 và nốt phần chưa thử của G4 (cần cài lại bản có sửa lần hoãn)
+2. G6: Pomodoro và widget màn hình chính (AC-35 tới AC-41), sửa BUG-001 (qua nửa đêm)
+3. Người dùng: chạy `bash scripts/backup.sh <thư mục ngoài ổ D>` (remote GitHub đã có, đã đẩy G1 tới G4)
 
 ## Lỗi đã biết (đang mở)
 Mỗi lỗi: BUG-xxx · mô tả · cách tái hiện · mức độ (chặn / nặng / nhẹ) · cách tạm tránh.

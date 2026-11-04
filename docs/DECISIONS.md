@@ -2,6 +2,24 @@
 
 Mỗi quyết định một mục, mới nhất ở trên cùng.
 
+## D-008 · Chuỗi ngày, tỉ lệ, điểm tính từ "đơn vị", biểu đồ tự vẽ · 2026-11-04
+- Bối cảnh: G5, SPEC F-05 (AC-23 tới AC-25) và F-06 (AC-26 tới AC-29).
+- Quyết định:
+  - **Đơn vị tính**: mỗi ngày đến hạn là một đơn vị. Thói quen kiểu "K lần mỗi tuần/tháng" thì mỗi tuần (bắt đầu theo cài đặt) hoặc mỗi tháng là một đơn vị, chỉ ngày có ghi mới tính, đủ K là đạt. Kết quả đơn vị: đạt, bỏ lỡ, bỏ qua, chưa xong (hôm nay hoặc kỳ chưa kết thúc).
+  - **Chuỗi**: đạt thì +1, bỏ lỡ thì về 0, bỏ qua và chưa xong thì giữ nguyên. Chuỗi hiện tại là chuỗi tại đơn vị mới nhất; chuỗi dài nhất là lớn nhất từ trước tới nay. Ngày không đến hạn không phải đơn vị nên không ảnh hưởng.
+  - **Tỉ lệ thành công** (7 ngày, 30 ngày, từ đầu): số đơn vị đạt chia số đơn vị đạt cộng bỏ lỡ, trong các đơn vị kết thúc trong khoảng đó; null (hiện "Chưa có") nếu chưa có đơn vị nào. Với "K lần": theo tuần hoặc tháng chứ không theo ngày.
+  - **Điểm 0–100**: lấy tối đa 60 đơn vị gần nhất (chỉ đạt và bỏ lỡ), đơn vị thứ i tính từ mới nhất có trọng số 0,95^i; điểm = 100 × tổng trọng số của đơn vị đạt / tổng trọng số, làm tròn. Chưa có đơn vị nào thì 0. Ví dụ kiểm bằng tay: bỏ lỡ 3 ngày rồi đạt 3 ngày gần nhất cho 54; đạt 3 ngày rồi bỏ lỡ 3 ngày gần nhất cho 46.
+  - **Kỳ đầu bắt đầu giữa tuần/tháng** (kiểu "K lần") mà không đủ K thì không tính là bỏ lỡ.
+  - **Ngày chưa ghi** tính là giá trị 0 như màn Hôm nay, nên mục tiêu "nhiều nhất" mà chưa ghi gì thì đạt.
+  - **Màn Thống kê chung**: mỗi ngày đếm các mục đến hạn (thói quen và việc, kể cả kiểu "K lần" vì chúng hiện hằng ngày ở màn Hôm nay); mục bỏ qua không vào tổng. Việc quá hạn tính ở ngày gốc của nó. Top 3 theo chuỗi dài nhất, hòa thì theo điểm, rồi theo thứ tự người dùng xếp.
+  - **Biểu đồ cột tự vẽ** bằng `CustomPaint`, không thêm thư viện. Chữ (nhãn đầu, cuối, giá trị lớn nhất) và bảng thay thế mở được ("Xem dạng bảng") là widget thường, để co theo cỡ chữ hệ thống và TalkBack đọc được (AC-29, AC-50). Mỗi ô lịch có cả màu lẫn biểu tượng nhỏ.
+  - Chạm một thói quen ở danh sách mở màn tiến độ; màn sửa mở từ nút "Sửa" ở đó hoặc từ menu ở màn Hôm nay.
+- Lý do / phương án đã loại: `fl_chart` (loại: thêm một thư viện cho hai loại biểu đồ đơn giản, khó kiểm soát nhãn cho trình đọc màn hình). Lưu chuỗi và điểm vào cơ sở dữ liệu (loại: dữ liệu suy ra được, lưu thêm dễ lệch khi sửa lịch sử). Tính trong SQL (loại: lịch lặp nhiều kiểu, cần logic Dart đã có).
+- Hệ quả cần nhớ:
+  - Thống kê tính lại từ toàn bộ lịch sử mỗi lần dữ liệu đổi. Đo trên máy phát triển: 50 thói quen × 3 năm hết khoảng 0,4 giây; CHƯA đo trên điện thoại (ngưỡng SPEC mục 5b là 1 giây).
+  - Đổi mục tiêu của một thói quen thì kết quả các ngày cũ tính lại theo mục tiêu mới (D-005).
+  - Truy vấn mục con đã đánh dấu dùng phép nối bảng, không dùng `IN (...)` với danh sách mã (vượt giới hạn biến của SQLite khi lịch sử dài; lỗi tìm ra bằng test hiệu năng).
+
 ## D-007 · Nhắc giờ: flutter_local_notifications, SCHEDULE_EXACT_ALARM do người dùng cấp, lịch lăn 7 ngày · 2026-11-03
 - Bối cảnh: SPEC F-04 (AC-17 tới AC-22). Đã tra ngày 2026-11-03:
   - Tài liệu Android (developer.android.com/about/versions/14/changes/schedule-exact-alarms): từ Android 14, `SCHEDULE_EXACT_ALARM` bị tắt sẵn với app mới cài, người dùng phải tự bật trong "Báo thức và lời nhắc". `USE_EXACT_ALARM` chỉ dành cho app báo thức hoặc lịch.
