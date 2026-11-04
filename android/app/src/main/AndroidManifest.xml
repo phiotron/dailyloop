@@ -68,6 +68,17 @@
             </intent-filter>
         </receiver>
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver" />
+        <!-- AC-21: đổi giờ, đổi múi giờ, khởi động lại, cập nhật app lúc app tắt thì
+             tính lại giờ nhắc theo giờ địa phương mới (chạy Dart không giao diện).
+             Bộ nhận trên của thư viện chỉ đặt lại ĐÚNG thời điểm tuyệt đối cũ. -->
+        <receiver android:exported="false" android:name=".TimeChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

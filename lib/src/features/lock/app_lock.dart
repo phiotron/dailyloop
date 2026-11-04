@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/pin_service.dart';
+import '../../data/settings_repository.dart';
 import '../../providers.dart';
 import 'lock_screen.dart';
 
@@ -43,7 +44,22 @@ class LockNotifier extends Notifier<AppLockState> {
   Future<void> _init() async {
     var enabled = true;
     try {
-      enabled = await ref.read(pinServiceProvider).isEnabled();
+      final pin = ref.read(pinServiceProvider);
+      enabled = await pin.isEnabled();
+      // Keychain của iOS còn nguyên sau khi gỡ app: cài lại thì dữ liệu mất mà
+      // mã PIN cũ còn, người dùng bị khóa trước một app trống. Bật PIN chỉ làm
+      // được sau màn chào, nên có PIN mà chưa qua màn chào là PIN của lần cài
+      // trước (D-011).
+      if (enabled) {
+        final done = await ref
+            .read(settingsRepositoryProvider)
+            .readValue(SettingsRepository.onboardingDoneKey);
+        if (done != 'true') {
+          await pin.disable();
+          ref.invalidate(pinEnabledProvider);
+          enabled = false;
+        }
+      }
     } catch (_) {
       // Không đọc được bộ nhớ an toàn (Keystore/Keychain hỏng): coi như đang
       // khóa để người dùng thấy màn khóa và nút "Quên mã" thay vì màn trắng.

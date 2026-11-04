@@ -56,6 +56,22 @@ void main() {
     },
   );
 
+  testWidgets(
+    'PIN còn sót từ lần cài trước (Keychain iOS) mà dữ liệu trống thì bỏ PIN, không khóa',
+    (tester) async {
+      final secrets = await secretsWithPin(tester, '2468');
+      // Cài lại: chưa qua màn chào, cơ sở dữ liệu trống.
+      final db = await pumpApp(tester, secrets: secrets, onboarded: false);
+      expect(find.text('Nhập mã PIN'), findsNothing);
+      expect(find.byType(WelcomeScreen), findsOneWidget);
+      expect(
+        await tester.runAsync(() => PinService(secrets).isEnabled()),
+        isFalse,
+      );
+      await disposeApp(tester, db);
+    },
+  );
+
   testWidgets('không bật PIN thì vào thẳng app, không thấy màn khóa', (
     tester,
   ) async {

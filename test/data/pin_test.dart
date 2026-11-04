@@ -1,8 +1,11 @@
 import 'package:dailyloop/src/data/pin_service.dart';
+import 'package:dailyloop/src/data/settings_repository.dart';
 import 'package:dailyloop/src/features/lock/app_lock.dart';
 import 'package:dailyloop/src/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../helpers.dart';
 
 void main() {
   group('mã PIN (AC-45)', () {
@@ -58,13 +61,19 @@ void main() {
     late MemorySecretStore store;
 
     Future<ProviderContainer> start() async {
+      final db = memoryDatabase();
+      await SettingsRepository(db).setOnboardingDone();
       final c = ProviderContainer(
         overrides: [
+          databaseProvider.overrideWithValue(db),
           clockProvider.overrideWithValue(() => now),
           secretStoreProvider.overrideWithValue(store),
         ],
       );
-      addTearDown(c.dispose);
+      addTearDown(() async {
+        c.dispose();
+        await db.close();
+      });
       c.listen(lockProvider, (_, _) {});
       await Future<void>.delayed(Duration.zero);
       return c;
@@ -112,13 +121,18 @@ void main() {
     });
 
     test('bộ nhớ an toàn lỗi thì coi như đang khóa, không mở được', () async {
+      final db = memoryDatabase();
       final c = ProviderContainer(
         overrides: [
+          databaseProvider.overrideWithValue(db),
           clockProvider.overrideWithValue(() => now),
           secretStoreProvider.overrideWithValue(_BrokenSecretStore()),
         ],
       );
-      addTearDown(c.dispose);
+      addTearDown(() async {
+        c.dispose();
+        await db.close();
+      });
       c.listen(lockProvider, (_, _) {});
       await Future<void>.delayed(Duration.zero);
       expect(c.read(lockProvider), AppLockState.locked);

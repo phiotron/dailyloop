@@ -22,6 +22,9 @@ import 'features/welcome/welcome_screen.dart';
 import 'providers.dart';
 import 'reminders/alarm_screen.dart';
 import 'reminders/reminder_host.dart';
+// Giữ điểm vào Dart của bộ nhận đổi giờ (Android) trong chương trình được biên dịch.
+// ignore: unused_import
+import 'reminders/time_change_entry.dart';
 import 'ui/messenger.dart';
 
 /// Mỗi lần gọi tạo router mới; test dùng để mỗi test bắt đầu ở màn Hôm nay.

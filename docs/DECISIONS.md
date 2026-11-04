@@ -2,6 +2,55 @@
 
 Mỗi quyết định một mục, mới nhất ở trên cùng.
 
+## D-013 · AC-21: bộ nhận đổi giờ, đổi múi giờ, khởi động lại chạy Dart không giao diện (Android) · 2026-11-04
+- Bối cảnh: D-007 ghi hạn chế "đổi giờ hoặc múi giờ khi app đang tắt thì giờ nhắc giữ giờ tuyệt đối cũ". Giờ nhắc của người dùng là giờ địa phương ("8:00 mỗi ngày") nên đổi múi giờ phải tính lại thời điểm tuyệt đối. Bộ nhận khởi động lại của `flutter_local_notifications` chỉ đặt lại ĐÚNG các thời điểm tuyệt đối đã lưu, không tính lại.
+- Quyết định: Thêm `TimeChangeReceiver.kt` (khai trong manifest, `exported=false`) nhận `TIMEZONE_CHANGED`, `TIME_SET`, `BOOT_COMPLETED`, `MY_PACKAGE_REPLACED`. Bộ nhận dùng `goAsync()`, khởi động một FlutterEngine không giao diện và chạy hàm Dart `timeChangedMain` (`lib/src/reminders/time_change_entry.dart`): mở cơ sở dữ liệu, tính lại lịch lăn 7 ngày bằng `ReminderSync.syncNow()` và `PluginReminderGateway.replaceAll` có sẵn (cùng mã thông báo nên không nhắc trùng; lần hoãn được giữ theo D-007). Chữ thông báo lấy theo ngôn ngữ đã chọn trong cài đặt (không thì ngôn ngữ máy, không hỗ trợ thì tiếng Anh). Dart báo xong qua kênh `dailyloop/background` rồi engine được giải phóng; có hẹn giờ dự phòng 9 giây vì bộ nhận chỉ được chạy vài giây. Điểm vào Dart được giữ trong chương trình biên dịch nhờ `import` ở `app.dart`.
+- Lý do / phương án đã loại: Viết lại lập lịch bằng Kotlin (loại: phải lặp logic lịch lặp lần hai, như D-009). WorkManager (loại: thêm phụ thuộc, việc chỉ mất vài giây). Dịch vụ nền (loại: tốn pin, phải khai báo với Google Play).
+- Hệ quả cần nhớ: **CHƯA thử máy thật** (đổi múi giờ, chỉnh giờ tay, khởi động lại khi app tắt). Phần Dart được test tự động (tính lại lịch theo giờ máy mới, chữ theo ngôn ngữ); phần Kotlin và manifest chỉ kiểm được trên máy (test chỉ kiểm khai báo). Khởi động lại máy có hai bộ nhận cùng chạy (của thư viện và của app), kết quả như nhau vì mã thông báo trùng. iOS: hệ điều hành tự xử lý thông báo theo giờ địa phương, không cần bộ nhận; lịch lăn tính lại ở lần mở app kế tiếp. Máy bật tối ưu pin quá chặt có thể không cho bộ nhận chạy.
+
+## D-012 · Sao lưu `.dailyloop`, xuất CSV, xóa toàn bộ dữ liệu; gói thư viện cho G7 · 2026-11-04
+- Bối cảnh: SPEC F-11 (AC-42 tới AC-44) và AC-52, chạy cả Android và iOS, không xin quyền bộ nhớ. Mô hình theo app anh em A002-vigon (D-006 của vigon), chép sang và chỉnh.
+- Quyết định:
+  - **File**: JSON `{format: "dailyloop-backup", version: 1, schemaVersion, exportedAt, checksum, tables}`; `tables` có 8 bảng (danh mục, thói quen và việc, lịch lặp, mục con, kết quả, dấu mục con, giờ nhắc, cài đặt gồm cả Pomodoro). `checksum` là SHA-256 của phần `tables`. KHÔNG có mã PIN (nằm ở bộ nhớ an toàn). Chia sẻ qua ghi file tạm rồi mở bảng chia sẻ của hệ điều hành; chọn file bằng trình chọn của hệ điều hành.
+  - **Khôi phục**: đọc và kiểm hết (JSON, `format`, `version` ≤ 1, `schemaVersion` ≤ bản hiện tại, mã băm, từng dòng) TRƯỚC khi ghi, rồi xóa toàn bộ và chèn trong MỘT giao dịch; vi phạm khóa ngoại, ràng buộc CHECK, trùng khóa thì quay lui và báo "File sao lưu hỏng", dữ liệu hiện có giữ nguyên. App hỏi xác nhận SAU khi kiểm file. Xong thì đặt lại toàn bộ giờ nhắc (`ReminderSync.syncNow()`); widget tự cập nhật qua thay đổi bảng.
+  - **CSV**: cột `date,activity,type,result,value`; tiêu đề tiếng Anh cố định, giá trị `type` và `result` theo ngôn ngữ app (Thói quen/Việc, Đạt/Chưa đạt/Đã bỏ qua); UTF-8 có BOM để Excel và Google Sheets đọc đúng chữ tiếng Việt; ô bắt đầu bằng `= + - @` được thêm dấu `'` để không thành công thức. Danh sách con: giá trị là số mục con đã xong. Chỉ xuất các ngày CÓ ghi kết quả.
+  - **Xóa toàn bộ**: hai bước xác nhận; xóa mọi bảng và đặt lại bộ đếm id, tạo lại 8 danh mục mặc định (như lúc mới cài), xóa PIN, hủy mọi giờ nhắc và hẹn giờ Pomodoro, ghi lại dữ liệu widget (trống), đưa về màn chào (cài đặt `onboardingDone` đã bị xóa).
+  - **Gói thư viện thêm ở G7** (đều hỗ trợ Android và iOS, không xin quyền, không SDK thu thập dữ liệu):
+    - `crypto ^3.0.8`: SHA-256 cho mã toàn vẹn file và băm PIN; Dart thuần.
+    - `flutter_secure_storage ^11.2.0`: Android Keystore, iOS Keychain (`first_unlock_this_device`: không đồng bộ sang máy khác qua iCloud); giữ mã băm PIN.
+    - `share_plus ^13.3.1`: bảng chia sẻ của hệ điều hành (iPad cần `sharePositionOrigin`, đã truyền); không xin quyền bộ nhớ.
+    - `file_picker ^13.3.2`: trình chọn file của hệ điều hành (Storage Access Framework, UIDocumentPicker); không xin quyền.
+    - `path_provider ^2.1.6`: thư mục tạm để ghi file trước khi chia sẻ.
+- Lý do / phương án đã loại: Sao chép nguyên file SQLite (loại: gắn với phiên bản schema, khó kiểm tính toàn vẹn). Xin quyền bộ nhớ (loại: trái SPEC mục 5, thêm khai báo). Mã hóa cơ sở dữ liệu bằng SQLCipher (loại: ngoài phạm vi v1, xem D-011).
+- Hệ quả cần nhớ: Mã băm chỉ phát hiện file hỏng hoặc sửa vô ý, KHÔNG chống người cố ý sửa (họ tính lại được). File sao lưu KHÔNG mã hóa (cần nói rõ trong app và chính sách quyền riêng tư). Đổi cấu trúc bảng thì tăng `schemaVersion` của DB và, nếu đổi định dạng file, tăng `version` của file kèm đường nâng cấp khi đọc file cũ. Cấu hình iOS: deployment target tối thiểu 14.0 (do `file_picker_darwin`); không cần khóa Info.plist hay entitlement nào cho các gói này.
+
+## D-011 · Khóa PIN chỉ chặn người tò mò, không mã hóa dữ liệu · 2026-11-04
+- Bối cảnh: SPEC F-12 (AC-45 tới AC-47) và AC-41. Mô hình theo app anh em A002-vigon (D-007 của vigon).
+- Quyết định: PIN 4 số, nhập hai lần để đặt; chỉ lưu muối ngẫu nhiên 16 byte và mã băm SHA-256 lặp 20.000 vòng ở bộ nhớ an toàn của hệ điều hành (`flutter_secure_storage`, D-012), không lưu mã, không đưa vào file sao lưu. Màn khóa là lớp phủ trong `MaterialApp.builder` (`AppLockOverlay`); phần app bên dưới chỉ bị ẩn (`Offstage`) nên không mất trạng thái. Khóa khi mở app và khi quay lại sau hơn 1 phút ở nền (`AppLifecycleListener`, so với `clockProvider` để test được). Lỗi đọc bộ nhớ an toàn thì coi như đang khóa để người dùng còn thấy nút "Quên mã". "Quên mã": giải thích rồi xóa toàn bộ dữ liệu qua hai bước xác nhận (D-012). Đổi hoặc tắt PIN phải nhập mã hiện tại. Chuông báo thức chạm lúc đang khóa hiện NGAY trên màn khóa với Xong, Hoãn, Tắt không cần PIN (hiện cả tên mục, như chính thông báo chuông); bấm "Mở app" thì về màn nhập PIN. Khi có PIN, dữ liệu widget không có tên mục, chỉ có "Còn N mục" (`hideNames`, AC-41); bật hoặc tắt PIN thì widget được dựng lại ngay.
+- Lý do / phương án đã loại: Vân tay/sinh trắc học (ngoài phạm vi v1). PBKDF2/Argon2 (loại: PIN 4 số chỉ có 10.000 khả năng nên thuật toán băm không đổi được độ an toàn). Lưu PIN trong SQLite (loại: file sao lưu và cơ sở dữ liệu sẽ chứa mã). Đếm số lần nhập sai rồi khóa tạm (loại khỏi v1: PIN chỉ chặn người tò mò).
+- Hệ quả cần nhớ:
+  - **PIN chỉ chặn người cầm máy tò mò mở app. KHÔNG mã hóa cơ sở dữ liệu hay file sao lưu** và không chống được kẻ lấy được bộ nhớ an toàn của máy đã root (dò 10.000 mã rất nhanh). Không được quảng cáo là "mã hóa dữ liệu"; chính sách quyền riêng tư và biểu mẫu store phải nói đúng điều này.
+  - Keychain iOS còn nguyên sau khi gỡ app: nếu có PIN mà cơ sở dữ liệu chưa qua màn chào thì coi là PIN của lần cài trước và xóa PIN (tránh khóa người dùng trước một app trống).
+  - **Chưa làm: ẩn tên mục trong tiêu đề thông báo trên màn khóa (một vế của AC-46).** Việc này phải sửa `reminder_service.dart` (mức hiển thị `private` kèm bản công khai không tên khi có PIN), ngoài phạm vi phiên G7. Hiện thông báo theo mặc định của hệ điều hành: Android thường ẩn nội dung nếu người dùng chọn "ẩn nội dung nhạy cảm" ở màn khóa.
+  - Màn hình "gần đây" của hệ điều hành vẫn có thể chụp nội dung app (chưa dùng FLAG_SECURE); ngoài phạm vi v1.
+  - Chưa kiểm chứng trên Keystore, Keychain thật; luồng chuông trên màn khóa chưa thử máy thật.
+
+## D-010 · Nhắc giờ trên iOS: "Chuông" = thông báo time-sensitive + âm dài + nút Xong/Hoãn/Tắt; lịch lăn tôn trọng giới hạn 64 · 2026-11-04
+- Bối cảnh: bản 1 có iOS (D-001). SPEC F-04 (AC-17 tới AC-22) viết cho Android; iOS không có báo thức toàn màn hình, không có "báo thức chính xác" để xin riêng, và chỉ giữ **64 thông báo chờ** gần giờ nhất mỗi app (phần xa hơn bị hệ điều hành bỏ im lặng). Hạ tầng: `flutter_local_notifications` 22 (đã hỗ trợ iOS), chỉ sửa nhánh iOS (`Platform.isIOS`) trong `reminder_service.dart`, Android giữ nguyên.
+- Quyết định:
+  - **Chuông trên iOS** = thông báo `interruptionLevel: timeSensitive` (xuyên Focus/tóm tắt theo lịch, sáng màn hình khóa), âm báo riêng `alarm.wav` dài khoảng 28 giây (giới hạn 30 giây của iOS), nhóm nút **Xong** (chỉ Có/Không và việc), **Hoãn 10 phút**, **Tắt**. Không có phát lặp tới khi bấm, không tự dừng sau 5 phút như Android: iOS chỉ phát âm một lần. Thông báo thường: mức `active`, âm mặc định, nút Xong cho Có/Không.
+  - **Entitlement** `com.apple.developer.usernotifications.time-sensitive` trong `ios/Runner/Runner.entitlements`; App ID `com.phiotron.dailyloop` phải bật "Time Sensitive Notifications" trước khi tạo provisioning profile. Người dùng có thể tắt riêng quyền này trong Cài đặt iOS; khi đó chuông chỉ như thông báo thường (app không phát hiện được).
+  - **Nút bấm** (nhóm `reminder_done`, `alarm_done`, `alarm`) không mang tùy chọn `foreground`: chạy ở engine nền, dùng lại `handleNotificationAction` của Android (D-007), nên cần `FlutterLocalNotificationsPlugin.setPluginRegistrantCallback` trong `AppDelegate.swift`. Nhãn nút cố định lúc đăng ký nhóm → đăng ký lại khi `ReminderSync` đổi chữ/ngôn ngữ.
+  - **Giới hạn 64:** `limitPlanForIos` cắt lịch lăn (đã xếp sớm nhất trước) còn `64 − 3 − (số lần hoãn đang chờ)`: chừa 1 chỗ cho báo hết giờ Pomodoro và 2 chỗ cho lần hoãn mới. Các lần nhắc bị cắt không được đặt; lần đặt lại lịch kế tiếp (mở app, quay lại app, dữ liệu đổi) sẽ đặt chúng khi vào được top 61.
+  - **Xin quyền đúng lúc:** khởi tạo plugin với `requestAlertPermission/Sound/Badge = false` (không hỏi lúc mở app, AC-34). Lần đầu đặt giờ nhắc, app hiện màn giải thích (AC-18) rồi mới gọi `requestPermissions(alert, sound)`. Từ chối thì giờ nhắc có cảnh báo và nút mở Cài đặt (`openAppNotificationSettings`). `exactAlarms` và `fullScreen` luôn coi là đã cấp trên iOS (không có khái niệm tương đương) nên không hiện cảnh báo thừa.
+  - **Không khai `UIBackgroundModes`:** thông báo cục bộ không cần. Chữ giao diện mới (nếu có) ghi ở `notes/2026-11-04-ios-ci.md`, không đổi `.arb` ở phiên này.
+  - **Mức tối thiểu iOS 15.0** (mặc định Flutter 3.47): `timeSensitive` cần iOS 15; mọi plugin trong `pubspec.yaml` chạy ≥ 13–14. Widget iOS (WidgetKit + App Intent để chạm ô đánh dấu không mở app) cần **iOS 17** cho riêng target widget; ứng dụng chính vẫn giữ 15.0. Chưa làm widget.
+- Lý do / phương án đã loại: Critical Alerts (loại: phải xin Apple duyệt entitlement riêng, chỉ cho y tế/an toàn). Chuỗi thông báo lặp mỗi phút để "kêu liên tục" (loại: chiếm hết hạn mức 64 và khó chịu với người dùng). Chạy nền (`UIBackgroundModes`, background fetch) để làm mới lịch (loại: không bảo đảm chạy, tốn pin; chấp nhận lịch lăn ngắn hơn khi không mở app).
+- Hệ quả cần nhớ:
+  - Người có nhiều giờ nhắc mỗi ngày (ví dụ 12 mục × 3 giờ = 36 lần/ngày) chỉ được đặt trước khoảng 1–2 ngày; nếu không mở app mà hết lịch thì không còn nhắc. Đây là giới hạn của iOS; ghi vào mô tả/FAQ và theo dõi khi thử máy.
+  - **CHƯA kiểm chứng** trên iPhone hay trên simulator có thao tác: chuông, nút Xong khi app đóng, time-sensitive qua Focus, giới hạn 64 thật, âm 28 giây phát đủ. Chỉ có build + mở app trên simulator ở CI. Nên thử qua TestFlight khi mượn được iPhone.
+  - `alarm.wav` là âm tự tổng hợp tạm thời; thay bằng âm do thiết kế đưa (giữ tên file hoặc sửa `iosAlarmSound`).
+
 ## D-009 · Pomodoro tính theo mốc thời gian đã lưu; widget không dùng gói ngoài · 2026-11-04
 - Bối cảnh: G6, SPEC F-09 (AC-35 tới AC-38) và F-10 (AC-39, AC-40).
 - Quyết định:
@@ -46,7 +95,7 @@ Mỗi quyết định một mục, mới nhất ở trên cùng.
 - Lý do / phương án đã loại: `USE_EXACT_ALARM` (loại: trái chính sách Google Play với app thói quen). Lặp lại bằng `matchDateTimeComponents` (loại: không biểu diễn được "cứ N ngày", "ngày 31", ngày kết thúc, và không bỏ được lần nhắc khi đã xong). Dịch vụ chạy nền liên tục (loại: tốn pin, phải khai báo foreground service).
 - Hệ quả cần nhớ:
   - Khởi động lại máy: thư viện tự đặt lại các lần nhắc đã lưu.
-  - Đổi giờ hoặc múi giờ khi app đang tắt: các lần nhắc giữ giờ tuyệt đối cũ cho tới lần mở app kế tiếp. AC-21 chỉ đạt một phần, ghi ở BACKLOG.
+  - ~~Đổi giờ hoặc múi giờ khi app đang tắt: các lần nhắc giữ giờ tuyệt đối cũ cho tới lần mở app kế tiếp.~~ → **Đã khắc phục ở G7 bằng bộ nhận `TimeChangeReceiver` (D-013); CHƯA thử máy thật.**
   - Không mở app quá 7 ngày thì hết lịch nhắc.
   - Trình tối ưu pin của từng hãng vẫn có thể làm trễ.
   - Khi phát hành phải nộp khai báo full-screen intent trong Play Console và khai trong Data safety rằng không có dữ liệu nào rời máy.
