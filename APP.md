@@ -7,7 +7,7 @@
 
 ## Brief
 - **Mã app / thư mục:** `A003-dailyloop` → `apps/A003-dailyloop/` — đã ghi trong `apps/REGISTRY.md`
-- **Bundle ID** (không đổi): `com.phiotron.dailyloop` · **Repo:** https://github.com/phiotron/dailyloop (private, nhánh `main`)
+- **Bundle ID** (không đổi): `com.phiotron.dailyloop` · **Repo:** https://github.com/phiotron/dailyloop (private; làm việc trên nhánh **`dev`**, `main` chỉ nhận code đã ổn định — WORKFLOW §7)
 - **Tên hiển thị:** **Orbiday** — Play/App Store EN `Orbiday: Habits & To-Do`, VI `Orbiday: Thói Quen & Việc`. Chưa tra nhãn hiệu chính thức (WIPO/Cục SHTT/USPTO nhóm 9/42, nhãn ORBI của NETGEAR) và tên miền `orbiday.app/.io` — việc của người dùng.
 - **Một câu mô tả:** Lập lịch thói quen và việc cần làm hằng ngày, nhắc đúng giờ, theo dõi chuỗi ngày và thống kê — offline, không tài khoản, không thu thập dữ liệu.
 - **Người dùng mục tiêu:** người đi làm, sinh viên, người muốn xây thói quen sức khỏe/học tập; Việt Nam và quốc tế (vi/en).
@@ -79,14 +79,14 @@ Flutter 3.47.8 ở `C:/src/flutter`, **chưa có trong PATH**. Git Bash: `export
 - Google Play chỉ cho `USE_EXACT_ALARM` với app báo thức/lịch → **không khai quyền đó**; dùng `SCHEDULE_EXACT_ALARM` do người dùng cấp (D-007).
 - **Widget Android ghi thẳng vào `dailyloop.sqlite`, bảng `entries`:** đổi tên bảng/cột phải sửa `WidgetStore.kt` (D-009). Widget CHƯA chạy trên máy thật.
 - Lệnh Bash có heredoc dài kèm dấu nháy dễ lỗi "unexpected EOF" → dùng công cụ Write.
-- Chỉ push `main` khi cần (CI iOS); không đổi nhánh trong thư mục dùng chung.
+- **Git (luật xưởng 2026-11-05, hết phút GitHub Actions):** thư mục app luôn ở `dev`; phiên con commit + push `dev`, không `git switch`. CI KHÔNG chạy trên `dev` → trước khi push tự chạy trên máy `flutter analyze` + `flutter test` (+ `flutter gen-l10n` nếu sửa `.arb`). Chỉ phiên điều phối merge `dev` → `main` (`git push origin dev:main`) sau khi tự chạy lại test; push `main` chỉ chạy job kiểm; build iOS chỉ khi tag `v*` hoặc chạy tay (`ios.yml`).
 
 ## Quyết định riêng của app (chi tiết: `docs/DECISIONS.md`)
 - **D-001** Flutter; **2026-11-04: thêm iOS vào bản 1.** · **D-002** Chỉ lưu trên máy, không máy chủ, không SDK bên thứ ba.
 - **D-003** Flutter 3.47.8, Riverpod 3 viết tay, go_router, l10n `.arb`. · **D-004** drift/SQLite, commit file sinh.
 - **D-005** Mô hình dữ liệu: thói quen+việc chung bảng, lịch lặp có `effectiveFrom`. · **D-006** Việc cần làm ghi kết quả vào ngày của việc.
 - **D-007** Nhắc giờ: flutter_local_notifications, lịch lăn 7 ngày. · **D-008** Chuỗi/điểm tính từ "đơn vị", biểu đồ tự vẽ. · **D-009** Pomodoro theo mốc thời gian; widget không gói ngoài; **D-010** iOS: chuông = thông báo time-sensitive, lịch lăn ≤ 64.
-- **2026-11-04** Vào xưởng với mã `A003-dailyloop`; giữ repo `phiotron/dailyloop`, nhánh `main` (đã xóa `master`); phiên con được push (CI iOS).
+- **2026-11-04** Vào xưởng với mã `A003-dailyloop`; giữ repo `phiotron/dailyloop`, nhánh `main` (đã xóa `master`); phiên con push `dev` (từ 2026-11-05; CI chỉ ở `main`/tag).
 - **2026-11-05** Đổi tên hiển thị DailyLoop → Streakloom → **Orbiday** (trùng tên trên store; xem `store/name-check.md`, `store/name-candidates.md`).
 - **D-010..D-013** (iOS nhắc giờ + G7: PIN, sao lưu, gói đã chọn) — chi tiết `docs/DECISIONS.md`.
 - **2026-11-04** UI bản 1 = **thiết kế mới** qua Claude Design (giữ nguyên luồng + phạm vi SPEC; không sao chép hình thức app nào).
