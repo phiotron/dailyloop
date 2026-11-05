@@ -39,4 +39,4 @@ Build + ký + tải lên chạy trên GitHub Actions macOS (`.github/workflows/r
 ## Sau phát hành
 - Theo dõi crash tại: {{công cụ / console của store}}
 - Nơi nhận phản hồi người dùng:
-- Mốc rà soát: sau 1 ngày, 1 tuần → ghi kết quả vào BACKLOG
+- Mốc rà soát: sau 1 ngày, 1 tuần → ghi kết quả vào `docs/MANUAL-TESTS.md`

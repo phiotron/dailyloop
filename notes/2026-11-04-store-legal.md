@@ -33,7 +33,7 @@ Người dùng chốt **Orbiday** sau khi DailyLoop (trùng nặng cả hai stor
 - **Đạt mới:** D-01 (bản đồ dữ liệu), D-08 (kịch bản sự cố — bản nháp), P-06 (targetSdk 36), P-07 (16 KB: zipalign + LOAD align các `.so` 64-bit, APK 2026-11-04). P-04 → không áp dụng.
 - **Chuyển sang chưa vì iOS vào v1:** P-01, P-02, P-03, P-05 (kèm việc cụ thể).
 - **Còn "chưa" (21 dòng), ai làm:** người dùng — M-01, D-02 (host chính sách), P-05, P-08, P-09, P-10; luật sư — D-07, D-09, S-06, C-03; phiên code/CI — D-11, S-05, P-01..P-03; phiên sau — S-01 (MASVS), S-04 (SBOM), A-01, T-02, D-06, D-12 (quyết định). Chi tiết bảng mục 4 của COMPLIANCE.
-- Nguồn tiêu chuẩn: `D:/DemoChung/shared/standards/tieu-chuan-ban-app-toan-cau.md` **còn đọc được** (2026-11-04) → giữ tham chiếu, đã ghi rõ "nguồn ngoài xưởng" + đề xuất chép sang `reference/`. Các mốc ngày trong bảng lấy từ file đó (cập nhật 28/10/2026); **chưa** mở trang Apple/Google chính thức để kiểm lại.
+- Nguồn tiêu chuẩn: `reference/tieu-chuan-ban-app-toan-cau.md` (xưởng) **còn đọc được** (2026-11-04) → giữ tham chiếu, đã ghi rõ "nguồn ngoài xưởng" + đề xuất chép sang `reference/`. Các mốc ngày trong bảng lấy từ file đó (cập nhật 28/10/2026); **chưa** mở trang Apple/Google chính thức để kiểm lại.
 
 ## Cách kiểm (đã chạy)
 - Đếm ký tự bằng Python (`len`, Unicode): mọi trường ở bảng trên nằm trong giới hạn (tên ≤ 30: 25–28; mô tả ngắn ≤ 80: 77/79; keywords ≤ 100: 100/96 — **EN keywords đúng 100, sát trần**; subtitle ≤ 30: 27/29; promo ≤ 170: 154/164; mô tả dài ≤ 4000). Số hiển thị ngay trong file bên cạnh từng trường.
@@ -71,5 +71,5 @@ Người dùng chốt **Orbiday** sau khi DailyLoop (trùng nặng cả hai stor
 - **Bước "tra tên" đưa lên TRƯỚC khi tạo `APP.md`/`product.md`** (đầu `Playbook` giai đoạn Khởi động): đây là lần thứ hai app bị phát hiện trùng muộn; thêm checklist: Play + App Store + WIPO + tên miền + 3 tên dự phòng.
 - **Một nhóm tester Google dùng chung cho cả xưởng** (`phiotron-testers`) + file danh sách tester ở ngoài repo; mỗi app một link opt-in. Ghi vào `memory/facts`.
 - **Script `build_web.py` → `tool/` cấp xưởng** (đã tổng quát: nhận danh sách trang); thêm bước kiểm "còn `[ĐIỀN]`" trước khi cho đăng. Tương tự script đếm ký tự store (đã dùng ở đây) nên thành lệnh một dòng.
-- **Chép tiêu chuẩn `tieu-chuan-ban-app-toan-cau.md` vào `reference/`** (đang nằm ngoài xưởng ở DemoChung; COMPLIANCE của cả hai app trỏ vào đó).
+- **Chép tiêu chuẩn `tieu-chuan-ban-app-toan-cau.md` vào `reference/`** (đã chép vào `D:/Mobile App/reference/`; COMPLIANCE của cả hai app trỏ vào đó).
 - Quy tắc song song: các phiên con cùng thư mục thấy file của nhau chưa commit (`ios/`, `lib/` G7) — tiện cho đối chiếu nhưng dễ nhầm; nên ghi vào brief mẫu "đọc, đừng sửa, đừng stage".

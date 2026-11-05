@@ -1,20 +1,22 @@
-# A003-dailyloop · DailyLoop — APP.md
+# A003-dailyloop · Orbiday — APP.md
 
 > Brief + trạng thái của app. **Chỉ phiên điều phối sửa file này**; phiên con ghi báo cáo vào `notes/`.
-> App **nhập từ DemoChung** (APP-002, đã qua G1–G6 ở đó 2026-11-03..04). Lịch sử quy trình cũ (BACKLOG đầy đủ + biên bản thử
-> máy G1–G6, RUNBOOK, retro mẫu, CLAUDE.md app, nhật ký phiên): `notes/archive-demochung/` — chỉ đọc.
+> App **đã code trước khi vào xưởng** (G1–G6 xong, 2026-11-03..04). Việc thử máy còn lại + biên bản: `docs/MANUAL-TESTS.md`.
+> **Tên hiển thị: Orbiday** (tên cũ DailyLoop → Streakloom bị loại vì trùng trên store, chốt 2026-11-05). Tên nội bộ `dailyloop` giữ nguyên
+> (mã app, bundle ID, tên repo, DB/kênh native, đuôi file sao lưu `.dailyloop`).
 
 ## Brief
 - **Mã app / thư mục:** `A003-dailyloop` → `apps/A003-dailyloop/` — đã ghi trong `apps/REGISTRY.md`
 - **Bundle ID** (không đổi): `com.phiotron.dailyloop` · **Repo:** https://github.com/phiotron/dailyloop (private, nhánh `main`)
+- **Tên hiển thị:** **Orbiday** — Play/App Store EN `Orbiday: Habits & To-Do`, VI `Orbiday: Thói Quen & Việc`. Chưa tra nhãn hiệu chính thức (WIPO/Cục SHTT/USPTO nhóm 9/42, nhãn ORBI của NETGEAR) và tên miền `orbiday.app/.io` — việc của người dùng.
 - **Một câu mô tả:** Lập lịch thói quen và việc cần làm hằng ngày, nhắc đúng giờ, theo dõi chuỗi ngày và thống kê — offline, không tài khoản, không thu thập dữ liệu.
 - **Người dùng mục tiêu:** người đi làm, sinh viên, người muốn xây thói quen sức khỏe/học tập; Việt Nam và quốc tế (vi/en).
 - **Kiếm tiền:** miễn phí hoàn toàn bản 1 (không quảng cáo, không IAP, không SDK).
 - **Nền tảng:** Android + iOS (iOS thêm 2026-11-04; build + test trên GitHub Actions macOS runner — fact xưởng `may-windows-build-ios`) ·
   **Stack:** Flutter 3.47.8, Riverpod 3, go_router, drift/SQLite.
 - **Tài liệu tham chiếu:** `docs/SPEC.md` (AC-01..AC-53 — nguồn sự thật về hành vi), `docs/DECISIONS.md`, `docs/ARCHITECTURE.md`,
-  `docs/TESTING.md`, `docs/SECURITY.md`, `docs/COMPLIANCE.md`, `docs/RELEASE.md`, `docs/RISKS.md`; thuật ngữ `CONTEXT.md` (khi có);
-  mô tả gửi Claude Design `product.md` (khi có); mockup `design/hifi/` (khi có); store `store/`.
+  `docs/TESTING.md`, `docs/SECURITY.md`, `docs/COMPLIANCE.md`, `docs/RELEASE.md`, `docs/RISKS.md`; thuật ngữ `CONTEXT.md`;
+  mô tả gửi Claude Design `product.md` (30 màn SCR-01..30); mockup `design/hifi/` (khi có); store `store/`; thử máy `docs/MANUAL-TESTS.md`.
 
 ## MVP (đúng SPEC, F-01..F-14)
 1. **Thói quen + lịch lặp** (F-01): 4 kiểu đánh giá (Có/Không, Số lượng, Thời gian, Danh sách con), 5 kiểu lịch lặp, lưu trữ/xóa có hoàn tác, sắp xếp.
@@ -33,22 +35,23 @@ Luồng nhanh nhất: mở app (hoặc widget) → chạm ô tròn của mục h
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
-| #1 Chuyển + product.md + G7 + nền iOS | 2026-11-04 | A product.md · B nền iOS + CI · C G7 (sao lưu/PIN/xóa/AC-21) · D store & pháp lý | đang chạy |
+| #1 Nhập app + product.md + G7 + nền iOS | 2026-11-04..05 | A product.md · B nền iOS + CI · C G7 · D store & pháp lý (+ đổi tên ×2) | **Xong code/tài liệu; chờ người dùng duyệt product.md → Claude Design.** 218 test đạt, analyze sạch, CI Ubuntu + iOS macOS xanh |
 | #2 Áp UI Hi-Fi + test 2 nền tảng | | F design system → G, H, I, J song song → K thử máy | |
 | #3 Phát hành | | L ảnh store · M Android · N iOS | |
 
-Kế hoạch đầy đủ 3 phiên: `notes/2026-11-04-ke-hoach-3-phien.md`.
-Đã có ở thời DemoChung: G1–G6 xong code, 169 test đạt, `flutter analyze` sạch, APK release build được. **Chưa thử máy thật:** phần lớn G3–G6
-(widget, Pomodoro báo hết giờ, thông báo/chuông nhiều tình huống) — xem biên bản trong `notes/archive-demochung/BACKLOG.md`.
+Kế hoạch 3 phiên: `notes/2026-11-04-ke-hoach-3-phien.md`. Báo cáo phiên con #1: `notes/2026-11-04-{product-md,ios-ci,g7,store-legal}.md`.
+
+**Kết quả #1 (đã kiểm thật):** `flutter analyze` sạch · `flutter test` **218 đạt** (169 cũ + 44 G7 + 5 iOS) · APK release build được (phiên C) ·
+GitHub Actions: CI Ubuntu xanh, iOS macOS simulator build xanh (run `41993235457`). Đã có: sao lưu `.dailyloop` + CSV, khóa PIN + chuông trên màn khóa,
+xóa toàn bộ dữ liệu, receiver đổi giờ/múi giờ (AC-21), nền iOS + nhắc giờ iOS (D-010), 3 workflow, hồ sơ store + chính sách vi/en, `product.md` + `CONTEXT.md`.
 
 **Việc dở / bước tiếp:**
-- Phiên #1: duyệt `product.md` → người dùng gửi Claude Design, lưu mockup vào `design/hifi/`.
-- Người dùng: Apple Developer (cá nhân) + App ID `com.phiotron.dailyloop` + App Group (cho widget iOS) + khóa API → GitHub Secrets repo `phiotron/dailyloop`.
-- Người dùng: Play Console cá nhân → **closed test 12 tester × 14 ngày** (bắt đầu sớm bằng build hiện tại); upload keystore ngoài repo (`docs/RELEASE.md`).
-- Người dùng: đăng chính sách lên web lấy link; TalkBack + cỡ chữ lớn nhất; cho phép thử máy thật (Galaxy A13 dùng chung với chat khác).
-- Mở từ SPEC/backlog cũ: thử máy thật G1–G6; dữ liệu thử "Test nuoc" còn trên máy (xóa khi máy rảnh); khai báo full-screen intent trong Play Console (G8).
-- COMPLIANCE còn "chưa" ở các dòng áp dụng — D phiên con rà lại.
-- Ý tưởng ngoài SPEC (KHÔNG tự làm): hỏi "Bỏ thay đổi?" khi Back ở màn soạn; hộp nhập ghi rõ ngày đang sửa từ lịch tháng; sao lưu Google Drive; mẫu thói quen/thử thách; widget từng thói quen; mở khóa vân tay.
+- **Người dùng:** duyệt `product.md` → gửi Claude Design (hướng: bộ nhận diện + design system MỚI cho Orbiday, giữ luồng + phạm vi SPEC) → lưu mockup vào `design/hifi/`.
+- **Chưa làm / chưa xong (phiên #2):** widget iOS (WidgetKit + App Group `group.com.phiotron.dailyloop`, phiên con riêng); thông báo ẩn tên khi có PIN (AC-46); `integration_test` trên simulator; icon + màn khởi động iOS thật (chờ icon Orbiday); chỉnh mô tả AC-20/F-04 cho iOS (chuông chỉ là thông báo time-sensitive).
+- **Chưa kiểm chứng trên máy thật:** phần native AC-21; G3–G7 Android (xem `docs/MANUAL-TESTS.md`); toàn bộ nhắc giờ iOS, ký/TestFlight (không có iPhone, chưa có tài khoản Apple).
+- **Người dùng (cần làm):** Apple Developer (cá nhân) + App ID `com.phiotron.dailyloop` bật Time Sensitive Notifications + App Store Connect app "Orbiday" + 7 GitHub Secrets iOS (tên + cách lấy: `docs/RELEASE.md` mục iOS; Claude không tự tạo khóa); Play Console cá nhân + upload keystore ngoài repo + **closed test 12 tester × 14 ngày bắt đầu sớm**; host chính sách quyền riêng tư (`docs/legal/`, bản HTML đã sinh) rồi điền link + email liên hệ; tra nhãn hiệu/tên miền Orbiday; mượn iPhone thử chuông; cho phép thử máy thật Android (máy dùng chung).
+- COMPLIANCE: còn các dòng "chưa" liệt kê trong `docs/COMPLIANCE.md` (mỗi dòng ghi ai làm).
+- Phút macOS GitHub: mỗi run iOS ~5–6 phút (×10 quota repo private) — chỉ chạy khi đổi `main` hoặc chạy tay.
 
 ## Lệnh (đã chạy thật 2026-11-03/04; dùng đúng, không đoán)
 Flutter 3.47.8 ở `C:/src/flutter`, **chưa có trong PATH**. Git Bash: `export PATH="/c/src/flutter/bin:$PATH"` trước mọi lệnh.
@@ -81,8 +84,10 @@ Flutter 3.47.8 ở `C:/src/flutter`, **chưa có trong PATH**. Git Bash: `export
 - **D-001** Flutter; **2026-11-04: thêm iOS vào bản 1.** · **D-002** Chỉ lưu trên máy, không máy chủ, không SDK bên thứ ba.
 - **D-003** Flutter 3.47.8, Riverpod 3 viết tay, go_router, l10n `.arb`. · **D-004** drift/SQLite, commit file sinh.
 - **D-005** Mô hình dữ liệu: thói quen+việc chung bảng, lịch lặp có `effectiveFrom`. · **D-006** Việc cần làm ghi kết quả vào ngày của việc.
-- **D-007** Nhắc giờ: flutter_local_notifications, lịch lăn 7 ngày. · **D-008** Chuỗi/điểm tính từ "đơn vị", biểu đồ tự vẽ. · **D-009** Pomodoro theo mốc thời gian; widget không gói ngoài.
-- **2026-11-04** Chuyển từ DemoChung vào xưởng, mã `A003-dailyloop`; giữ repo `phiotron/dailyloop`, đổi nhánh `master`→`main`; phiên con được push (CI iOS).
+- **D-007** Nhắc giờ: flutter_local_notifications, lịch lăn 7 ngày. · **D-008** Chuỗi/điểm tính từ "đơn vị", biểu đồ tự vẽ. · **D-009** Pomodoro theo mốc thời gian; widget không gói ngoài; **D-010** iOS: chuông = thông báo time-sensitive, lịch lăn ≤ 64.
+- **2026-11-04** Vào xưởng với mã `A003-dailyloop`; giữ repo `phiotron/dailyloop`, nhánh `main` (đã xóa `master`); phiên con được push (CI iOS).
+- **2026-11-05** Đổi tên hiển thị DailyLoop → Streakloom → **Orbiday** (trùng tên trên store; xem `store/name-check.md`, `store/name-candidates.md`).
+- **D-010..D-013** (iOS nhắc giờ + G7: PIN, sao lưu, gói đã chọn) — chi tiết `docs/DECISIONS.md`.
 - **2026-11-04** UI bản 1 = **thiết kế mới** qua Claude Design (giữ nguyên luồng + phạm vi SPEC; không sao chép hình thức app nào).
 - **2026-11-04** Widget iOS có (WidgetKit); kiểu "Chuông" trên iOS = thông báo time-sensitive + nút Xong/Hoãn. AC-21: thêm bộ nhận đổi giờ/múi giờ (Android). Phạm vi = đúng SPEC, G7 làm ở #1. Miễn phí hoàn toàn.
 - **2026-11-04** Tài khoản Google Play và Apple đứng tên **cá nhân**.

@@ -13,7 +13,7 @@ Người muốn sống có nề nếp (uống đủ nước, tập thể dục, 
 - Cuối ngày hoặc cuối tuần: xem chuỗi ngày, lịch tháng và thống kê; chỉnh lại thói quen.
 
 ## 3. Tính năng bản đầu (MVP) và tiêu chí chấp nhận
-Quy ước kiểm chứng: **[T]** = test tự động (`flutter test`), **[M]** = thử tay trên máy Android thật, ghi biên bản vào BACKLOG.
+Quy ước kiểm chứng: **[T]** = test tự động (`flutter test`), **[M]** = thử tay trên máy Android thật, ghi biên bản vào `docs/MANUAL-TESTS.md`.
 "Ngày" luôn tính theo giờ địa phương của máy, từ 00:00 tới 23:59.
 
 ### F-01 · Tạo và quản lý thói quen
@@ -154,7 +154,7 @@ Ngưỡng dưới đây là đề xuất của Claude, người dùng chỉnh kh
 - Tài khoản Google Play cá nhân mới phải closed test với 12 người trong 14 ngày (P-09).
 - Người dưới 18 tuổi có thể dùng; app không thu dữ liệu và không có tương tác xã hội. Người dùng cần quyết có tích hợp Play Age Signals hay không (D-12).
 - Bán ở EU: chưa rõ app miễn phí của cá nhân có thuộc phạm vi CRA không, cần luật sư xác nhận (S-06).
-- Phạm vi lớn: 14 tính năng, chia thành 8 giai đoạn (BACKLOG).
+- Phạm vi lớn: 14 tính năng, chia thành 8 giai đoạn (xem APP.md).
 
 ## 8. Tiêu chí hoàn thành bản đầu
 - F-01 tới F-14 đạt toàn bộ AC, có biên bản thử trên ít nhất một máy Android thật (Galaxy A13). Nhắc giờ phải thử thêm trên một máy của hãng khác nếu có.
