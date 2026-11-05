@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="widget_description">DailyLoop · Hôm nay</string>
+    <string name="widget_description">Orbiday · Hôm nay</string>
     <color name="widget_bg">#F7F7F9</color>
     <color name="widget_text">#1B1B1F</color>
     <color name="widget_text_dim">#5F6368</color>
