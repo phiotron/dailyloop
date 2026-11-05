@@ -1,4 +1,4 @@
-# Quy cách ảnh chụp, icon và ảnh bìa store — DailyLoop (Google Play + App Store)
+# Quy cách ảnh chụp, icon và ảnh bìa store — Orbiday (Google Play + App Store)
 
 Soạn 2026-11-04. **Chụp thật ở phiên điều phối #3 (phiên con "ảnh store") với UI mới** của phiên #2 (Claude Design) — chưa chụp bây giờ vì UI sẽ đổi.
 Mẫu: `apps/A002-vigon/store/screenshots-spec.md`. Kiểm lại bảng kích thước của Google/Apple ngày chụp (đổi theo năm); ghi ngày kiểm ở cuối file.
@@ -65,13 +65,13 @@ Kiểm trước khi chụp: không thông báo thật, giờ trên thanh trạng
 - Đặt tên: `store/screenshots/<platform>-<lang>/<nn>-<man>.png`, ví dụ `store/screenshots/ios-en/01-today.png`, `store/screenshots/android-vi/03-alarm.png`.
 
 ## 5. Brief icon + ảnh bìa (để người dùng nhờ Claude Design)
-> Gửi nguyên đoạn tiếng Anh dưới đây cho Claude Design cùng `product.md`. **Chốt tên app trước** (`store/name-check.md`) rồi thay `[APP NAME]`.
+> Gửi nguyên đoạn tiếng Anh dưới đây cho Claude Design cùng `product.md`. Tên app đã chốt: **Orbiday** (2026-11-05); gợi ý hình: orbit + day = vòng quay của ngày — tránh nhìn giống logo Orbi của NETGEAR (xem `store/name-check.md`).
 
 ```
-Design the app icon and the Google Play feature graphic for "[APP NAME]", a free, offline habit-and-to-do planner for Android and iPhone.
+Design the app icon and the Google Play feature graphic for "Orbiday", a free, offline habit-and-to-do planner for Android and iPhone.
 
 Concept: "loop" = a daily rhythm that closes. Idea to explore: a single continuous ring or looping stroke that almost closes, with a small check mark or a dot where it closes, suggesting "one more day done". Calm, friendly, motivating; not childish, not corporate. One strong, simple shape that reads at 48 px.
-Avoid: clock faces, bells, calendar grids, checklists with lines, flames (streak clichés), gradients with many colors, text/letters in the icon, and anything resembling other habit apps. Before finalizing, look at the icons that appear when searching "DailyLoop" and "habit tracker" on Google Play and make ours clearly different (different silhouette AND dominant color).
+Avoid: clock faces, bells, calendar grids, checklists with lines, flames (streak clichés), gradients with many colors, text/letters in the icon, and anything resembling other habit apps. Before finalizing, look at the icons that appear when searching "Orbiday", "Orbi" (NETGEAR wifi) and "habit tracker" on Google Play and make ours clearly different (different silhouette AND dominant color).
 Palette: use the app's design system colors (primary + one accent) from the Hi-Fi mockups; icon needs strong contrast between the symbol and its background.
 
 Deliverables

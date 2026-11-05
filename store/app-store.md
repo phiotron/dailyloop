@@ -1,10 +1,10 @@
-# Hồ sơ App Store — DailyLoop (bản nháp, chưa nộp)
+# Hồ sơ App Store — Orbiday (bản nháp, chưa nộp)
 
 Bản nháp để dán vào App Store Connect ở phiên điều phối #3 (phiên con N). Người dùng duyệt tên và nội dung trước khi nộp.
 Nội dung khớp với Play (`store/listing.md`) và với SPEC; không hứa điều code không làm. Soạn 2026-11-04.
 Không sao chép tên, icon, mô tả hay ảnh của app khác (SPEC mục 1, 7).
 
-> ⚠ **Tên "DailyLoop" trùng nặng** (App Store đã có "DailyLoop – Build Routines", id6747970681) → đọc `store/name-check.md` trước khi tạo app trong App Store Connect.
+> **Tên thương hiệu đã chốt: Orbiday (2026-11-05)** — thay cho DailyLoop (App Store đã có "DailyLoop – Build Routines") và Streakloom (App Store đã có "Streakloom"); xem `store/name-check.md`, `store/name-candidates.md`. Định danh nội bộ giữ nguyên: `com.phiotron.dailyloop`, `A003-dailyloop`, đuôi `.dailyloop`.
 > **Chỗ người dùng phải điền** (`[...]`): họ tên theo tài khoản Apple Developer (Seller/Copyright), email, số điện thoại (chỉ Apple thấy), URL chính sách, URL hỗ trợ.
 
 ## Trạng thái project iOS khi viết (QUAN TRỌNG — kiểm lại khi phiên con "nền iOS" xong)
@@ -14,7 +14,7 @@ Tài liệu này viết cho cấu hình **mong muốn**; phiên điều phối/p
 | Điểm | Giả định trong hồ sơ | Nếu khác thì sửa |
 |---|---|---|
 | Thiết bị | **Chỉ iPhone** (`TARGETED_DEVICE_FAMILY = 1`), chỉ màn dọc (SPEC mục 5: chỉ màn dọc) | Nếu giữ iPad: thêm bộ ảnh iPad 13" 2064×2752 và thử bố cục iPad (`screenshots-spec.md`); bỏ dòng "Chỉ iPhone" ở bảng Thông tin chung |
-| Tên hiển thị | `DailyLoop` (hoặc tên mới) | `CFBundleDisplayName` đang là "Dailyloop" |
+| Tên hiển thị | `Orbiday` | `CFBundleDisplayName` trong `Info.plist` (phiên iOS đổi; khung thô ban đầu là "Dailyloop") |
 | Mã hóa | `ITSAppUsesNonExemptEncryption = false` | Thêm vào `Info.plist`; nếu thiếu, App Store Connect hỏi lại mỗi build |
 | Privacy manifest | `ios/Runner/PrivacyInfo.xcprivacy`: không tracking, không thu thập; các API "required reason" cần khai (ít nhất file timestamp/disk space do SQLite/drift; **UserDefaults `CA92.1`** nếu dùng App Group/SharedPreferences cho widget) | Xem báo cáo Privacy của Xcode Archive ở build ký đầu tiên |
 | Thông báo | Entitlement `com.apple.developer.usernotifications.time-sensitive` bật trong App ID + `Runner.entitlements` | Không có → kiểu "Chuông" chỉ là thông báo thường |
@@ -23,7 +23,7 @@ Tài liệu này viết cho cấu hình **mong muốn**; phiên điều phối/p
 | Chuỗi mô tả quyền (`NS…UsageDescription`) | Không cần: thông báo xin lúc chạy không cần chuỗi; chọn/chia sẻ file dùng trình chọn/bảng chia sẻ hệ thống | Nếu App Store Connect báo ITMS-90683 thì thêm chuỗi, nói đúng lý do |
 
 ## Tra trùng tên
-Xem `store/name-check.md` (kết luận: trùng nặng, khuyến nghị đổi). App Store Connect kiểm trùng **nguyên tên** khi tạo app; nếu "DailyLoop: Habits & To-Do" đã bị giữ, thử `DailyLoop – Habits & Tasks`; nếu đổi tên thì dùng bảng ở mục "Tên" bên dưới.
+Đã chốt Orbiday (xem `store/name-check.md`, `store/name-candidates.md`): tra 2026-11-04 thấy không có app tên Orbiday trên App Store (US, VN) và Google Play. Còn phải tra nhãn hiệu (nhóm 9/42, nhãn "ORBI…" của NETGEAR). App Store Connect kiểm trùng **nguyên tên** khi tạo app: nếu "Orbiday: Habits & To-Do" bị giữ, thử `Orbiday – Habits & Tasks`.
 
 ## Thông tin chung (App Information)
 | Trường | Giá trị |
@@ -49,22 +49,21 @@ Xem `store/name-check.md` (kết luận: trùng nặng, khuyến nghị đổi).
 Cùng đường dẫn chính sách phải điền vào app (`AppInfo.privacyPolicyUrl`, AC-51) — việc của phiên code.
 
 ## Tên, phụ đề, từ khóa (đã đếm ký tự)
-| Phương án | Tên EN | Tên VI |
+| Ngôn ngữ | Tên (≤ 30) | Số ký tự |
 |---|---|---|
-| **A — giữ tên (mặc định)** | `DailyLoop: Habits & To-Do` (25) | `DailyLoop: Thói Quen & Việc` (27) |
-| B — Nhịp Ngày | `Nhip Ngay: Habits & To-Do` (25) | `Nhịp Ngày: Thói Quen & Việc` (27) |
-| C — Streakloom | `Streakloom: Habits & To-Do` (26) | `Streakloom: Thói Quen & Việc` (28) |
-Từ khóa và phụ đề dưới đây **không lặp** chữ trong tên (Apple đã đánh chỉ mục tên); nếu đổi tên sang B/C, `Habits`, `To-Do` vẫn ở tên nên từ khóa giữ nguyên.
+| English (U.S.) | `Orbiday: Habits & To-Do` | 23 |
+| Vietnamese | `Orbiday: Thói Quen & Việc` | 25 |
+Từ khóa và phụ đề dưới đây **không lặp** chữ trong tên (Apple đã đánh chỉ mục tên: orbiday, habits, to-do).
 
 ## English (U.S.) — localization chính
-- **Name** (≤ 30): phương án A ở trên
+- **Name** (≤ 30): `Orbiday: Habits & To-Do` (23)
 - **Subtitle** (≤ 30): `Reminders, streaks, offline` (27)
 - **Keywords** (≤ 100 ký tự, dấu phẩy không cách): `routine,planner,tracker,checklist,pomodoro,timer,widget,goals,daily,schedule,focus,task,productivity` (100)
 - **Promotional Text** (≤ 170; đổi được không cần duyệt lại): `Your habits and to-dos in one list for today. Tap to complete, get reminded on time, see your streaks. No account, no ads: your data stays on your iPhone.` (154)
 
 **Description** (≤ 4.000):
 ```
-DailyLoop turns your habits and to-dos into one simple list for today. Open the app, tap the circle next to each item, and watch your streaks grow.
+Orbiday turns your habits and to-dos into one simple list for today. Open the app, tap the circle next to each item, and watch your streaks grow.
 
 ONE LIST FOR TODAY
 • Habits and one-off to-dos together, sorted by reminder time and priority.
@@ -81,7 +80,7 @@ HABITS THE WAY YOU WORK
 REMINDERS
 • Up to 5 reminder times for each habit or to-do, only on the days it is due.
 • Pick a normal notification or an "Alarm" reminder. Notifications have Done and Snooze buttons, so you can finish an item without opening the app.
-• "Alarm" reminders are sent as time-sensitive notifications: they can break through Focus and Scheduled Summary and play a sound. You can turn this off for DailyLoop in iPhone Settings. (iPhone does not allow a full-screen alarm.)
+• "Alarm" reminders are sent as time-sensitive notifications: they can break through Focus and Scheduled Summary and play a sound. You can turn this off for Orbiday in iPhone Settings. (iPhone does not allow a full-screen alarm.)
 • Finish an item early and its later reminders that day stay quiet.
 • The app explains why it needs notifications before asking, and works without them.
 
@@ -99,7 +98,7 @@ HOME SCREEN WIDGET
 • The "Today" widget shows today's items and their status. Tap an item to open it in the app.
 
 YOUR DATA STAYS YOURS
-• No account, no ads, no analytics, no tracking. DailyLoop has no server and never connects to the Internet, so the developer never receives your data.
+• No account, no ads, no analytics, no tracking. Orbiday has no server and never connects to the Internet, so the developer never receives your data.
 • Your data is stored only in the app on your iPhone. If you use iPhone backup (iCloud or a computer), it includes the app's data like any other app.
 • Optional 4-digit PIN lock. With the PIN on, the widget and lock-screen notifications hide item names. The PIN does not encrypt your data. If you forget it, the only way back in is to erase the app's data.
 • Back up to a .dailyloop file that you keep yourself (for example in Files) and restore it on a new iPhone. Export your history as CSV for Numbers, Excel or Google Sheets. Backup files are not encrypted, so keep them somewhere safe.
@@ -110,9 +109,9 @@ COMFORTABLE TO USE
 
 Free. No in-app purchases.
 
-DailyLoop is a personal organizer, not a medical device, and it cannot replace professional advice.
+Orbiday is a personal organizer, not a medical device, and it cannot replace professional advice.
 ```
-Số ký tự: 3362 / 4000
+Số ký tự: 3354 / 4000
 
 - **What's New**: App Store Connect **không cho nhập** ở bản 1.0 → dùng cho TestFlight "What to Test" và giữ cho 1.0.1: `First release: habits and to-dos in one daily list, reminders, streaks and stats, Pomodoro timer, widget, PIN lock, backup and CSV export.`
 
@@ -122,7 +121,7 @@ Số ký tự: 3362 / 4000
 - "VoiceOver" thay "TalkBack"; "không kết nối Internet" thay "không có quyền Internet"; nêu sao lưu iPhone có chứa dữ liệu (Android tắt `allowBackup`).
 
 ## Vietnamese — localization phụ
-- **Name** (≤ 30): phương án A ở trên (VI)
+- **Name** (≤ 30): `Orbiday: Thói Quen & Việc` (25)
 - **Subtitle** (≤ 30): `Nhắc giờ, chuỗi ngày, offline` (29)
 - **Keywords** (≤ 100): `lịch,mục tiêu,kế hoạch,nhắc nhở,pomodoro,routine,habit,todo,widget,năng suất,tập trung,công việc` (96)
   (Apple đếm theo ký tự; nếu App Store Connect báo quá dài thì bỏ từ cuối.)
@@ -130,7 +129,7 @@ Số ký tự: 3362 / 4000
 
 **Description** (≤ 4.000):
 ```
-DailyLoop gom thói quen và việc cần làm của bạn vào một danh sách gọn cho hôm nay. Mở app, chạm vào ô tròn bên cạnh mỗi mục, và xem chuỗi ngày của bạn dài ra.
+Orbiday gom thói quen và việc cần làm của bạn vào một danh sách gọn cho hôm nay. Mở app, chạm vào ô tròn bên cạnh mỗi mục, và xem chuỗi ngày của bạn dài ra.
 
 MỘT DANH SÁCH CHO HÔM NAY
 • Thói quen và việc cần làm một lần nằm chung, xếp theo giờ nhắc rồi mức ưu tiên.
@@ -165,7 +164,7 @@ WIDGET MÀN HÌNH CHÍNH
 • Widget "Hôm nay" hiện các mục hôm nay và trạng thái của chúng. Chạm vào một mục để mở nó trong app.
 
 DỮ LIỆU CỦA BẠN VẪN LÀ CỦA BẠN
-• Không tài khoản, không quảng cáo, không công cụ phân tích, không theo dõi. DailyLoop không có máy chủ và không bao giờ kết nối Internet, nên nhà phát triển không nhận dữ liệu của bạn.
+• Không tài khoản, không quảng cáo, không công cụ phân tích, không theo dõi. Orbiday không có máy chủ và không bao giờ kết nối Internet, nên nhà phát triển không nhận dữ liệu của bạn.
 • Dữ liệu chỉ lưu trong app trên iPhone của bạn. Nếu bạn dùng sao lưu iPhone (iCloud hoặc máy tính), bản sao lưu đó chứa dữ liệu của app như mọi app khác.
 • Khóa bằng mã PIN 4 số (tùy chọn). Khi bật PIN, widget và thông báo trên màn khóa ẩn tên mục. PIN không mã hóa dữ liệu. Quên mã thì chỉ có cách xóa dữ liệu của app.
 • Sao lưu ra file .dailyloop do bạn tự giữ (ví dụ trong app Tệp) và khôi phục khi đổi iPhone. Xuất lịch sử ra CSV để mở bằng Numbers, Excel hoặc Google Sheets. File sao lưu không được mã hóa, hãy cất ở nơi an toàn.
@@ -176,9 +175,9 @@ DỄ DÙNG
 
 Miễn phí. Không mua trong app.
 
-DailyLoop là công cụ sắp xếp cá nhân, không phải thiết bị y tế và không thay thế lời khuyên chuyên môn.
+Orbiday là công cụ sắp xếp cá nhân, không phải thiết bị y tế và không thay thế lời khuyên chuyên môn.
 ```
-Số ký tự: 3377 / 4000
+Số ký tự: 3371 / 4000
 
 - **What's New** (TestFlight / bản sau): `Bản đầu tiên: thói quen và việc trong một danh sách hằng ngày, nhắc giờ, chuỗi ngày và thống kê, đồng hồ Pomodoro, widget, khóa PIN, sao lưu và xuất CSV.`
 
@@ -216,11 +215,11 @@ Kết quả dự kiến: **4+** ở mọi vùng (Việt Nam theo thang riêng, d
 - Liên hệ: họ tên + email `[email liên hệ]` + số điện thoại `[của người dùng]` (chỉ Apple thấy).
 - Notes (dán nguyên, tiếng Anh):
   ```
-  DailyLoop is a fully offline habit and to-do planner. There is no account, no server and no network access; all data stays on the device.
+  Orbiday is a fully offline habit and to-do planner. There is no account, no server and no network access; all data stays on the device.
   To try it: tap + > New habit, enter a name, set a reminder time two minutes from now, and allow notifications when asked. The app explains why notifications are needed before the system prompt appears.
-  Reminders: each habit or to-do can have up to 5 reminder times. The "Alarm" style is delivered as a TIME-SENSITIVE notification (entitlement com.apple.developer.usernotifications.time-sensitive) with Done and Snooze buttons. iOS does not allow third-party full-screen alarms, so we use time-sensitive notifications only for reminders the user explicitly sets to the Alarm style; normal reminders use standard notifications. The user can turn time-sensitive delivery off in Settings > Notifications > DailyLoop.
+  Reminders: each habit or to-do can have up to 5 reminder times. The "Alarm" style is delivered as a TIME-SENSITIVE notification (entitlement com.apple.developer.usernotifications.time-sensitive) with Done and Snooze buttons. iOS does not allow third-party full-screen alarms, so we use time-sensitive notifications only for reminders the user explicitly sets to the Alarm style; normal reminders use standard notifications. The user can turn time-sensitive delivery off in Settings > Notifications > Orbiday.
   Timer: Pomodoro (the clock icon on the home screen) ends with a local notification at the end time; the remaining time is computed from a saved start time, so it stays correct if the app is closed.
-  Widget: long-press the home screen > + > DailyLoop > "Today". It shows today's items (data is shared with the app through an App Group on this device only).
+  Widget: long-press the home screen > + > Orbiday > "Today". It shows today's items (data is shared with the app through an App Group on this device only).
   PIN lock: Settings > Lock with PIN (4 digits, entered twice). It only hides the app UI, items names in the widget and lock-screen notifications; data is not encrypted, and the app says so.
   Backup: Settings > Export backup creates a .dailyloop file and opens the iOS share sheet (Save to Files). Settings > Restore opens the Files picker.
   The app is free, has no in-app purchases and no ads.

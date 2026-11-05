@@ -4,6 +4,8 @@ Bối cảnh: `store/name-check.md` (DailyLoop trùng nặng); Streakloom cũng 
 Yêu cầu: thương hiệu 1 từ/ghép tự đặt ≤ 14 ký tự, dễ đọc với người Việt, gợi chuỗi ngày/nhịp/nề nếp, không dùng từ chung chung, tránh các tên đã thấy trùng (DailyLoop, Streakloom, Streakwell, Dayrhythm, Dayweave, Daynest, HabitRail, Streakly, HabitLoop).
 **Đây không thay thế tra WIPO / Cục Sở hữu trí tuệ / USPTO / EUIPO** — chỉ là lọc thô bằng công cụ công khai. Tên chốt vẫn cần tra lại ngày tạo app.
 
+> **Đã chốt #1 Orbiday (2026-11-05)** — xem `store/name-check.md` (việc còn lại: tra nhãn hiệu nhóm 9/42 + nhãn ORBI của NETGEAR, đăng ký tên miền).
+
 ## Khuyến nghị: chọn #1 **Orbiday** (nếu người dùng muốn thận trọng hơn về nhãn hiệu: **Ritwell**)
 Xếp hạng 5 tên sạch nhất. Tên store EN đúng khuôn "<Tên>: Habits & To-Do"; VI "<Tên>: Thói Quen & Việc"; số trong ngoặc là số ký tự (≤ 30). Tên dưới icon = chính tên thương hiệu (6–8 ký tự).
 | # | Tên | Store EN | Store VI | Vì sao gợi ý | Rủi ro còn lại |

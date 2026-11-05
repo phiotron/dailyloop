@@ -1,4 +1,4 @@
-# COMPLIANCE — DailyLoop (A003-dailyloop)
+# COMPLIANCE — Orbiday (A003-dailyloop)
 
 Hồ sơ tuân thủ theo `D:/DemoChung/shared/standards/tieu-chuan-ban-app-toan-cau.md` (tài liệu gốc, cập nhật 28/10/2026; ghi "L<n>" là Lớp n trong tài liệu đó).
 **Nguồn ngoài xưởng:** file trên nằm ở thư mục DemoChung (ngoài `D:/Mobile App`); còn đọc được tại 2026-11-04. Nếu sau này mất truy cập: bảng dưới là bản chụp các yêu cầu tại 2026-11-04, mọi mốc ngày lấy từ tài liệu gốc cập nhật 28/10/2026 và phải kiểm lại bằng trang chính thức của Apple/Google trước mỗi lần phát hành (mục 3). Đề xuất cho phiên điều phối: chép tài liệu gốc sang `D:/Mobile App/reference/` để cả xưởng dùng chung.

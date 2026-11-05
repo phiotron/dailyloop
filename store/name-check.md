@@ -1,8 +1,33 @@
-# Tra trùng tên "DailyLoop" — kết quả (2026-11-04)
+# Tên thương hiệu của app — đã chốt **Orbiday** (2026-11-05)
 
-> **Cập nhật 2026-11-04:** người dùng đã loại cả DailyLoop và **Streakloom** (App Store đã có app "Streakloom" của Austin Michie, id6767362848). Ứng viên tên tiếng Anh mới và kết quả tra: [`store/name-candidates.md`](name-candidates.md) (khuyến nghị #1 Orbiday). Bảng "Tên dự phòng" bên dưới là bản cũ — Streakloom không còn dùng được.
+## Kết luận
+**Đã chốt Orbiday (2026-11-05).** Tên cũ bị loại vì trùng nặng (bằng chứng ở mục "Lý do đổi" bên dưới):
+- **DailyLoop** — 3 app thói quen cùng tên trên Google Play, 1 app trên App Store.
+- **Streakloom** (ứng viên thay thế đầu tiên) — App Store đã có app "Streakloom" của Austin Michie, id6767362848, thói quen, 2,99 USD.
 
-## Kết luận (đọc phần này là đủ)
+Orbiday được chọn từ `store/name-candidates.md` (hạng #1; tra 2026-11-04): không thấy app tên Orbiday trên App Store (US, VN) và Google Play; không thấy trang web hay nhãn hiệu trùng; `orbiday.app` và `orbiday.io` còn trống, `orbiday.com` đã có chủ. Tên store: Play/App Store EN `Orbiday: Habits & To-Do` (23), VI `Orbiday: Thói Quen & Việc` (25). Tên dưới icon: `Orbiday`.
+
+### Còn phải làm (người dùng hoặc luật sư — chưa làm)
+1. **Tra nhãn hiệu chính thức** cho "ORBIDAY": WIPO Global Brand Database, Cục Sở hữu trí tuệ Việt Nam, USPTO, EUIPO — nhất là **nhóm 9 (phần mềm tải về) và nhóm 42**. Công cụ của phiên store chỉ tra được qua trang tổng hợp, không đủ kết luận.
+2. **Nhãn "ORBI…" của NETGEAR** (wifi mesh, rất nổi trên Play/App Store): chữ đầu "Orbi" giống nhau dù khác ngành. Xem kết quả tra nhóm 9/42; nếu NETGEAR có nhãn "ORBI" cover phần mềm/ứng dụng thì cân nhắc lại (tên dự phòng sạch nhất: **Ritwell**, rồi Beatday — `name-candidates.md`). Icon không được gợi lại logo Orbi.
+3. **Đăng ký tên miền** `orbiday.app` và/or `orbiday.io` (người dùng tự làm; app không bắt buộc cần tên miền riêng — trang chính sách có thể đặt trên Google Sites).
+4. Tra lại nhanh tên "Orbiday" trong Play Console / App Store Connect ngày tạo app (App Store Connect báo ngay nếu tên bị chiếm).
+5. Ghi tên chốt vào `APP.md` (phiên điều phối).
+
+### Định danh nội bộ giữ nguyên (không hiện với người dùng)
+Bundle ID / package `com.phiotron.dailyloop` · mã app `A003-dailyloop` · repo `phiotron/dailyloop` · đuôi file sao lưu `.dailyloop` · tên cơ sở dữ liệu `dailyloop.sqlite`.
+
+### Chỗ còn phải đổi tay (xem danh sách đầy đủ ở `notes/2026-11-04-store-legal.md`)
+Play Console / App Store Connect (tên app, ngôn ngữ, URL chính sách), icon + ảnh bìa, mockup Claude Design nếu còn tên cũ. Đã đổi trong code (phiên khác, commit 41647bb): `android:label`, `.arb`, `widget_strings.xml`; `CFBundleDisplayName` do phiên iOS.
+
+---
+
+# Lý do đổi — tra trùng tên "DailyLoop" (2026-11-04)
+
+> Phần dưới giữ nguyên làm bằng chứng. Các tên dự phòng cũ (Nhịp Ngày, Streakloom, Ngày Đều) đã thay bằng kết quả ở `store/name-candidates.md`; **Streakloom không dùng được**; "Nếu giữ DailyLoop" không còn áp dụng.
+
+## Kết luận lúc đó (2026-11-04)
+
 **"DailyLoop" đang bị trùng nặng, cùng loại app, trên cả hai store.** Đã có **ít nhất 3 app thói quen/việc hằng ngày tên DailyLoop / Daily Loop trên
 Google Play** và **1 app tên "DailyLoop – Build Routines" trên App Store** (dạng thói quen, miễn phí, iPhone). Một trong số đó
 (ByteNest Labs) còn có đúng bộ tính năng như app mình: thói quen + việc + nhắc + chuông toàn màn hình + chuỗi ngày.

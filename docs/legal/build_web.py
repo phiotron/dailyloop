@@ -17,9 +17,9 @@ HERE = Path(__file__).resolve().parent
 OUT = HERE / "web"
 
 PAGES = [
-    ("privacy-policy", "Privacy Policy · Chính sách quyền riêng tư", "DailyLoop"),
-    ("terms-of-use", "Terms of Use · Điều khoản sử dụng", "DailyLoop"),
-    ("support", "Support · Hỗ trợ", "DailyLoop"),
+    ("privacy-policy", "Privacy Policy · Chính sách quyền riêng tư", "Orbiday"),
+    ("terms-of-use", "Terms of Use · Điều khoản sử dụng", "Orbiday"),
+    ("support", "Support · Hỗ trợ", "Orbiday"),
 ]
 
 CSS = """

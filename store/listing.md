@@ -1,23 +1,23 @@
-# Hồ sơ Google Play — DailyLoop (bản nháp, chưa nộp)
+# Hồ sơ Google Play — Orbiday (bản nháp, chưa nộp)
 
 Bản nháp để dán vào Google Play Console ở phiên điều phối #3 (closed test có thể cần sớm hơn — xem `store/closed-test-plan.md`).
 Người dùng duyệt tên và nội dung trước khi nộp. Bản App Store tương ứng: `store/app-store.md` (giữ hai bản thống nhất).
 Soạn 2026-11-04 từ `docs/SPEC.md` (F-01..F-14), `AndroidManifest.xml` + manifest đã gộp của bản release (`build/.../processReleaseManifest`), D-007, D-009.
 Không sao chép tên, icon, mô tả hay ảnh của app khác (SPEC mục 1, 7).
 
-> ⚠ **Tên "DailyLoop" đang trùng nặng trên cả hai store** → đọc `store/name-check.md` TRƯỚC. Mọi chỗ tên dưới đây viết cho tên `DailyLoop`;
-> nếu đổi tên, thay theo bảng "Tên" (các mô tả dài không chứa tên riêng ngoài dòng mở đầu và dòng cuối, dùng tìm–thay `DailyLoop`).
+> **Tên thương hiệu đã chốt: Orbiday (2026-11-05)** — thay cho DailyLoop (trùng nặng) và Streakloom (trùng trên App Store); lý do và việc tra nhãn hiệu còn lại: `store/name-check.md`, `store/name-candidates.md`.
+> Định danh nội bộ giữ nguyên: bundle/package `com.phiotron.dailyloop`, mã app `A003-dailyloop`, đuôi file sao lưu `.dailyloop`.
 
 > **Chỗ người dùng phải điền** (đánh dấu `[...]`): tên nhà phát triển, email liên hệ, URL chính sách quyền riêng tư, website (nếu có).
 > Phần mô tả mô tả đúng SPEC; các dòng liên quan G7 (PIN, sao lưu, xóa dữ liệu) và widget/chuông chưa thử máy thật → **đối chiếu lại với bản build thật trước khi nộp** (mục cuối "Kiểm trước khi nộp").
 
 ## Tên (≤ 30 ký tự)
-| Phương án | Tiếng Anh (en-US) | Tiếng Việt (vi) | Ghi chú |
-|---|---|---|---|
-| **A — giữ tên (mặc định trong bản nháp)** | `DailyLoop: Habits & To-Do` (25) | `DailyLoop: Thói Quen & Việc` (27) | Trùng tên 3 app trên Play, 1 app trên App Store (`name-check.md`) |
-| B — "Nhịp Ngày" | `Nhip Ngay: Habits & To-Do` (25) | `Nhịp Ngày: Thói Quen & Việc` (27) | Tra Play không thấy trùng |
-| C — "Streakloom" | `Streakloom: Habits & To-Do` (26) | `Streakloom: Thói Quen & Việc` (28) | Tra Play không thấy trùng |
-- Tên dưới icon trên máy: **DailyLoop** (hoặc tên mới) — `android:label` trong `AndroidManifest.xml`, ≤ 12 ký tự cho khỏi bị cắt.
+| Ngôn ngữ | Tên trên Play (≤ 30) | Số ký tự |
+|---|---|---|
+| Tiếng Anh (en-US) | `Orbiday: Habits & To-Do` | 23 |
+| Tiếng Việt (vi) | `Orbiday: Thói Quen & Việc` | 25 |
+Dự phòng nếu Play báo tên bị chiếm hoặc cần đổi: `Orbiday: Habit & Task Planner` (29), `Orbiday: Thói Quen & Công Việc` (30).
+- Tên dưới icon trên máy: **Orbiday** (7 ký tự) — `android:label` trong `AndroidManifest.xml`.
 - Play cho tên ≤ 30 ký tự; không ký hiệu/emoji gây hiểu nhầm, không "#1", "Best", "Free" (chính sách Metadata).
 
 ## Mô tả ngắn (≤ 80 ký tự)
@@ -28,7 +28,7 @@ Không sao chép tên, icon, mô tả hay ảnh của app khác (SPEC mục 1, 7
 
 ### English (en-US)
 ```
-DailyLoop turns your habits and to-dos into one simple list for today. Open the app, tap the circle next to each item, and watch your streaks grow.
+Orbiday turns your habits and to-dos into one simple list for today. Open the app, tap the circle next to each item, and watch your streaks grow.
 
 ONE LIST FOR TODAY
 • Habits and one-off to-dos together, sorted by reminder time and priority.
@@ -73,13 +73,13 @@ COMFORTABLE TO USE
 
 Free. No in-app purchases.
 
-DailyLoop is a personal organizer, not a medical device, and it cannot replace professional advice. Reminder timing can be affected by your phone's battery saver; for the most exact times, allow "Alarms & reminders" for DailyLoop in system settings.
+Orbiday is a personal organizer, not a medical device, and it cannot replace professional advice. Reminder timing can be affected by your phone's battery saver; for the most exact times, allow "Alarms & reminders" for Orbiday in system settings.
 ```
-Số ký tự: 3283 / 4000
+Số ký tự: 3277 / 4000
 
 ### Tiếng Việt (vi)
 ```
-DailyLoop gom thói quen và việc cần làm của bạn vào một danh sách gọn cho hôm nay. Mở app, chạm vào ô tròn bên cạnh mỗi mục, và xem chuỗi ngày của bạn dài ra.
+Orbiday gom thói quen và việc cần làm của bạn vào một danh sách gọn cho hôm nay. Mở app, chạm vào ô tròn bên cạnh mỗi mục, và xem chuỗi ngày của bạn dài ra.
 
 MỘT DANH SÁCH CHO HÔM NAY
 • Thói quen và việc cần làm một lần nằm chung, xếp theo giờ nhắc rồi mức ưu tiên.
@@ -124,9 +124,9 @@ DỄ DÙNG
 
 Miễn phí. Không mua trong app.
 
-DailyLoop là công cụ sắp xếp cá nhân, không phải thiết bị y tế và không thay thế lời khuyên chuyên môn. Giờ nhắc có thể bị chế độ tiết kiệm pin của máy làm trễ; để đúng giờ nhất, hãy cho phép "Báo thức và lời nhắc" cho DailyLoop trong cài đặt hệ thống.
+Orbiday là công cụ sắp xếp cá nhân, không phải thiết bị y tế và không thay thế lời khuyên chuyên môn. Giờ nhắc có thể bị chế độ tiết kiệm pin của máy làm trễ; để đúng giờ nhất, hãy cho phép "Báo thức và lời nhắc" cho Orbiday trong cài đặt hệ thống.
 ```
-Số ký tự: 3223 / 4000
+Số ký tự: 3217 / 4000
 
 ### Từ khóa (Play không có ô từ khóa; đã lồng vào tên và mô tả — dùng tự nhiên, không nhồi)
 habit tracker, daily planner, to-do list, routine, streak, reminder, Pomodoro, widget, offline · thói quen, việc cần làm, nhắc giờ, chuỗi ngày, hẹn giờ Pomodoro, không cần mạng.
@@ -149,7 +149,7 @@ habit tracker, daily planner, to-do list, routine, streak, reminder, Pomodoro, w
 | Target audience | Nhóm tuổi: **13–15, 16–17, 18+**. Không chọn nhóm dưới 13 → không vào chương trình Families. "Hấp dẫn trẻ em": **No** | COMPLIANCE P-12 không áp dụng; Play Age Signals chưa tích hợp ở bản 1 (D-12, đề xuất) |
 | News app / Government app | No / No | |
 | Financial features | App không có tính năng tài chính → chọn mục kiểu "My app doesn't provide any financial features" | Câu chữ danh sách đổi theo thời gian — đọc kỹ khi điền |
-| Health apps (Health apps declaration) | **No** — DailyLoop là app thói quen/việc nói chung, không đo/chẩn đoán/tư vấn sức khỏe, không dùng Health Connect | Nếu danh sách tính năng có mục kiểu "Activity and fitness tracking"/"Nutrition" mà Play đòi chọn vì mô tả có "uống nước/tập thể dục" làm ví dụ → đọc kỹ; mô tả đã tránh ví dụ y khoa (thuốc) có chủ đích |
+| Health apps (Health apps declaration) | **No** — Orbiday là app thói quen/việc nói chung, không đo/chẩn đoán/tư vấn sức khỏe, không dùng Health Connect | Nếu danh sách tính năng có mục kiểu "Activity and fitness tracking"/"Nutrition" mà Play đòi chọn vì mô tả có "uống nước/tập thể dục" làm ví dụ → đọc kỹ; mô tả đã tránh ví dụ y khoa (thuốc) có chủ đích |
 | Advertising ID | **No** (không dùng) | App không khai `AD_ID`; không SDK quảng cáo. Kiểm manifest đã gộp: không có `com.google.android.gms.permission.AD_ID` |
 | Data safety | Xem mục dưới | |
 | Full-screen intent / Exact alarm (Permissions declaration) | Xem mục "Quyền nhạy cảm" | Điền nếu Play Console hiện biểu mẫu khai báo cho các quyền này; tên biểu mẫu có thể đổi |
@@ -184,15 +184,15 @@ Dán nguyên văn nếu Play Console hiện biểu mẫu; **đọc câu hỏi th
 
 **Exact alarms (`SCHEDULE_EXACT_ALARM`) — "What is the core functionality of your app that requires exact alarms?"**
 ```
-DailyLoop is a habit and to-do planner. Each habit or to-do can have up to five user-set reminder times (for example "drink water at 10:30"). The user picks the exact time and the app must deliver the reminder at that time, including when the phone is idle, because a late reminder defeats the purpose (taking a task or habit at a set moment of the day). We use setExactAndAllowWhileIdle / setAlarmClock only for these user-created reminders and for the Pomodoro end-of-timer alert. We do NOT declare USE_EXACT_ALARM. Android 14+ requires the user to grant SCHEDULE_EXACT_ALARM; before asking, the app shows a screen explaining why, and if the user declines, reminders still work as inexact notifications and the app shows a warning icon. No alarms are scheduled for anything other than user-created reminders and the timer.
+Orbiday is a habit and to-do planner. Each habit or to-do can have up to five user-set reminder times (for example "drink water at 10:30"). The user picks the exact time and the app must deliver the reminder at that time, including when the phone is idle, because a late reminder defeats the purpose (taking a task or habit at a set moment of the day). We use setExactAndAllowWhileIdle / setAlarmClock only for these user-created reminders and for the Pomodoro end-of-timer alert. We do NOT declare USE_EXACT_ALARM. Android 14+ requires the user to grant SCHEDULE_EXACT_ALARM; before asking, the app shows a screen explaining why, and if the user declines, reminders still work as inexact notifications and the app shows a warning icon. No alarms are scheduled for anything other than user-created reminders and the timer.
 ```
 **Full-screen intent (`USE_FULL_SCREEN_INTENT`) — "Describe how your app uses full-screen intent"**
 ```
-DailyLoop offers an optional "Alarm" reminder style that the user chooses per reminder. When such a reminder fires, the app shows a full-screen alarm screen over the lock screen with Done, Snooze (10 minutes) and Stop buttons, and rings until the user acts or 5 minutes pass. It is used ONLY for these user-created alarm-style reminders (the same way an alarm clock behaves), never for advertising, promotions or marketing. It is off by default: reminders default to normal notifications. Android 14+ may require the user to allow full-screen notifications in system settings; the app explains why before sending the user there. If the permission is not granted, the reminder is shown as a normal heads-up notification instead.
+Orbiday offers an optional "Alarm" reminder style that the user chooses per reminder. When such a reminder fires, the app shows a full-screen alarm screen over the lock screen with Done, Snooze (10 minutes) and Stop buttons, and rings until the user acts or 5 minutes pass. It is used ONLY for these user-created alarm-style reminders (the same way an alarm clock behaves), never for advertising, promotions or marketing. It is off by default: reminders default to normal notifications. Android 14+ may require the user to allow full-screen notifications in system settings; the app explains why before sending the user there. If the permission is not granted, the reminder is shown as a normal heads-up notification instead.
 ```
 **Receiver / boot (`RECEIVE_BOOT_COMPLETED`)** — không cần biểu mẫu; nếu hỏi: `Re-schedules the user's reminders after the device restarts or the app is updated. No other work is done at boot.`
 
-**Rủi ro:** Google có thể coi DailyLoop không phải "app báo thức chính" và **từ chối** full-screen intent / exact alarm. Hệ quả đã thiết kế sẵn: chuông thành thông báo nổi thường (AC-20), nhắc giờ không chính xác tuyệt đối (D-007). Nếu bị từ chối: gỡ quyền khỏi manifest ở bản kế tiếp (phiên code) và sửa dòng "Chuông toàn màn hình" trong mô tả. Quyết định này không chặn closed test.
+**Rủi ro:** Google có thể coi Orbiday không phải "app báo thức chính" và **từ chối** full-screen intent / exact alarm. Hệ quả đã thiết kế sẵn: chuông thành thông báo nổi thường (AC-20), nhắc giờ không chính xác tuyệt đối (D-007). Nếu bị từ chối: gỡ quyền khỏi manifest ở bản kế tiếp (phiên code) và sửa dòng "Chuông toàn màn hình" trong mô tả. Quyết định này không chặn closed test.
 
 ## Tài khoản nhà phát triển cá nhân — điều cần biết
 - **Tên hiển thị trên Play** = tên người dùng đặt khi tạo tài khoản (đã xác minh danh tính). Chính sách quyền riêng tư và màn Giới thiệu dùng cùng tên đó.
