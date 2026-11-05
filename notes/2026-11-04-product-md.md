@@ -39,3 +39,6 @@ Phiên con của phiên điều phối #1 · 2026-11-04 · phạm vi sửa: ch�
 - Mục 2.3 thêm đoạn thương hiệu: Streakloom = streak + loom (dệt chuỗi ngày) — gợi ý tùy chọn cho logo/icon; logo/màu phải khác hẳn 3 app DailyLoop cũ.
 - **`.arb` còn chữ "DailyLoop" ở 3 khóa** (EN + VI): `appTitle`, `permNotifBody`, `restoreFailed`. Trong product.md đã viết bằng Streakloom và đánh dấu `NEW:` (đầu file + bảng 2.5 + SCR-22). Không sửa `.arb`; phiên điều phối đổi sau (kèm tên app Android/iOS, tiêu đề app, widget, thông báo). Script đối chiếu `.arb` ↔ product.md sẽ báo lệch ở đúng 3 khóa này — là chủ ý.
 - Tên trong `ios/`/Android manifest (display name) cũng cần đổi ở phiên áp UI — ngoài phạm vi phiên này.
+
+## Cập nhật 2: tên chốt cuối = **Orbiday** (2026-11-05)
+- Streakloom bị loại (App Store đã có app trùng). `product.md` và `CONTEXT.md` đổi mọi "Streakloom" → **Orbiday**; store EN "Orbiday: Habits & To-Do", VI "Orbiday: Thói Quen & Việc". Mục thương hiệu (2.3) viết lại: orbit + day ("vòng quay của ngày"), gợi ý tùy chọn; logo/màu phải khác Orbi (NETGEAR, Wi-Fi) và các tên DailyLoop/Streakloom cũ. Giữ nguyên `A003-dailyloop`, `com.phiotron.dailyloop`, đuôi `.dailyloop`. `.arb` đã là Orbiday nên bỏ các dấu `NEW:` về tên (không còn cảnh báo lệch 3 khóa ở bước 'Cập nhật' trước).
