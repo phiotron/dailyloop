@@ -1,9 +1,12 @@
 # CI Dart/Android: phân tích + unit/widget test trên Ubuntu (rẻ), chạy mọi push và PR.
 # Ghim Flutter 3.47.8 cho khớp máy phát triển (D-003). iOS ở ios.yml (macOS, chỉ nhánh main).
 name: CI
+# Tiết kiệm phút Actions (luật xưởng WORKFLOW §7, 2026-11-05): không chạy trên `dev`; push `main` chỉ kiểm;
+# build chỉ khi tag `v*` hoặc chạy tay.
 on:
   push:
-  pull_request:
+    branches: [main]
+    paths-ignore: ['**/*.md', 'docs/**', 'store/**', 'design/**', 'notes/**']
   workflow_dispatch:
 
 concurrency:

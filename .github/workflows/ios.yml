@@ -4,17 +4,11 @@
 # CHƯA có integration test: cần gói `integration_test` trong pubspec (xem notes/2026-11-04-ios-ci.md).
 name: iOS
 
+# Tiết kiệm phút Actions (luật xưởng WORKFLOW §7, 2026-11-05): không chạy trên `dev`; push `main` chỉ kiểm;
+# build chỉ khi tag `v*` hoặc chạy tay.
 on:
   push:
-    branches: [main]
-    paths-ignore:
-      - '**/*.md'
-      - 'docs/**'
-      - 'store/**'
-      - 'design/**'
-      - 'notes/**'
-      - 'android/**'
-      - 'tool/**'
+    tags: ['v*']
   workflow_dispatch:
 
 concurrency:
