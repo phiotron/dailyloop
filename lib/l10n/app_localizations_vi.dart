@@ -10,7 +10,7 @@ class AppLocalizationsVi extends AppLocalizations {
   AppLocalizationsVi([String locale = 'vi']) : super(locale);
 
   @override
-  String get appTitle => 'DailyLoop';
+  String get appTitle => 'Orbiday';
 
   @override
   String get today => 'Hôm nay';
@@ -523,7 +523,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get permNotifBody =>
-      'DailyLoop chỉ dùng thông báo để nhắc bạn đúng giờ đã đặt. Không cho phép thì sẽ không có nhắc giờ, các phần khác của app vẫn dùng bình thường.';
+      'Orbiday chỉ dùng thông báo để nhắc bạn đúng giờ đã đặt. Không cho phép thì sẽ không có nhắc giờ, các phần khác của app vẫn dùng bình thường.';
 
   @override
   String get permExactTitle => 'Nhắc đúng giờ?';
@@ -771,7 +771,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get restoreFailed =>
-      'File sao lưu hỏng, sai định dạng hoặc do bản DailyLoop mới hơn tạo ra. Dữ liệu hiện tại được giữ nguyên.';
+      'File sao lưu hỏng, sai định dạng hoặc do bản Orbiday mới hơn tạo ra. Dữ liệu hiện tại được giữ nguyên.';
 
   @override
   String get exportFailed => 'Không xuất được file';

@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'DailyLoop'**
+  /// **'Orbiday'**
   String get appTitle;
 
   /// No description provided for @today.
@@ -1055,7 +1055,7 @@ abstract class AppLocalizations {
   /// No description provided for @permNotifBody.
   ///
   /// In en, this message translates to:
-  /// **'DailyLoop uses notifications only to remind you at the times you set. Without them, reminders will not appear. You can still use the rest of the app.'**
+  /// **'Orbiday uses notifications only to remind you at the times you set. Without them, reminders will not appear. You can still use the rest of the app.'**
   String get permNotifBody;
 
   /// No description provided for @permExactTitle.
@@ -1505,7 +1505,7 @@ abstract class AppLocalizations {
   /// No description provided for @restoreFailed.
   ///
   /// In en, this message translates to:
-  /// **'The backup file is damaged, in the wrong format or made by a newer DailyLoop. Your current data was left untouched.'**
+  /// **'The backup file is damaged, in the wrong format or made by a newer Orbiday. Your current data was left untouched.'**
   String get restoreFailed;
 
   /// No description provided for @exportFailed.

@@ -10,7 +10,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'DailyLoop';
+  String get appTitle => 'Orbiday';
 
   @override
   String get today => 'Today';
@@ -524,7 +524,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get permNotifBody =>
-      'DailyLoop uses notifications only to remind you at the times you set. Without them, reminders will not appear. You can still use the rest of the app.';
+      'Orbiday uses notifications only to remind you at the times you set. Without them, reminders will not appear. You can still use the rest of the app.';
 
   @override
   String get permExactTitle => 'Remind on time?';
@@ -791,7 +791,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restoreFailed =>
-      'The backup file is damaged, in the wrong format or made by a newer DailyLoop. Your current data was left untouched.';
+      'The backup file is damaged, in the wrong format or made by a newer Orbiday. Your current data was left untouched.';
 
   @override
   String get exportFailed => 'Could not export the file';
