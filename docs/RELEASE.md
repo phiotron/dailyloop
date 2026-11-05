@@ -13,7 +13,7 @@
 ## iOS (TestFlight / App Store) — CHƯA KIỂM CHỨNG (chưa có tài khoản Apple, chưa có iPhone)
 Build + ký + tải lên chạy trên GitHub Actions macOS (`.github/workflows/release-ios.yml`, chạy tay `workflow_dispatch`); Windows không build iOS. Build thử không ký ở `ios.yml`. Chi tiết và lệnh: `notes/2026-11-04-ios-ci.md`.
 - **Apple Developer cá nhân** → App ID `com.phiotron.dailyloop` với khả năng **Time Sensitive Notifications** bật sẵn (D-010). Khi làm widget iOS: thêm **App Group** `group.com.phiotron.dailyloop` và App ID + profile cho extension.
-- Tạo app "DailyLoop" trong App Store Connect (bundle id trên) trước lần tải lên đầu.
+- Tạo app "Orbiday" (tên hiển thị đã chốt) trong App Store Connect (bundle id trên) trước lần tải lên đầu.
 - **GitHub Secrets** (repo `phiotron/dailyloop` › Settings › Secrets and variables › Actions) — KHÔNG ghi giá trị vào repo hay file này:
   | Tên secret | Nội dung |
   |---|---|

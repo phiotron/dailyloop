@@ -49,11 +49,11 @@ jobs:
       - name: Kiểm Info.plist, PrivacyInfo, entitlements, âm chuông
         run: |
           plutil -lint ios/Runner/Info.plist ios/Runner/PrivacyInfo.xcprivacy ios/Runner/Runner.entitlements
-          # Tên hiển thị hiện là "DailyLoop" nhưng brief đang đổi sang "Streakloom": chỉ in ra, không ép.
-          echo "CFBundleDisplayName = $(plutil -extract CFBundleDisplayName raw ios/Runner/Info.plist)"
+          # Tên hiển thị chốt là "Orbiday" (bundle id vẫn com.phiotron.dailyloop).
+          test "$(plutil -extract CFBundleDisplayName raw ios/Runner/Info.plist)" = "Orbiday"
           test "$(plutil -extract ITSAppUsesNonExemptEncryption raw ios/Runner/Info.plist)" = "false"
           test "$(plutil -extract NSPrivacyTracking raw ios/Runner/PrivacyInfo.xcprivacy)" = "false"
-          test "$(plutil -extract com.apple.developer.usernotifications.time-sensitive raw ios/Runner/Runner.entitlements)" = "true"
+          test "$(/usr/libexec/PlistBuddy -c "Print :com.apple.developer.usernotifications.time-sensitive" ios/Runner/Runner.entitlements)" = "true"
           # Chỉ chạy dọc (SPEC mục 5): đúng một hướng, không khai UIBackgroundModes (nhắc giờ không cần).
           test "$(plutil -extract UISupportedInterfaceOrientations raw ios/Runner/Info.plist)" = "1"
           if grep -q "UIBackgroundModes" ios/Runner/Info.plist; then echo "Info.plist khai UIBackgroundModes"; exit 1; fi
